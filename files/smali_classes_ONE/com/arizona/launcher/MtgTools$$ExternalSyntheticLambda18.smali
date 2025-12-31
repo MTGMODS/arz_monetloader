@@ -1,4 +1,4 @@
-.class public final synthetic Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda0;
+.class public final synthetic Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda18;
 .super Ljava/lang/Object;
 .source "D8$$SyntheticClass"
 
@@ -17,7 +17,7 @@
     .line 0
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
-    iput-object p1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda0;->f$0:Landroid/content/Context;
+    iput-object p1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda18;->f$0:Landroid/content/Context;
 
     return-void
 .end method
@@ -28,9 +28,9 @@
     .locals 1
 
     .line 0
-    iget-object v0, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda0;->f$0:Landroid/content/Context;
+    iget-object v0, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda18;->f$0:Landroid/content/Context;
 
-    invoke-static {v0}, Lcom/arizona/launcher/MtgTools;->lambda$showVipDialog$8(Landroid/content/Context;)V
+    invoke-static {v0}, Lcom/arizona/launcher/MtgTools;->lambda$isValidKey$1(Landroid/content/Context;)V
 
     return-void
 .end method

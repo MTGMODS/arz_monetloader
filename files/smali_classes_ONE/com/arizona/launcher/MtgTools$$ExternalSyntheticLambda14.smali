@@ -3,17 +3,17 @@
 .source "D8$$SyntheticClass"
 
 # interfaces
-.implements Ljava/lang/Runnable;
+.implements Landroid/content/DialogInterface$OnClickListener;
 
 
 # instance fields
 .field public final synthetic f$0:Landroid/content/Context;
 
-.field public final synthetic f$1:Ljava/lang/Exception;
+.field public final synthetic f$1:Landroid/app/Activity;
 
 
 # direct methods
-.method public synthetic constructor <init>(Landroid/content/Context;Ljava/lang/Exception;)V
+.method public synthetic constructor <init>(Landroid/content/Context;Landroid/app/Activity;)V
     .locals 0
 
     .line 0
@@ -21,22 +21,22 @@
 
     iput-object p1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;->f$0:Landroid/content/Context;
 
-    iput-object p2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;->f$1:Ljava/lang/Exception;
+    iput-object p2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;->f$1:Landroid/app/Activity;
 
     return-void
 .end method
 
 
 # virtual methods
-.method public final run()V
+.method public final onClick(Landroid/content/DialogInterface;I)V
     .locals 2
 
     .line 0
     iget-object v0, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;->f$0:Landroid/content/Context;
 
-    iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;->f$1:Ljava/lang/Exception;
+    iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;->f$1:Landroid/app/Activity;
 
-    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$isValidKey$4(Landroid/content/Context;Ljava/lang/Exception;)V
+    invoke-static {v0, v1, p1, p2}, Lcom/arizona/launcher/MtgTools;->lambda$initialize$12(Landroid/content/Context;Landroid/app/Activity;Landroid/content/DialogInterface;I)V
 
     return-void
 .end method

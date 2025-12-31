@@ -3,40 +3,28 @@
 .source "D8$$SyntheticClass"
 
 # interfaces
-.implements Landroid/content/DialogInterface$OnClickListener;
-
-
-# instance fields
-.field public final synthetic f$0:Landroid/widget/EditText;
-
-.field public final synthetic f$1:Landroid/content/Context;
+.implements Ljavax/net/ssl/HostnameVerifier;
 
 
 # direct methods
-.method public synthetic constructor <init>(Landroid/widget/EditText;Landroid/content/Context;)V
+.method public synthetic constructor <init>()V
     .locals 0
 
     .line 0
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
-
-    iput-object p1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda9;->f$0:Landroid/widget/EditText;
-
-    iput-object p2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda9;->f$1:Landroid/content/Context;
 
     return-void
 .end method
 
 
 # virtual methods
-.method public final onClick(Landroid/content/DialogInterface;I)V
-    .locals 2
+.method public final verify(Ljava/lang/String;Ljavax/net/ssl/SSLSession;)Z
+    .locals 0
 
     .line 0
-    iget-object v0, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda9;->f$0:Landroid/widget/EditText;
+    invoke-static {p1, p2}, Lcom/arizona/launcher/MtgTools;->lambda$postRequest$0(Ljava/lang/String;Ljavax/net/ssl/SSLSession;)Z
 
-    iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda9;->f$1:Landroid/content/Context;
+    move-result p1
 
-    invoke-static {v0, v1, p1, p2}, Lcom/arizona/launcher/MtgTools;->lambda$showVipDialog$7(Landroid/widget/EditText;Landroid/content/Context;Landroid/content/DialogInterface;I)V
-
-    return-void
+    return p1
 .end method

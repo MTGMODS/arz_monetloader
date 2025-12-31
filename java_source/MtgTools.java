@@ -72,9 +72,7 @@ public class MtgTools {
             Log.i("MtgTools", "HTTP code: " + code + " from " + urlStr);
 
             InputStream is = (code >= 400) ? c.getErrorStream() : c.getInputStream();
-            if (is == null) {
-                return "{\"valid\":false,\"error\":\"Empty response\",\"code\":" + code + "}";
-            }
+            if (is == null) return null;
 
             StringBuilder sb = new StringBuilder();
             try (BufferedReader in = new BufferedReader(new InputStreamReader(is))) {
@@ -83,17 +81,15 @@ public class MtgTools {
             }
 
             String body = sb.toString();
-            if (body.isEmpty()) {
-                body = "{\"valid\":false,\"error\":\"No content\",\"code\":" + code + "}";
-            }
+            if (body.isEmpty()) return null;
 
             return body;
         } catch (UnknownHostException e) {
             Log.e("MtgTools", "DNS error: " + e.getMessage());
-            return "{\"valid\":false,\"error\":\"DNS_FAIL\"}";
+            return null;
         } catch (Exception e) {
             Log.e("MtgTools", "Error post request: ", e);
-            return "{\"valid\":false,\"error\":\"" + e.getMessage() + "\"}";
+            return null;
         } finally {
             if (c != null) c.disconnect();
         }
@@ -104,7 +100,7 @@ public class MtgTools {
 
         final String host = "mtgmods.duckdns.org";
         final String urlHost = "https://" + host + "/api/check_key";
-        final String urlIp   = "https://130.61.17.51/api/check_key";
+        final String urlIp   = "https://130.61.116.240/api/check_key";
         final String deviceId = getDeviceId(context);
 
         String response = postRequest(urlHost, key, deviceId, false, host);
@@ -115,31 +111,43 @@ public class MtgTools {
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n⚠️ Ошибка подключения ⚠️", Toast.LENGTH_LONG).show());
             return false;
         }
+
         try {
             JSONObject json = new JSONObject(response);
-            boolean valid = json.optBoolean("valid", false);
-            if (valid) {
+            Boolean valid = json.has("valid") ? json.getBoolean("valid") : null;
+            if (Boolean.TRUE.equals(valid)) {
                 String username = json.optString("user", "VIP пользователь");
                 new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n👑 " + username + " 👑", Toast.LENGTH_SHORT).show());
-            } else {
-                context.getSharedPreferences("mtg", Context.MODE_PRIVATE).edit().remove("key").apply();
+                return true;
+            } else if (Boolean.FALSE.equals(valid)) {
                 String err = json.optString("error", "");
                 String toastMessage;
                 if (json.optBoolean("expires", false)) {
                     toastMessage = "[MTG MODS]\n😭 Ключ устарел 😭";
+                    context.getSharedPreferences("mtg", Context.MODE_PRIVATE).edit().remove("key").apply();
                 } else if ("Key not found".equalsIgnoreCase(err)) {
                     toastMessage = "[MTG MODS]\n❌ Ключ не найден ❌";
+                    context.getSharedPreferences("mtg", Context.MODE_PRIVATE).edit().remove("key").apply();
                 } else if ("Missing key".equalsIgnoreCase(err)) {
                     toastMessage = "[MTG MODS]\n⚠️ Не введён ключ ⚠️";
+                    context.getSharedPreferences("mtg", Context.MODE_PRIVATE).edit().remove("key").apply();
                 } else if ("Internal server error".equalsIgnoreCase(err)) {
                     toastMessage = "[MTG MODS]\n❗️ Сервер упал ❗️";
-                }
-                else {
-                    toastMessage = "[MTG MODS]\n❌ Неверный ключ ❌";
+                } else {
+                    Log.e("MtgTools", "Unexpected valid=false response: " + response);
+                    toastMessage = "[MTG MODS]\n⚠️ Ошибка сервера ⚠️";
+
+                    String finalResponse = response;
+                    new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, finalResponse, Toast.LENGTH_LONG).show());
                 }
                 new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, toastMessage, Toast.LENGTH_LONG).show());
-            }
-            return valid;
+            } else {
+                Log.e("MtgTools", "Error check key: " + response);
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "🌐 Смените 4G / Wi-Fi / VPN 🌐", Toast.LENGTH_SHORT).show());
+                String finalResponse = response;
+                new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, finalResponse, Toast.LENGTH_LONG).show());
+            };
+            return false;
         } catch (Exception e) {
             Log.e("MtgTools", "Error check key: ", e);
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show());
