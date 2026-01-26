@@ -32,6 +32,8 @@ import javax.net.ssl.X509TrustManager;
 
 public class MtgTools {
 
+    public static boolean forceVip = false;
+
     public static String getDeviceId(Context context) {
         @SuppressLint("HardwareIds") String id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         if (id == null || id.isEmpty() || "9774d56d682e549c".equals(id)) {
@@ -133,10 +135,11 @@ public class MtgTools {
                     context.getSharedPreferences("mtg", Context.MODE_PRIVATE).edit().remove("key").apply();
                 } else if ("Internal server error".equalsIgnoreCase(err)) {
                     toastMessage = "[MTG MODS]\n❗️ Сервер упал ❗️";
+                } else if ("NOT_ACTIVATED".equalsIgnoreCase(err)) {
+                    toastMessage = "[MTG MODS]\n👉 Активируйте в TG/DS 👈";
                 } else {
-                    Log.e("MtgTools", "Unexpected valid=false response: " + response);
                     toastMessage = "[MTG MODS]\n⚠️ Ошибка сервера ⚠️";
-
+                    Log.e("MtgTools", "Unexpected valid=false response: " + response);
                     String finalResponse = response;
                     new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, finalResponse, Toast.LENGTH_LONG).show());
                 }
@@ -201,10 +204,19 @@ public class MtgTools {
                         if (isValidKey(key, context)) {
                             context.getSharedPreferences("mtg", Context.MODE_PRIVATE).edit().putString("key", key).apply();
                             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n✅ Реклама отключена ✅", Toast.LENGTH_LONG).show());
-                        }
+                        } else if (MtgTools.forceVip) {
+                            activity.finishAffinity();
+                        };
                     }).start();
                 })
-                .setNegativeButton("Закрыть", (dialog2, which) -> activity.finishAffinity())
+                .setNegativeButton("Закрыть", (dialog, which) -> {
+                    if (MtgTools.forceVip) {
+                        Toast.makeText(context, "[MTG MODS]\n👉 Отключите DNS 👈", Toast.LENGTH_LONG).show();
+                        activity.finishAffinity();
+                    } else {
+                        dialog.dismiss();
+                    }
+                })
                 .setCancelable(false)
                 .show();
     }
@@ -216,6 +228,7 @@ public class MtgTools {
                 if (isShowAd(context)) {
                     new Handler(Looper.getMainLooper()).post(() -> {
                         if (isActiveAdBlocker(activity, context)) {
+                            forceVip = true;
                             new MaterialAlertDialogBuilder(context)
                                     .setTitle("ℹ️ Обнаружен AD Blocker (Private DNS) ℹ️")
                                     .setMessage(

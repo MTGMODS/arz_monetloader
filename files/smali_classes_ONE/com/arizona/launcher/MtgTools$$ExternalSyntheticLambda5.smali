@@ -9,11 +9,11 @@
 # instance fields
 .field public final synthetic f$0:Landroid/content/Context;
 
-.field public final synthetic f$1:Ljava/lang/String;
+.field public final synthetic f$1:Ljava/lang/Exception;
 
 
 # direct methods
-.method public synthetic constructor <init>(Landroid/content/Context;Ljava/lang/String;)V
+.method public synthetic constructor <init>(Landroid/content/Context;Ljava/lang/Exception;)V
     .locals 0
 
     .line 0
@@ -21,7 +21,7 @@
 
     iput-object p1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda5;->f$0:Landroid/content/Context;
 
-    iput-object p2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda5;->f$1:Ljava/lang/String;
+    iput-object p2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda5;->f$1:Ljava/lang/Exception;
 
     return-void
 .end method
@@ -34,9 +34,9 @@
     .line 0
     iget-object v0, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda5;->f$0:Landroid/content/Context;
 
-    iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda5;->f$1:Ljava/lang/String;
+    iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda5;->f$1:Ljava/lang/Exception;
 
-    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$isValidKey$6(Landroid/content/Context;Ljava/lang/String;)V
+    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$isValidKey$7(Landroid/content/Context;Ljava/lang/Exception;)V
 
     return-void
 .end method

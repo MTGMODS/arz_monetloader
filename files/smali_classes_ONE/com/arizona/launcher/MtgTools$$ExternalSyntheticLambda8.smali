@@ -11,9 +11,11 @@
 
 .field public final synthetic f$1:Landroid/content/Context;
 
+.field public final synthetic f$2:Landroid/app/Activity;
+
 
 # direct methods
-.method public synthetic constructor <init>(Ljava/lang/String;Landroid/content/Context;)V
+.method public synthetic constructor <init>(Ljava/lang/String;Landroid/content/Context;Landroid/app/Activity;)V
     .locals 0
 
     .line 0
@@ -23,20 +25,24 @@
 
     iput-object p2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda8;->f$1:Landroid/content/Context;
 
+    iput-object p3, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda8;->f$2:Landroid/app/Activity;
+
     return-void
 .end method
 
 
 # virtual methods
 .method public final run()V
-    .locals 2
+    .locals 3
 
     .line 0
     iget-object v0, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda8;->f$0:Ljava/lang/String;
 
     iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda8;->f$1:Landroid/content/Context;
 
-    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$showVipDialog$9(Ljava/lang/String;Landroid/content/Context;)V
+    iget-object v2, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda8;->f$2:Landroid/app/Activity;
+
+    invoke-static {v0, v1, v2}, Lcom/arizona/launcher/MtgTools;->lambda$showVipDialog$9(Ljava/lang/String;Landroid/content/Context;Landroid/app/Activity;)V
 
     return-void
 .end method
