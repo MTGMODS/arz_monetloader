@@ -310,7 +310,7 @@ if not check_toast:
     print("[ERROR] ❌ Don't connected MTGTools!")
     input("\n")
 
-version_pattern = re.compile(r'const-string (v\d+), " v(.+) release"')
+version_pattern = re.compile(r'const-string (v\d+), " v(.+) release(?:_web)?"')
 version_app = ""
 
 for i, line in enumerate(smali_lines):
@@ -324,7 +324,7 @@ for i, line in enumerate(smali_lines):
         break
 
 if not check_version:
-    print("[ERROR] ❌ Version release not found!")
+    print("[ERROR] ❌ Version not found!")
     input("\n")
 
 with open(MAIN_ENTRENCH_PATH, "w", encoding="utf-8") as file:
