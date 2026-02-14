@@ -34,18 +34,14 @@ public class MtgTools {
 
     public static boolean forceVip = false;
 
+    @SuppressLint("HardwareIds")
     public static String getDeviceId(Context context) {
-        @SuppressLint("HardwareIds") String id = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (id == null || id.isEmpty() || "9774d56d682e549c".equals(id)) {
-            SharedPreferences prefs = context.getSharedPreferences("mtg", Context.MODE_PRIVATE);
-            id = prefs.getString("device_id", null);
-            if (id == null) {
-                id = "GEN" + UUID.randomUUID().toString();
-                prefs.edit().putString("device_id", id).apply();
-            }
-        }
-        return id;
+        return Settings.Secure.getString(
+                context.getContentResolver(),
+                Settings.Secure.ANDROID_ID
+        );
     }
+
     private static String postRequest(String urlStr, String key, String device, boolean useIp, String hostHeader) {
         HttpsURLConnection c = null;
         try {
@@ -55,7 +51,9 @@ public class MtgTools {
             c.setReadTimeout(5000);
             c.setDoOutput(true);
             c.setRequestProperty("Key", key);
-            c.setRequestProperty("Device", device);
+            if (device != null && !device.isEmpty()) {
+                c.setRequestProperty("Device", device);
+            }
             c.setRequestProperty("Content-Length", "0");
 
             if (useIp) {
@@ -103,11 +101,10 @@ public class MtgTools {
         final String host = "mtgmods.duckdns.org";
         final String urlHost = "https://" + host + "/api/check_key";
         final String urlIp   = "https://130.61.116.240/api/check_key";
-        final String deviceId = getDeviceId(context);
 
-        String response = postRequest(urlHost, key, deviceId, false, host);
+        String response = postRequest(urlHost, key, getDeviceId(context), false, host);
         if (response == null || response.contains("DNS_FAIL") || response.contains("UnknownHostException") || response.contains("host") || response.contains("or service")) {
-            response = postRequest(urlIp, key, deviceId, true, host);
+            response = postRequest(urlIp, key, getDeviceId(context), true, host);
         }
         if (response == null) {
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n⚠️ Ошибка подключения ⚠️", Toast.LENGTH_LONG).show());
@@ -137,6 +134,9 @@ public class MtgTools {
                     toastMessage = "[MTG MODS]\n❗️ Сервер упал ❗️";
                 } else if ("NOT_ACTIVATED".equalsIgnoreCase(err)) {
                     toastMessage = "[MTG MODS]\n👉 Активируйте в TG/DS 👈";
+                } else if ("RATE_LIMIT".equalsIgnoreCase(err)) {
+                    int retry = json.optInt("retry", 10);
+                    toastMessage = "[MTG MODS]\n⏳ АнтиФлуд " + retry + " сек ⏳";
                 } else {
                     toastMessage = "[MTG MODS]\n⚠️ Ошибка сервера ⚠️";
                     Log.e("MtgTools", "Unexpected valid=false response: " + response);
