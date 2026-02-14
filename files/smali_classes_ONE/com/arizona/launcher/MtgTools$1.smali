@@ -21,7 +21,7 @@
 .method constructor <init>()V
     .locals 0
 
-    .line 64
+    .line 62
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -34,7 +34,7 @@
     .param p1, "xcs"    # [Ljava/security/cert/X509Certificate;
     .param p2, "s"    # Ljava/lang/String;
 
-    .line 65
+    .line 63
     return-void
 .end method
 
@@ -43,14 +43,14 @@
     .param p1, "xcs"    # [Ljava/security/cert/X509Certificate;
     .param p2, "s"    # Ljava/lang/String;
 
-    .line 66
+    .line 64
     return-void
 .end method
 
 .method public getAcceptedIssuers()[Ljava/security/cert/X509Certificate;
     .locals 1
 
-    .line 67
+    .line 65
     const/4 v0, 0x0
 
     new-array v0, v0, [Ljava/security/cert/X509Certificate;
