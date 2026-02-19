@@ -64,6 +64,7 @@ It is responsible for:
 ### 2️⃣ Build Process
 1. **Clone** this repository to your local machine  
 2. Set your keystore credentials using environment variables:
+
 **Linux / macOS (bash):**
 ```bash
 export KEY_ALIAS="your_alias"
