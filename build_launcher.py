@@ -192,27 +192,6 @@ with open(MANIFEST_PATH, "w", encoding="utf-8") as file:
 
 ##################################################################################################################
 
-for smali_dir in SMALI_CLASSES:
-    smali_dir = smali_dir.replace('\\', '/')
-    potential_path = smali_dir + "/ru/mrlargha/commonui/elements/hud/presentation/Hud.smali"
-    if os.path.isfile(potential_path):
-        print("[INFO] 🖥  Updating HUD label to 'arizona-rp.com (lua)'...")
-
-        with open(potential_path, "r", encoding="utf-8") as file:
-            hud_data = file.read()
-
-        hud_data = hud_data.replace("arizona-rp.com", "arizona-rp.com (lua)")
-
-        if 'arizona-rp.com (lua)' in hud_data:
-            print("[INFO] ✅ HUD label updated successfully!")
-            with open(potential_path, "w", encoding="utf-8") as file:
-                file.write(hud_data)
-        else:
-            print("[WARN] ❌ Hud text don't find!")
-        break
-
-##################################################################################################################
-
 UPDATE_SERVICE_PATH = DECODED_DIR + SMALI_PATH + "/com/arizona/launcher/UpdateService.smali"
 
 print("[INFO] 🔒 Disabling original client updates...")
