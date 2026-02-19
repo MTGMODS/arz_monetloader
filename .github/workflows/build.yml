@@ -1,0 +1,91 @@
+name: Auto Build MonetLoader
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */6 * * *"   # кожні 6 годин (можеш змінити)
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get launcher version from JSON
+        id: get_version
+        run: |
+          VERSION_JSON=$(curl -s https://mob.maz-ins.com/game/release/app_version.json)
+          VERSION_NAME=$(echo $VERSION_JSON | jq -r '.launcherVersionName')
+
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          echo "Detected version: $VERSION_NAME"
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git tag -l | grep -qx "${{ steps.get_version.outputs.version_name }}"; then
+            echo "Tag exists. Skipping build."
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "Tag does not exist. Build required."
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Stop if tag exists
+        if: steps.check_tag.outputs.exists == 'true'
+        run: exit 0
+
+      - name: Create new tag
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git tag "${{ steps.get_version.outputs.version_name }}"
+          git push origin "${{ steps.get_version.outputs.version_name }}"
+
+      - name: Set up Python
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        if: steps.check_tag.outputs.exists == 'false'
+        run: pip install requests
+
+      - name: Set up Java
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+
+      - name: Decode keystore
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > key.jks
+
+      - name: Build APK
+        if: steps.check_tag.outputs.exists == 'false'
+        env:
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASS: ${{ secrets.KEY_PASS }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        run: python build_laucnher.py
+
+      - name: Create GitHub Release
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_version.outputs.version_name }}
+          name: ${{ steps.get_version.outputs.version_name }}
+          files: MonetLoader*.apk
+          draft: false
+          prerelease: false
+          make_latest: false
