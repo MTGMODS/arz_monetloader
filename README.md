@@ -24,7 +24,9 @@ It is responsible for:
 ### ⚙️ MonetLoader Integration
 - Provides Lua-based scripting support
 - Includes required MonetLoader resource files
-- Installs default Lua scripts
+- Installs default Lua scripts and required libraries
+- Provides an in-game `/mtg` command to install additional Lua scripts
+
 
 ### 🧰 MTG Tools
 - Automatically extracts required Lua libraries and helper assets
@@ -33,7 +35,7 @@ It is responsible for:
 
 ### 💰 Unity Ads
 - Loads and displays ads using the Unity SDK  
-- Ads appear **once at startup** launcher and **do not interrupt gameplay**  
+- Ads appear **once at startup** and **do not interrupt gameplay**  
 - Can be **disabled** inside the launcher *(for VIP users)*  
 
 ---
