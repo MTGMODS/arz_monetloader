@@ -1,6 +1,6 @@
 # 🧩 About this project
 
-An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **MonetLoader** library - a Lua script loader for mobile **GTA:SA 2.00**, available at [t.me/monetloader](https://t.me/monetloader).   
+An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **[MonetLoader](https://t.me/monetloader)** library.  
 
 This launcher build also integrates the **MTG Tools** module.
 It is responsible for:
