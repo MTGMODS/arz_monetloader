@@ -1,10 +1,16 @@
 # Original ARZ Client
-app-arizona-release_web.apk
 /app-arizona-release_web/
 
-# SIGN KEY
-key.jks
+# SIGNED KEY
+*.jks
+
+# Environment
+.env
 
 # Finished MonetLoader APK
-MonetLoader v*.apk
-MonetLoader.apk.idsig
+*.apk
+*.idsig
+
+# Python 
+__pycache__/
+*.pyc
