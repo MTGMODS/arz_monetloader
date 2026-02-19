@@ -84,7 +84,20 @@ print("[INFO] 🔧 Adding MTG files...")
 PATH_SMALI_ONE = DECODED_DIR + '/smali_classes_ONE'
 PATH_SMALI_TWO = DECODED_DIR + '/smali_classes_TWO'
 
-LATERS_SMALI = int(SMALI_CLASSES[-1].replace("\\", "/").replace(DECODED_DIR, '').replace("/smali_classes", ""))
+smali_numbers = []
+
+for path in SMALI_CLASSES:
+    name = os.path.basename(path)
+    if name.startswith("smali_classes"):
+        num = name.replace("smali_classes", "")
+        if num.isdigit():
+            smali_numbers.append(int(num))
+
+if not smali_numbers:
+    raise RuntimeError("❌ No smali_classes folders found!")
+
+LATERS_SMALI = max(smali_numbers)
+
 PATH_SMALI_ONE_WORK = PATH_SMALI_ONE.replace('_ONE', f"{LATERS_SMALI + 1}")
 PATH_SMALI_TWO_WORK = PATH_SMALI_TWO.replace('_TWO', f"{LATERS_SMALI + 2}")
 
@@ -145,7 +158,7 @@ print("[INFO] 🔄 Updating package name to 'com.arizona.game' in smali files...
 manifest_data = manifest_data.replace("com.arizona21.game.web", "com.arizona.game")
 manifest_data = manifest_data.replace("com.arizona21.game", "com.arizona.game")
 
-print("[INFO] 🏷 Setting app name to 'Arizona Lua'...")
+print("[INFO] 🏷  Setting app name to 'Arizona Lua'...")
 manifest_data = re.sub(r'android:label="@string/app_name"', 'android:label="Arizona Lua"', manifest_data)
 if 'android:label="Arizona Lua"' in manifest_data:
     print("[INFO] ✅ Successful renamed!")
@@ -183,7 +196,7 @@ for smali_dir in SMALI_CLASSES:
     smali_dir = smali_dir.replace('\\', '/')
     potential_path = smali_dir + "/ru/mrlargha/commonui/elements/hud/presentation/Hud.smali"
     if os.path.isfile(potential_path):
-        print("[INFO] 🖥 Updating HUD label to 'arizona-rp.com (lua)'...")
+        print("[INFO] 🖥  Updating HUD label to 'arizona-rp.com (lua)'...")
 
         with open(potential_path, "r", encoding="utf-8") as file:
             hud_data = file.read()
@@ -203,10 +216,14 @@ for smali_dir in SMALI_CLASSES:
 UPDATE_SERVICE_PATH = DECODED_DIR + SMALI_PATH + "/com/arizona/launcher/UpdateService.smali"
 
 print("[INFO] 🔒 Disabling original client updates...")
+
 with open(UPDATE_SERVICE_PATH, "r", encoding="utf-8") as file:
     smali_lines = file.readlines()
 
 matches = [i for i, line in enumerate(smali_lines) if "needUpdateMsg" in line]
+
+if len(matches) < 3:
+    raise RuntimeError("❌ Unexpected UpdateService structure (needUpdateMsg not found enough times).")
 
 # add \"const/4 p1, 0x0\" after 3/4 "needUpdateMsg"
 insert_index = matches[2]
@@ -284,7 +301,7 @@ with open(MAIN_ENTRENCH_PATH, "w", encoding="utf-8") as file:
 
 ##################################################################################################################
 
-print("[INFO] 🏗 Rebuilding APK...")
+print("[INFO] ⚙️ Rebuilding APK...")
 subprocess.run(["java", "-jar", APKTOOL_PATH, "b", DECODED_DIR], check=True)
 print("[INFO] ✅ APK rebuilt successfully!")
 
@@ -308,10 +325,14 @@ KEYSTORE_PASS = os.getenv("KEYSTORE_PASS") or KEY_PASS
 
 print("[INFO] 🔐 Signing APK...")
 
-if os.path.exists(KEYSTORE_PATH) and KEY_ALIAS and KEY_PASS and KEYSTORE_PASS:
+if os.path.exists(KEYSTORE_PATH) and KEY_ALIAS and KEY_PASS:
     try:
         subprocess.run([
-            "java", "-jar", APKSIGNER_PATH, "sign",
+            "java",
+            "--enable-native-access=ALL-UNNAMED",
+            "-jar",
+            APKSIGNER_PATH,
+            "sign",
             "--ks", KEYSTORE_PATH,
             "--ks-key-alias", KEY_ALIAS,
             "--ks-pass", f"pass:{KEYSTORE_PASS}",
