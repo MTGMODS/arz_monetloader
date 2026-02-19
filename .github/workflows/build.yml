@@ -3,7 +3,7 @@ name: Auto Build MonetLoader
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */3 * * *"
 
 jobs:
   build:
@@ -86,6 +86,7 @@ jobs:
           tag_name: ${{ steps.get_version.outputs.version_name }}
           name: ${{ steps.get_version.outputs.version_name }}
           files: MonetLoader*.apk
+          body: "🚀 Лаунчер MonetLoader обновлён до версии ${{ steps.get_version.outputs.version_name }}!"
           draft: false
           prerelease: false
           make_latest: false
