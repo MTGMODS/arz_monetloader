@@ -1,6 +1,6 @@
 # 🧩 About this project
 
-An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **MonetLoader** library - a Lua script loader for **GTA: San Andreas 2.00**, available at [t.me/monetloader](https://t.me/monetloader).   
+An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **MonetLoader** library - a Lua script loader for mobile **GTA:SA 2.00**, available at [t.me/monetloader](https://t.me/monetloader).   
 
 This launcher build also integrates the **MTG Tools** module.
 It is responsible for:
@@ -9,33 +9,32 @@ It is responsible for:
 - 🔄 Checking if your launcher version is up to date
 - 💰 Controlling Unity Ads behavior *(to support the project)*  
 
-> This is an **independent third-party project**, created solely to extend  
-> **Lua compatibility for Arizona Mobile**, and is **not affiliated with or endorsed by**
-> **Arizona Games**, **Rockstar Games**, or any of their partners.  
-> All trademarks belong to their respective owners.
+> ⚠️ This is an **independent third-party project**, created solely to extend **Lua compatibility for Arizona Mobile**
+> It is **not affiliated with, endorsed by, or connected to Arizona Games, Rockstar Games, or their partners.**   
+> All trademarks and copyrights belong to their respective owners.
 
 ---
 
 ## ⚙️ Features
 
-### 🧠 Main 
-- 🧩 Adds support **Lua-script** to the game with **MonetLoader**
-- 🧩 Integrates **MTG Tools** module and **Unity Ads** SDK
-- 📂 Includes default MonetLoader resource files  
-- 📂 Includes default Lua scripts  
+### 🧩 Core Functionality
+- 1️⃣ Adds **Lua scripting** support via **MonetLoader** (x32 only)
+- 2️⃣ Integrates **MTG Tools** module and **Unity Ads** SDK
 
 ### ⚙️ MonetLoader Integration
-- Provides Lua-based scripting support *(x32 only)*
+- Provides Lua-based scripting support
+- Includes required MonetLoader resource files
+- Installs default Lua scripts
 
 ### 🧰 MTG Tools
-- Installs MonetLoader resource files (Lua libraries, helper scripts, and related assets)  
-- Checks for updates of the MonetLoader-based client  
-- Manages included MTG modules  
+- Automatically extracts required Lua libraries and helper assets
+- Manages bundled MTG modules
+- Performs version checks for the modified launcher
 
 ### 💰 Unity Ads
 - Loads and displays ads using the Unity SDK  
-- Ads appear **once at startup** and **do not interrupt gameplay**  
-- They can be **disabled** inside the launcher *(for VIP users)*  
+- Ads appear **once at startup** launcher and **do not interrupt gameplay**  
+- Can be **disabled** inside the launcher *(for VIP users)*  
 
 ---
 
