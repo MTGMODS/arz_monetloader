@@ -20,7 +20,7 @@ It is responsible for:
 
 ### 🧠 Main 
 - 🧩 Adds support **Lua-script** to the game with **MonetLoader**
-- 🧩 Integrates **MTG Tools** and **Unity Ads**  
+- 🧩 Integrates **MTG Tools** module and **Unity Ads** SDK
 - 📂 Includes default MonetLoader resource files  
 - 📂 Includes default Lua scripts  
 
@@ -45,7 +45,7 @@ It is responsible for:
 ├── build_launcher.py                   # Main build automation script
 ├── apktool.jar                         # Decompiler/Recompiler
 ├── apksigner.jar                       # APK signing tool
-├── key.jks                             # Keystore (replace with your own)
+├── key.jks                             # Example keystore (not included in repo)
 ├── files/assets/                       # MonetLoader resource files
 ├── files/lib/                          # MonetLoader & LuaJIT libraries
 ├── files/smali_classes_*               # Injected custom smali code
@@ -77,19 +77,11 @@ $env:KEY_ALIAS="your_alias"
 $env:KEY_PASS="your_key_password"
 $env:KEYSTORE_PASS="your_keystore_password"
 ```
-3. Update profile.json for actual libsamp
-- https://www.youtube.com/watch?v=u6gdRxX3lSc
+3. Update `profile.json` with the correct `libsamp` configuration  
+(see tutorial: https://www.youtube.com/watch?v=u6gdRxX3lSc)
 4. Run the build script in terminal:
 ```bash
 python build_launcher.py
-```
-
-
-### 🧪 Example build logs
-```bash
-[INFO] ✅ Successful connected MonetLoader!
-[INFO] ✅ Successful connected MtgTools!
-[INFO] ℹ️ Your launcher: MonetLoader v16.5.1.apk
 ```
 
 ---
