@@ -63,10 +63,18 @@ It is responsible for:
 ---
 ### 2️⃣ Build Process
 1. **Clone** this repository to your local machine  
-2. **Edit** `build_launcher.py` — insert your keystore data for signing:
+2. Set your keystore credentials using environment variables:
+**Linux / macOS (bash):**
 ```bash
-KEY_ALIAS = "key0"      # your key
-KEY_PASS = "password"   # your key pass
+export KEY_ALIAS="your_alias"
+export KEY_PASS="your_key_password"
+export KEYSTORE_PASS="your_keystore_password" # optional if same as KEY_PASS
+```
+**Windows (PowerShell, temporary)**
+```powershell
+$env:KEY_ALIAS="your_alias"
+$env:KEY_PASS="your_key_password"
+$env:KEYSTORE_PASS="your_keystore_password"
 ```
 3. Update profile.json for actual libsamp
 - https://www.youtube.com/watch?v=u6gdRxX3lSc
