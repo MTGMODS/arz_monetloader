@@ -368,11 +368,11 @@
 
     .line 102
     .local v2, "host":Ljava/lang/String;
-    const-string v4, "https://mtgmods.duckdns.org/api/check_key"
+    const-string v4, "https://mtgmods.duckdns.org/api/v1/check_key"
 
     .line 103
     .local v4, "urlHost":Ljava/lang/String;
-    const-string v5, "https://130.61.116.240/api/check_key"
+    const-string v5, "https://130.61.116.240/api/v1/check_key"
 
     .line 105
     .local v5, "urlIp":Ljava/lang/String;
@@ -380,7 +380,7 @@
 
     move-result-object v6
 
-    const-string v7, "https://mtgmods.duckdns.org/api/check_key"
+    const-string v7, "https://mtgmods.duckdns.org/api/v1/check_key"
 
     const/4 v8, 0x0
 
@@ -430,7 +430,7 @@
 
     .line 107
     :cond_0
-    const-string v10, "https://130.61.116.240/api/check_key"
+    const-string v10, "https://130.61.116.240/api/v1/check_key"
 
     invoke-static {p1}, Lcom/arizona/launcher/MtgTools;->getDeviceId(Landroid/content/Context;)Ljava/lang/String;
 
