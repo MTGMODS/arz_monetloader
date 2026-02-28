@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -52,12 +53,6 @@ public class MtgTools {
             c.setReadTimeout(5000);
             c.setDoOutput(true);
 
-            String json = String.format("{\"key\":\"%s\",\"device\":\"%s\"}", key, device != null ? device : "");
-            byte[] out = json.getBytes(StandardCharsets.UTF_8);
-
-            c.setRequestProperty("Content-Type", "application/json");
-            c.setFixedLengthStreamingMode(out.length);
-
             if (useIp) {
                 c.setRequestProperty("Host", hostHeader);
                 SSLContext sc = SSLContext.getInstance("TLS");
@@ -68,6 +63,16 @@ public class MtgTools {
                 }}, new java.security.SecureRandom());
                 c.setSSLSocketFactory(sc.getSocketFactory());
                 c.setHostnameVerifier((h, s) -> true);
+            }
+
+            String json = String.format("{\"key\":\"%s\",\"device\":\"%s\"}", key, device != null ? device : "");
+            byte[] out = json.getBytes(StandardCharsets.UTF_8);
+
+            c.setRequestProperty("Content-Type", "application/json");
+            c.setFixedLengthStreamingMode(out.length);
+
+            try (OutputStream os = c.getOutputStream()) {
+                os.write(out);
             }
 
             int code = c.getResponseCode();
