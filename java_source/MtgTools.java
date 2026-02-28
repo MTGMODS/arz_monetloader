@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -50,11 +51,12 @@ public class MtgTools {
             c.setConnectTimeout(5000);
             c.setReadTimeout(5000);
             c.setDoOutput(true);
-            c.setRequestProperty("Key", key);
-            if (device != null && !device.isEmpty()) {
-                c.setRequestProperty("Device", device);
-            }
-            c.setRequestProperty("Content-Length", "0");
+
+            String json = String.format("{\"key\":\"%s\",\"device\":\"%s\"}", key, device != null ? device : "");
+            byte[] out = json.getBytes(StandardCharsets.UTF_8);
+
+            c.setRequestProperty("Content-Type", "application/json");
+            c.setFixedLengthStreamingMode(out.length);
 
             if (useIp) {
                 c.setRequestProperty("Host", hostHeader);

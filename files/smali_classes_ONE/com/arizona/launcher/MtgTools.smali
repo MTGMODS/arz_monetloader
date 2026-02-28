@@ -11,7 +11,7 @@
 .method static constructor <clinit>()V
     .locals 1
 
-    .line 35
+    .line 36
     const/4 v0, 0x0
 
     sput-boolean v0, Lcom/arizona/launcher/MtgTools;->forceVip:Z
@@ -22,7 +22,7 @@
 .method public constructor <init>()V
     .locals 0
 
-    .line 33
+    .line 34
     invoke-direct {p0}, Ljava/lang/Object;-><init>()V
 
     return-void
@@ -32,15 +32,15 @@
     .locals 2
     .param p0, "context"    # Landroid/content/Context;
 
-    .line 39
+    .line 40
     nop
 
-    .line 40
+    .line 41
     invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
 
     move-result-object v0
 
-    .line 39
+    .line 40
     const-string v1, "android_id"
 
     invoke-static {v0, v1}, Landroid/provider/Settings$Secure;->getString(Landroid/content/ContentResolver;Ljava/lang/String;)Ljava/lang/String;
@@ -55,7 +55,7 @@
     .param p0, "activity"    # Landroid/app/Activity;
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 226
+    .line 228
     new-instance v0, Ljava/lang/Thread;
 
     new-instance v1, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda0;
@@ -64,10 +64,10 @@
 
     invoke-direct {v0, v1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;)V
 
-    .line 275
+    .line 277
     invoke-virtual {v0}, Ljava/lang/Thread;->start()V
 
-    .line 277
+    .line 279
     new-instance v0, Ljava/lang/Thread;
 
     new-instance v1, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda10;
@@ -76,10 +76,10 @@
 
     invoke-direct {v0, v1}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;)V
 
-    .line 285
+    .line 287
     invoke-virtual {v0}, Ljava/lang/Thread;->start()V
 
-    .line 287
+    .line 289
     return-void
 .end method
 
@@ -88,7 +88,7 @@
     .param p0, "activity"    # Landroid/app/Activity;
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 162
+    .line 164
     const-string v0, "connectivity"
 
     invoke-virtual {p1, v0}, Landroid/content/Context;->getSystemService(Ljava/lang/String;)Ljava/lang/Object;
@@ -97,7 +97,7 @@
 
     check-cast v0, Landroid/net/ConnectivityManager;
 
-    .line 163
+    .line 165
     .local v0, "cm":Landroid/net/ConnectivityManager;
     const/4 v1, 0x0
 
@@ -109,39 +109,39 @@
 
     if-lt v2, v3, :cond_1
 
-    .line 164
+    .line 166
     invoke-virtual {v0}, Landroid/net/ConnectivityManager;->getActiveNetwork()Landroid/net/Network;
 
     move-result-object v2
 
-    .line 165
+    .line 167
     .local v2, "activeNetwork":Landroid/net/Network;
     if-eqz v2, :cond_1
 
-    .line 166
+    .line 168
     invoke-virtual {v0, v2}, Landroid/net/ConnectivityManager;->getLinkProperties(Landroid/net/Network;)Landroid/net/LinkProperties;
 
     move-result-object v3
 
-    .line 167
+    .line 169
     .local v3, "linkProperties":Landroid/net/LinkProperties;
     if-eqz v3, :cond_1
 
-    .line 168
+    .line 170
     invoke-virtual {v3}, Landroid/net/LinkProperties;->getPrivateDnsServerName()Ljava/lang/String;
 
     move-result-object v4
 
-    .line 169
+    .line 171
     .local v4, "privateDnsHost":Ljava/lang/String;
     if-eqz v4, :cond_1
 
-    .line 170
+    .line 172
     invoke-virtual {v4}, Ljava/lang/String;->toLowerCase()Ljava/lang/String;
 
     move-result-object v5
 
-    .line 171
+    .line 173
     .local v5, "dns":Ljava/lang/String;
     const/16 v6, 0x9
 
@@ -199,7 +199,7 @@
 
     aput-object v9, v6, v7
 
-    .line 172
+    .line 174
     .local v6, "adBlockers":[Ljava/lang/String;
     array-length v7, v6
 
@@ -210,7 +210,7 @@
 
     aget-object v10, v6, v9
 
-    .line 173
+    .line 175
     .local v10, "blocker":Ljava/lang/String;
     invoke-virtual {v5, v10}, Ljava/lang/String;->contains(Ljava/lang/CharSequence;)Z
 
@@ -218,7 +218,7 @@
 
     if-eqz v11, :cond_0
 
-    .line 174
+    .line 176
     new-instance v1, Ljava/lang/StringBuilder;
 
     invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
@@ -241,17 +241,17 @@
 
     invoke-static {v7, v1}, Landroid/util/Log;->w(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 175
+    .line 177
     return v8
 
-    .line 172
+    .line 174
     .end local v10    # "blocker":Ljava/lang/String;
     :cond_0
     add-int/lit8 v9, v9, 0x1
 
     goto :goto_0
 
-    .line 182
+    .line 184
     .end local v2    # "activeNetwork":Landroid/net/Network;
     .end local v3    # "linkProperties":Landroid/net/LinkProperties;
     .end local v4    # "privateDnsHost":Ljava/lang/String;
@@ -265,7 +265,7 @@
     .locals 5
     .param p0, "context"    # Landroid/content/Context;
 
-    .line 185
+    .line 187
     const-string v0, "mtg"
 
     const/4 v1, 0x0
@@ -274,7 +274,7 @@
 
     move-result-object v0
 
-    .line 186
+    .line 188
     .local v0, "sp":Landroid/content/SharedPreferences;
     const-string v2, "check"
 
@@ -286,7 +286,7 @@
 
     if-nez v3, :cond_0
 
-    .line 187
+    .line 189
     invoke-interface {v0}, Landroid/content/SharedPreferences;->edit()Landroid/content/SharedPreferences$Editor;
 
     move-result-object v3
@@ -297,10 +297,10 @@
 
     invoke-interface {v2}, Landroid/content/SharedPreferences$Editor;->apply()V
 
-    .line 188
+    .line 190
     return v1
 
-    .line 190
+    .line 192
     :cond_0
     const-string v2, "key"
 
@@ -310,7 +310,7 @@
 
     move-result-object v2
 
-    .line 191
+    .line 193
     .local v2, "savedKey":Ljava/lang/String;
     invoke-virtual {v2}, Ljava/lang/String;->isEmpty()Z
 
@@ -336,7 +336,7 @@
     .param p0, "key"    # Ljava/lang/String;
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 99
+    .line 101
     const-string v0, "valid"
 
     const-string v1, "Error check key: "
@@ -363,18 +363,18 @@
 
     invoke-static {v3, v2}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 101
+    .line 103
     const-string v2, "mtgmods.duckdns.org"
 
-    .line 102
+    .line 104
     .local v2, "host":Ljava/lang/String;
     const-string v4, "https://mtgmods.duckdns.org/api/v1/check_key"
 
-    .line 103
+    .line 105
     .local v4, "urlHost":Ljava/lang/String;
     const-string v5, "https://130.61.116.240/api/v1/check_key"
 
-    .line 105
+    .line 107
     .local v5, "urlIp":Ljava/lang/String;
     invoke-static {p1}, Lcom/arizona/launcher/MtgTools;->getDeviceId(Landroid/content/Context;)Ljava/lang/String;
 
@@ -390,7 +390,7 @@
 
     move-result-object v6
 
-    .line 106
+    .line 108
     .local v6, "response":Ljava/lang/String;
     const/4 v7, 0x1
 
@@ -428,7 +428,7 @@
 
     if-eqz v10, :cond_1
 
-    .line 107
+    .line 109
     :cond_0
     const-string v10, "https://130.61.116.240/api/v1/check_key"
 
@@ -440,11 +440,11 @@
 
     move-result-object v6
 
-    .line 109
+    .line 111
     :cond_1
     if-nez v6, :cond_2
 
-    .line 110
+    .line 112
     new-instance v0, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
@@ -459,17 +459,17 @@
 
     invoke-virtual {v0, v1}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 111
+    .line 113
     return v8
 
-    .line 115
+    .line 117
     :cond_2
     :try_start_0
     new-instance v9, Lorg/json/JSONObject;
 
     invoke-direct {v9, v6}, Lorg/json/JSONObject;-><init>(Ljava/lang/String;)V
 
-    .line 116
+    .line 118
     .local v9, "json":Lorg/json/JSONObject;
     invoke-virtual {v9, v0}, Lorg/json/JSONObject;->has(Ljava/lang/String;)Z
 
@@ -490,7 +490,7 @@
     :cond_3
     const/4 v0, 0x0
 
-    .line 117
+    .line 119
     .local v0, "valid":Ljava/lang/Boolean;
     :goto_0
     sget-object v10, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;
@@ -501,7 +501,7 @@
 
     if-eqz v10, :cond_4
 
-    .line 118
+    .line 120
     const-string v10, "user"
 
     const-string v11, "VIP \u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u0442\u0435\u043b\u044c"
@@ -510,7 +510,7 @@
 
     move-result-object v10
 
-    .line 119
+    .line 121
     .local v10, "username":Ljava/lang/String;
     new-instance v11, Landroid/os/Handler;
 
@@ -526,10 +526,10 @@
 
     invoke-virtual {v11, v12}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 120
+    .line 122
     return v7
 
-    .line 121
+    .line 123
     .end local v10    # "username":Ljava/lang/String;
     :cond_4
     sget-object v7, Ljava/lang/Boolean;->FALSE:Ljava/lang/Boolean;
@@ -540,7 +540,7 @@
 
     if-eqz v7, :cond_b
 
-    .line 122
+    .line 124
     const-string v7, "error"
 
     const-string v10, ""
@@ -549,7 +549,7 @@
 
     move-result-object v7
 
-    .line 124
+    .line 126
     .local v7, "err":Ljava/lang/String;
     const-string v10, "expires"
 
@@ -565,11 +565,11 @@
 
     if-eqz v10, :cond_5
 
-    .line 125
+    .line 127
     :try_start_1
     const-string v10, "[MTG MODS]\n\ud83d\ude2d \u041a\u043b\u044e\u0447 \u0443\u0441\u0442\u0430\u0440\u0435\u043b \ud83d\ude2d"
 
-    .line 126
+    .line 128
     .local v10, "toastMessage":Ljava/lang/String;
     invoke-virtual {p1, v12, v8}, Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
 
@@ -587,7 +587,7 @@
 
     goto/16 :goto_1
 
-    .line 127
+    .line 129
     .end local v10    # "toastMessage":Ljava/lang/String;
     :cond_5
     const-string v10, "Key not found"
@@ -598,10 +598,10 @@
 
     if-eqz v10, :cond_6
 
-    .line 128
+    .line 130
     const-string v10, "[MTG MODS]\n\u274c \u041a\u043b\u044e\u0447 \u043d\u0435 \u043d\u0430\u0439\u0434\u0435\u043d \u274c"
 
-    .line 129
+    .line 131
     .restart local v10    # "toastMessage":Ljava/lang/String;
     invoke-virtual {p1, v12, v8}, Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
 
@@ -619,7 +619,7 @@
 
     goto/16 :goto_1
 
-    .line 130
+    .line 132
     .end local v10    # "toastMessage":Ljava/lang/String;
     :cond_6
     const-string v10, "Missing key"
@@ -630,10 +630,10 @@
 
     if-eqz v10, :cond_7
 
-    .line 131
+    .line 133
     const-string v10, "[MTG MODS]\n\u26a0\ufe0f \u041d\u0435 \u0432\u0432\u0435\u0434\u0451\u043d \u043a\u043b\u044e\u0447 \u26a0\ufe0f"
 
-    .line 132
+    .line 134
     .restart local v10    # "toastMessage":Ljava/lang/String;
     invoke-virtual {p1, v12, v8}, Landroid/content/Context;->getSharedPreferences(Ljava/lang/String;I)Landroid/content/SharedPreferences;
 
@@ -651,7 +651,7 @@
 
     goto :goto_1
 
-    .line 133
+    .line 135
     .end local v10    # "toastMessage":Ljava/lang/String;
     :cond_7
     const-string v10, "Internal server error"
@@ -662,13 +662,13 @@
 
     if-eqz v10, :cond_8
 
-    .line 134
+    .line 136
     const-string v10, "[MTG MODS]\n\u2757\ufe0f \u0421\u0435\u0440\u0432\u0435\u0440 \u0443\u043f\u0430\u043b \u2757\ufe0f"
 
     .restart local v10    # "toastMessage":Ljava/lang/String;
     goto :goto_1
 
-    .line 135
+    .line 137
     .end local v10    # "toastMessage":Ljava/lang/String;
     :cond_8
     const-string v10, "NOT_ACTIVATED"
@@ -679,13 +679,13 @@
 
     if-eqz v10, :cond_9
 
-    .line 136
+    .line 138
     const-string v10, "[MTG MODS]\n\ud83d\udc49 \u0410\u043a\u0442\u0438\u0432\u0438\u0440\u0443\u0439\u0442\u0435 \u0432 TG/DS \ud83d\udc48"
 
     .restart local v10    # "toastMessage":Ljava/lang/String;
     goto :goto_1
 
-    .line 137
+    .line 139
     .end local v10    # "toastMessage":Ljava/lang/String;
     :cond_9
     const-string v10, "RATE_LIMIT"
@@ -696,7 +696,7 @@
 
     if-eqz v10, :cond_a
 
-    .line 138
+    .line 140
     const-string v10, "retry"
 
     const/16 v11, 0xa
@@ -705,7 +705,7 @@
 
     move-result v10
 
-    .line 139
+    .line 141
     .local v10, "retry":I
     new-instance v11, Ljava/lang/StringBuilder;
 
@@ -733,16 +733,16 @@
 
     move-object v10, v11
 
-    .line 140
+    .line 142
     .local v10, "toastMessage":Ljava/lang/String;
     goto :goto_1
 
-    .line 141
+    .line 143
     .end local v10    # "toastMessage":Ljava/lang/String;
     :cond_a
     const-string v10, "[MTG MODS]\n\u26a0\ufe0f \u041e\u0448\u0438\u0431\u043a\u0430 \u0441\u0435\u0440\u0432\u0435\u0440\u0430 \u26a0\ufe0f"
 
-    .line 142
+    .line 144
     .restart local v10    # "toastMessage":Ljava/lang/String;
     new-instance v11, Ljava/lang/StringBuilder;
 
@@ -764,10 +764,10 @@
 
     invoke-static {v3, v11}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 143
+    .line 145
     move-object v11, v6
 
-    .line 144
+    .line 146
     .local v11, "finalResponse":Ljava/lang/String;
     new-instance v12, Landroid/os/Handler;
 
@@ -783,7 +783,7 @@
 
     invoke-virtual {v12, v13}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 146
+    .line 148
     .end local v11    # "finalResponse":Ljava/lang/String;
     :goto_1
     new-instance v11, Landroid/os/Handler;
@@ -800,14 +800,14 @@
 
     invoke-virtual {v11, v12}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 147
+    .line 149
     nop
 
     .end local v7    # "err":Ljava/lang/String;
     .end local v10    # "toastMessage":Ljava/lang/String;
     goto :goto_2
 
-    .line 148
+    .line 150
     :cond_b
     new-instance v7, Ljava/lang/StringBuilder;
 
@@ -827,7 +827,7 @@
 
     invoke-static {v3, v7}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
 
-    .line 149
+    .line 151
     new-instance v7, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
@@ -842,10 +842,10 @@
 
     invoke-virtual {v7, v10}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 150
+    .line 152
     move-object v7, v6
 
-    .line 151
+    .line 153
     .local v7, "finalResponse":Ljava/lang/String;
     new-instance v10, Landroid/os/Handler;
 
@@ -863,22 +863,22 @@
     :try_end_1
     .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_1} :catch_0
 
-    .line 153
+    .line 155
     .end local v7    # "finalResponse":Ljava/lang/String;
     :goto_2
     return v8
 
-    .line 154
+    .line 156
     .end local v0    # "valid":Ljava/lang/Boolean;
     .end local v9    # "json":Lorg/json/JSONObject;
     :catch_0
     move-exception v0
 
-    .line 155
+    .line 157
     .local v0, "e":Ljava/lang/Exception;
     invoke-static {v3, v1, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 156
+    .line 158
     new-instance v1, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
@@ -893,7 +893,7 @@
 
     invoke-virtual {v1, v3}, Landroid/os/Handler;->post(Ljava/lang/Runnable;)Z
 
-    .line 158
+    .line 160
     .end local v0    # "e":Ljava/lang/Exception;
     return v8
 .end method
@@ -905,7 +905,7 @@
     .param p2, "dialog"    # Landroid/content/DialogInterface;
     .param p3, "which"    # I
 
-    .line 243
+    .line 245
     const/high16 v0, 0x10000000
 
     :try_start_0
@@ -915,24 +915,24 @@
 
     invoke-direct {v1, v2}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 244
+    .line 246
     .local v1, "intent":Landroid/content/Intent;
     invoke-virtual {v1, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 245
+    .line 247
     invoke-virtual {p0, v1}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
     :try_end_0
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 254
+    .line 256
     .end local v1    # "intent":Landroid/content/Intent;
     goto :goto_0
 
-    .line 246
+    .line 248
     :catch_0
     move-exception v1
 
-    .line 248
+    .line 250
     .local v1, "e":Ljava/lang/Exception;
     :try_start_1
     new-instance v2, Landroid/content/Intent;
@@ -941,24 +941,24 @@
 
     invoke-direct {v2, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
-    .line 249
+    .line 251
     .local v2, "intent":Landroid/content/Intent;
     invoke-virtual {v2, v0}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
 
-    .line 250
+    .line 252
     invoke-virtual {p0, v2}, Landroid/content/Context;->startActivity(Landroid/content/Intent;)V
     :try_end_1
     .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_1} :catch_1
 
-    .line 253
+    .line 255
     .end local v2    # "intent":Landroid/content/Intent;
     goto :goto_0
 
-    .line 251
+    .line 253
     :catch_1
     move-exception v0
 
-    .line 252
+    .line 254
     .local v0, "ex":Ljava/lang/Exception;
     const-string v2, "\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438 -> \u0421\u0435\u0442\u044c -> DNS"
 
@@ -970,13 +970,13 @@
 
     invoke-virtual {v2}, Landroid/widget/Toast;->show()V
 
-    .line 255
+    .line 257
     .end local v0    # "ex":Ljava/lang/Exception;
     .end local v1    # "e":Ljava/lang/Exception;
     :goto_0
     invoke-virtual {p1}, Landroid/app/Activity;->finishAffinity()V
 
-    .line 256
+    .line 258
     return-void
 .end method
 
@@ -987,7 +987,7 @@
     .param p2, "dialog"    # Landroid/content/DialogInterface;
     .param p3, "which"    # I
 
-    .line 257
+    .line 259
     invoke-static {p0, p1}, Lcom/arizona/launcher/MtgTools;->showVipDialog(Landroid/app/Activity;Landroid/content/Context;)V
 
     return-void
@@ -998,7 +998,7 @@
     .param p0, "dialog"    # Landroid/content/DialogInterface;
     .param p1, "which"    # I
 
-    .line 265
+    .line 267
     invoke-interface {p0}, Landroid/content/DialogInterface;->dismiss()V
 
     return-void
@@ -1011,7 +1011,7 @@
     .param p2, "dialog"    # Landroid/content/DialogInterface;
     .param p3, "which"    # I
 
-    .line 266
+    .line 268
     invoke-static {p0, p1}, Lcom/arizona/launcher/MtgTools;->showVipDialog(Landroid/app/Activity;Landroid/content/Context;)V
 
     return-void
@@ -1022,7 +1022,7 @@
     .param p0, "activity"    # Landroid/app/Activity;
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 230
+    .line 232
     invoke-static {p0, p1}, Lcom/arizona/launcher/MtgTools;->isActiveAdBlocker(Landroid/app/Activity;Landroid/content/Context;)Z
 
     move-result v0
@@ -1033,22 +1033,22 @@
 
     if-eqz v0, :cond_0
 
-    .line 231
+    .line 233
     sput-boolean v1, Lcom/arizona/launcher/MtgTools;->forceVip:Z
 
-    .line 232
+    .line 234
     new-instance v0, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     invoke-direct {v0, p1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;-><init>(Landroid/content/Context;)V
 
-    .line 233
+    .line 235
     const-string v1, "\u2139\ufe0f \u041e\u0431\u043d\u0430\u0440\u0443\u0436\u0435\u043d AD Blocker (Private DNS) \u2139\ufe0f"
 
     invoke-virtual {v0, v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setTitle(Ljava/lang/CharSequence;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v0
 
-    .line 234
+    .line 236
     const-string v1, "\u0414\u0430\u043d\u043d\u044b\u0439 Lua \u043b\u0430\u0443\u043d\u0447\u0435\u0440 \u0440\u0430\u0441\u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u044f\u0435\u0442\u0441\u044f \u0431\u0435\u0441\u043f\u043b\u0430\u0442\u043d\u043e, \u0430 \u0440\u0435\u043a\u043b\u0430\u043c\u0430 \u043f\u0440\u0438 \u0437\u0430\u043f\u0443\u0441\u043a\u0435 (\u0432 \u0438\u0433\u0440\u0435 \u0435\u0451 \u043d\u0435\u0442\u0443) \u043f\u043e\u043c\u043e\u0433\u0430\u0435\u0442 \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0442\u044c \u043b\u0430\u0443\u043d\u0447\u0435\u0440 \ud83d\udc96\n\n\u0412\u044b \u0436\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u0443\u0435\u0442\u0435 Private DNS, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0431\u043b\u043e\u043a\u0438\u0440\u0443\u0435\u0442 \u043f\u043e\u043a\u0430\u0437 \u0440\u0435\u043a\u043b\u0430\u043c\u044b \ud83e\udd7a\n\n\u2139\ufe0f \u0414\u043b\u044f \u043f\u0440\u043e\u0434\u043e\u043b\u0436\u0435\u043d\u0438\u044f, \u0432\u0430\u043c \u043d\u0443\u0436\u043d\u043e \u0440\u0435\u0448\u0438\u0442\u044c \u0434\u0430\u043d\u043d\u0443\u044e \u043f\u0440\u043e\u0431\u043b\u0435\u043c\u0443:\n\ud83d\udc49 \u041b\u0438\u0431\u043e \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0447\u0430\u0441\u0442\u043d\u044b\u0439 DNS \u0432 \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0430\u0445, \u0434\u043b\u044f \u0437\u0430\u0433\u0440\u0443\u0437\u043a\u0438 \u0440\u0435\u043a\u043b\u0430\u043c\u044b\n\ud83d\udc49 \u041b\u0438\u0431\u043e \u0438\u043c\u0435\u0442\u044c \u043f\u043e\u0434\u043f\u0438\u0441\u043a\u0443 MTGVIP (\u0434\u043b\u044f \u0441\u043a\u0440\u0438\u043f\u0442\u043e\u0432 \u0438 \u043b\u0430\u0443\u043d\u0447\u0435\u0440\u0430)"
 
     invoke-virtual {v0, v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setMessage(Ljava/lang/CharSequence;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
@@ -1059,7 +1059,7 @@
 
     invoke-direct {v1, p1, p0}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda13;-><init>(Landroid/content/Context;Landroid/app/Activity;)V
 
-    .line 241
+    .line 243
     const-string v3, "\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u043d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438"
 
     invoke-virtual {v0, v3, v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setPositiveButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
@@ -1070,40 +1070,40 @@
 
     invoke-direct {v1, p0, p1}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda14;-><init>(Landroid/app/Activity;Landroid/content/Context;)V
 
-    .line 257
+    .line 259
     invoke-virtual {v0, v2, v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setNegativeButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v0
 
-    .line 258
+    .line 260
     const/4 v1, 0x0
 
     invoke-virtual {v0, v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setCancelable(Z)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v0
 
-    .line 259
+    .line 261
     invoke-virtual {v0}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->show()Landroidx/appcompat/app/AlertDialog;
 
     goto :goto_0
 
-    .line 261
+    .line 263
     :cond_0
     invoke-static {p0, p1}, Lcom/arizona/launcher/Ads;->initializeAds(Landroid/app/Activity;Landroid/content/Context;)V
 
-    .line 262
+    .line 264
     new-instance v0, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     invoke-direct {v0, p1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;-><init>(Landroid/content/Context;)V
 
-    .line 263
+    .line 265
     const-string v3, "\u2139\ufe0f \u041f\u0440\u043e\u0441\u043c\u043e\u0442\u0440 \u0440\u0435\u043a\u043b\u0430\u043c\u044b \u043f\u0435\u0440\u0435\u0434 \u043d\u0430\u0447\u0430\u043b\u043e\u043c \u0438\u0433\u0440\u044b \u2139\ufe0f"
 
     invoke-virtual {v0, v3}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setTitle(Ljava/lang/CharSequence;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v0
 
-    .line 264
+    .line 266
     const-string v3, "\u042d\u0442\u0438\u043c \u0434\u0435\u0439\u0441\u0442\u0432\u0438\u0435\u043c \u0432\u044b \u043f\u043e\u0434\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u0435\u0442\u0435 MTG MODS \u2764\ufe0f\n\u0420\u0435\u043a\u043b\u0430\u043c\u044b \u0432 \u0438\u0433\u0440\u0435 \u043d\u0435\u0442\u0443, \u043e\u043d\u0430 \u0442\u043e\u043b\u044c\u043a\u043e \u043f\u0440\u0438 \u0437\u0430\u043f\u0443\u0441\u043a\u0435 \u043b\u0430\u0443\u043d\u0447\u0435\u0440\u0430\n\n\u0415\u0441\u043b\u0438 \u0432\u044b \u0445\u043e\u0442\u0438\u0442\u0435 \u043e\u0442\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u0440\u0435\u043a\u043b\u0430\u043c\u0443, \u043f\u0440\u0438\u043e\u0431\u0440\u0435\u0442\u0438\u0442\u0435 VIP"
 
     invoke-virtual {v0, v3}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setMessage(Ljava/lang/CharSequence;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
@@ -1114,7 +1114,7 @@
 
     invoke-direct {v3}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda15;-><init>()V
 
-    .line 265
+    .line 267
     const-string v4, "\u0418\u0433\u0440\u0430\u0442\u044c"
 
     invoke-virtual {v0, v4, v3}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setPositiveButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
@@ -1125,20 +1125,20 @@
 
     invoke-direct {v3, p0, p1}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda16;-><init>(Landroid/app/Activity;Landroid/content/Context;)V
 
-    .line 266
+    .line 268
     invoke-virtual {v0, v2, v3}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setNegativeButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v0
 
-    .line 267
+    .line 269
     invoke-virtual {v0, v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setCancelable(Z)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v0
 
-    .line 268
+    .line 270
     invoke-virtual {v0}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->show()Landroidx/appcompat/app/AlertDialog;
 
-    .line 270
+    .line 272
     :goto_0
     return-void
 .end method
@@ -1148,7 +1148,7 @@
     .param p0, "context"    # Landroid/content/Context;
     .param p1, "activity"    # Landroid/app/Activity;
 
-    .line 228
+    .line 230
     :try_start_0
     invoke-static {p0}, Lcom/arizona/launcher/MtgTools;->isShowAd(Landroid/content/Context;)Z
 
@@ -1156,7 +1156,7 @@
 
     if-eqz v0, :cond_0
 
-    .line 229
+    .line 231
     new-instance v0, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
@@ -1173,15 +1173,15 @@
     :try_end_0
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 274
+    .line 276
     :cond_0
     goto :goto_0
 
-    .line 272
+    .line 274
     :catch_0
     move-exception v0
 
-    .line 273
+    .line 275
     .local v0, "e":Ljava/lang/Exception;
     const-string v1, "MtgTools"
 
@@ -1189,7 +1189,7 @@
 
     invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 275
+    .line 277
     .end local v0    # "e":Ljava/lang/Exception;
     :goto_0
     return-void
@@ -1200,7 +1200,7 @@
     .param p0, "activity"    # Landroid/app/Activity;
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 279
+    .line 281
     :try_start_0
     invoke-static {p0, p1}, Lcom/arizona/launcher/CheckUpdate;->isNeedUpdate(Landroid/app/Activity;Landroid/content/Context;)Z
 
@@ -1208,20 +1208,20 @@
 
     if-nez v0, :cond_0
 
-    .line 280
+    .line 282
     invoke-static {p0, p1}, Lcom/arizona/launcher/AssetExtractor;->unpackAssets(Landroid/app/Activity;Landroid/content/Context;)V
     :try_end_0
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
 
-    .line 284
+    .line 286
     :cond_0
     goto :goto_0
 
-    .line 282
+    .line 284
     :catch_0
     move-exception v0
 
-    .line 283
+    .line 285
     .local v0, "e":Ljava/lang/Exception;
     const-string v1, "MtgTools"
 
@@ -1229,7 +1229,7 @@
 
     invoke-static {v1, v2, v0}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;Ljava/lang/Throwable;)I
 
-    .line 285
+    .line 287
     .end local v0    # "e":Ljava/lang/Exception;
     :goto_0
     return-void
@@ -1239,7 +1239,7 @@
     .locals 2
     .param p0, "context"    # Landroid/content/Context;
 
-    .line 110
+    .line 112
     const-string v0, "[MTG MODS]\n\u26a0\ufe0f \u041e\u0448\u0438\u0431\u043a\u0430 \u043f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u0438\u044f \u26a0\ufe0f"
 
     const/4 v1, 0x1
@@ -1258,7 +1258,7 @@
     .param p0, "context"    # Landroid/content/Context;
     .param p1, "username"    # Ljava/lang/String;
 
-    .line 119
+    .line 121
     new-instance v0, Ljava/lang/StringBuilder;
 
     invoke-direct {v0}, Ljava/lang/StringBuilder;-><init>()V
@@ -1299,7 +1299,7 @@
     .param p0, "context"    # Landroid/content/Context;
     .param p1, "finalResponse"    # Ljava/lang/String;
 
-    .line 144
+    .line 146
     const/4 v0, 0x1
 
     invoke-static {p0, p1, v0}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
@@ -1316,7 +1316,7 @@
     .param p0, "context"    # Landroid/content/Context;
     .param p1, "toastMessage"    # Ljava/lang/String;
 
-    .line 146
+    .line 148
     const/4 v0, 0x1
 
     invoke-static {p0, p1, v0}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
@@ -1332,7 +1332,7 @@
     .locals 2
     .param p0, "context"    # Landroid/content/Context;
 
-    .line 149
+    .line 151
     const-string v0, "\ud83c\udf10 \u0421\u043c\u0435\u043d\u0438\u0442\u0435 4G / Wi-Fi / VPN \ud83c\udf10"
 
     const/4 v1, 0x0
@@ -1351,7 +1351,7 @@
     .param p0, "context"    # Landroid/content/Context;
     .param p1, "finalResponse"    # Ljava/lang/String;
 
-    .line 151
+    .line 153
     const/4 v0, 0x1
 
     invoke-static {p0, p1, v0}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
@@ -1368,7 +1368,7 @@
     .param p0, "context"    # Landroid/content/Context;
     .param p1, "e"    # Ljava/lang/Exception;
 
-    .line 156
+    .line 158
     invoke-virtual {p1}, Ljava/lang/Exception;->getMessage()Ljava/lang/String;
 
     move-result-object v0
@@ -1389,7 +1389,7 @@
     .param p0, "h"    # Ljava/lang/String;
     .param p1, "s"    # Ljavax/net/ssl/SSLSession;
 
-    .line 68
+    .line 70
     const/4 v0, 0x1
 
     return v0
@@ -1403,7 +1403,7 @@
     .param p3, "dialog2"    # Landroid/content/DialogInterface;
     .param p4, "which"    # I
 
-    .line 202
+    .line 204
     invoke-virtual {p0}, Landroid/widget/EditText;->getText()Landroid/text/Editable;
 
     move-result-object v0
@@ -1416,7 +1416,7 @@
 
     move-result-object v0
 
-    .line 203
+    .line 205
     .local v0, "key":Ljava/lang/String;
     new-instance v1, Ljava/lang/Thread;
 
@@ -1426,10 +1426,10 @@
 
     invoke-direct {v1, v2}, Ljava/lang/Thread;-><init>(Ljava/lang/Runnable;)V
 
-    .line 210
+    .line 212
     invoke-virtual {v1}, Ljava/lang/Thread;->start()V
 
-    .line 211
+    .line 213
     return-void
 .end method
 
@@ -1440,12 +1440,12 @@
     .param p2, "dialog"    # Landroid/content/DialogInterface;
     .param p3, "which"    # I
 
-    .line 213
+    .line 215
     sget-boolean v0, Lcom/arizona/launcher/MtgTools;->forceVip:Z
 
     if-eqz v0, :cond_0
 
-    .line 214
+    .line 216
     const-string v0, "[MTG MODS]\n\ud83d\udc49 \u041e\u0442\u043a\u043b\u044e\u0447\u0438\u0442\u0435 DNS \ud83d\udc48"
 
     const/4 v1, 0x1
@@ -1456,16 +1456,16 @@
 
     invoke-virtual {v0}, Landroid/widget/Toast;->show()V
 
-    .line 215
+    .line 217
     invoke-virtual {p1}, Landroid/app/Activity;->finishAffinity()V
 
     goto :goto_0
 
-    .line 217
+    .line 219
     :cond_0
     invoke-interface {p2}, Landroid/content/DialogInterface;->dismiss()V
 
-    .line 219
+    .line 221
     :goto_0
     return-void
 .end method
@@ -1474,7 +1474,7 @@
     .locals 2
     .param p0, "context"    # Landroid/content/Context;
 
-    .line 206
+    .line 208
     const-string v0, "[MTG MODS]\n\u2705 \u0420\u0435\u043a\u043b\u0430\u043c\u0430 \u043e\u0442\u043a\u043b\u044e\u0447\u0435\u043d\u0430 \u2705"
 
     const/4 v1, 0x1
@@ -1494,14 +1494,14 @@
     .param p1, "context"    # Landroid/content/Context;
     .param p2, "activity"    # Landroid/app/Activity;
 
-    .line 204
+    .line 206
     invoke-static {p0, p1}, Lcom/arizona/launcher/MtgTools;->isValidKey(Ljava/lang/String;Landroid/content/Context;)Z
 
     move-result v0
 
     if-eqz v0, :cond_0
 
-    .line 205
+    .line 207
     const-string v0, "mtg"
 
     const/4 v1, 0x0
@@ -1522,7 +1522,7 @@
 
     invoke-interface {v0}, Landroid/content/SharedPreferences$Editor;->apply()V
 
-    .line 206
+    .line 208
     new-instance v0, Landroid/os/Handler;
 
     invoke-static {}, Landroid/os/Looper;->getMainLooper()Landroid/os/Looper;
@@ -1539,35 +1539,35 @@
 
     goto :goto_0
 
-    .line 207
+    .line 209
     :cond_0
     sget-boolean v0, Lcom/arizona/launcher/MtgTools;->forceVip:Z
 
     if-eqz v0, :cond_1
 
-    .line 208
+    .line 210
     invoke-virtual {p2}, Landroid/app/Activity;->finishAffinity()V
 
-    .line 210
+    .line 212
     :cond_1
     :goto_0
     return-void
 .end method
 
 .method private static postRequest(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Ljava/lang/String;
-    .locals 9
+    .locals 11
     .param p0, "urlStr"    # Ljava/lang/String;
     .param p1, "key"    # Ljava/lang/String;
     .param p2, "device"    # Ljava/lang/String;
     .param p3, "useIp"    # Z
     .param p4, "hostHeader"    # Ljava/lang/String;
 
-    .line 46
+    .line 47
     const-string v0, "MtgTools"
 
     const/4 v1, 0x0
 
-    .line 48
+    .line 49
     .local v1, "c":Ljavax/net/ssl/HttpsURLConnection;
     const/4 v2, 0x0
 
@@ -1584,226 +1584,241 @@
 
     move-object v1, v3
 
-    .line 49
+    .line 50
     const-string v3, "POST"
 
     invoke-virtual {v1, v3}, Ljavax/net/ssl/HttpsURLConnection;->setRequestMethod(Ljava/lang/String;)V
 
-    .line 50
+    .line 51
     const/16 v3, 0x1388
 
     invoke-virtual {v1, v3}, Ljavax/net/ssl/HttpsURLConnection;->setConnectTimeout(I)V
 
-    .line 51
+    .line 52
     invoke-virtual {v1, v3}, Ljavax/net/ssl/HttpsURLConnection;->setReadTimeout(I)V
 
-    .line 52
+    .line 53
     const/4 v3, 0x1
 
     invoke-virtual {v1, v3}, Ljavax/net/ssl/HttpsURLConnection;->setDoOutput(Z)V
 
-    .line 53
-    const-string v4, "Key"
+    .line 55
+    const-string v4, "{\"key\":\"%s\",\"device\":\"%s\"}"
 
-    invoke-virtual {v1, v4, p1}, Ljavax/net/ssl/HttpsURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 54
     if-eqz p2, :cond_0
 
-    invoke-virtual {p2}, Ljava/lang/String;->isEmpty()Z
+    move-object v5, p2
 
-    move-result v4
+    goto :goto_0
 
-    if-nez v4, :cond_0
-
-    .line 55
-    const-string v4, "Device"
-
-    invoke-virtual {v1, v4, p2}, Ljavax/net/ssl/HttpsURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 57
     :cond_0
-    const-string v4, "Content-Length"
+    const-string v5, ""
 
-    const-string v5, "0"
+    :goto_0
+    filled-new-array {p1, v5}, [Ljava/lang/Object;
 
-    invoke-virtual {v1, v4, v5}, Ljavax/net/ssl/HttpsURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+    move-result-object v5
 
-    .line 59
-    if-eqz p3, :cond_1
-
-    .line 60
-    const-string v4, "Host"
-
-    invoke-virtual {v1, v4, p4}, Ljavax/net/ssl/HttpsURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
-
-    .line 61
-    const-string v4, "TLS"
-
-    invoke-static {v4}, Ljavax/net/ssl/SSLContext;->getInstance(Ljava/lang/String;)Ljavax/net/ssl/SSLContext;
+    invoke-static {v4, v5}, Ljava/lang/String;->format(Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/String;
 
     move-result-object v4
 
+    .line 56
+    .local v4, "json":Ljava/lang/String;
+    sget-object v5, Ljava/nio/charset/StandardCharsets;->UTF_8:Ljava/nio/charset/Charset;
+
+    invoke-virtual {v4, v5}, Ljava/lang/String;->getBytes(Ljava/nio/charset/Charset;)[B
+
+    move-result-object v5
+
+    .line 58
+    .local v5, "out":[B
+    const-string v6, "Content-Type"
+
+    const-string v7, "application/json"
+
+    invoke-virtual {v1, v6, v7}, Ljavax/net/ssl/HttpsURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 59
+    array-length v6, v5
+
+    invoke-virtual {v1, v6}, Ljavax/net/ssl/HttpsURLConnection;->setFixedLengthStreamingMode(I)V
+
+    .line 61
+    if-eqz p3, :cond_1
+
     .line 62
-    .local v4, "sc":Ljavax/net/ssl/SSLContext;
+    const-string v6, "Host"
+
+    invoke-virtual {v1, v6, p4}, Ljavax/net/ssl/HttpsURLConnection;->setRequestProperty(Ljava/lang/String;Ljava/lang/String;)V
+
+    .line 63
+    const-string v6, "TLS"
+
+    invoke-static {v6}, Ljavax/net/ssl/SSLContext;->getInstance(Ljava/lang/String;)Ljavax/net/ssl/SSLContext;
+
+    move-result-object v6
+
+    .line 64
+    .local v6, "sc":Ljavax/net/ssl/SSLContext;
     new-array v3, v3, [Ljavax/net/ssl/TrustManager;
 
-    new-instance v5, Lcom/arizona/launcher/MtgTools$1;
+    new-instance v7, Lcom/arizona/launcher/MtgTools$1;
 
-    invoke-direct {v5}, Lcom/arizona/launcher/MtgTools$1;-><init>()V
+    invoke-direct {v7}, Lcom/arizona/launcher/MtgTools$1;-><init>()V
 
-    const/4 v6, 0x0
+    const/4 v8, 0x0
 
-    aput-object v5, v3, v6
+    aput-object v7, v3, v8
 
-    new-instance v5, Ljava/security/SecureRandom;
+    new-instance v7, Ljava/security/SecureRandom;
 
-    invoke-direct {v5}, Ljava/security/SecureRandom;-><init>()V
+    invoke-direct {v7}, Ljava/security/SecureRandom;-><init>()V
 
-    invoke-virtual {v4, v2, v3, v5}, Ljavax/net/ssl/SSLContext;->init([Ljavax/net/ssl/KeyManager;[Ljavax/net/ssl/TrustManager;Ljava/security/SecureRandom;)V
+    invoke-virtual {v6, v2, v3, v7}, Ljavax/net/ssl/SSLContext;->init([Ljavax/net/ssl/KeyManager;[Ljavax/net/ssl/TrustManager;Ljava/security/SecureRandom;)V
 
-    .line 67
-    invoke-virtual {v4}, Ljavax/net/ssl/SSLContext;->getSocketFactory()Ljavax/net/ssl/SSLSocketFactory;
+    .line 69
+    invoke-virtual {v6}, Ljavax/net/ssl/SSLContext;->getSocketFactory()Ljavax/net/ssl/SSLSocketFactory;
 
     move-result-object v3
 
     invoke-virtual {v1, v3}, Ljavax/net/ssl/HttpsURLConnection;->setSSLSocketFactory(Ljavax/net/ssl/SSLSocketFactory;)V
 
-    .line 68
+    .line 70
     new-instance v3, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda9;
 
     invoke-direct {v3}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda9;-><init>()V
 
     invoke-virtual {v1, v3}, Ljavax/net/ssl/HttpsURLConnection;->setHostnameVerifier(Ljavax/net/ssl/HostnameVerifier;)V
 
-    .line 71
-    .end local v4    # "sc":Ljavax/net/ssl/SSLContext;
+    .line 73
+    .end local v6    # "sc":Ljavax/net/ssl/SSLContext;
     :cond_1
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->getResponseCode()I
 
     move-result v3
 
-    .line 72
-    .local v3, "code":I
-    new-instance v4, Ljava/lang/StringBuilder;
-
-    invoke-direct {v4}, Ljava/lang/StringBuilder;-><init>()V
-
-    const-string v5, "HTTP code: "
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v4
-
-    invoke-virtual {v4, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
-
-    move-result-object v4
-
-    const-string v5, " from "
-
-    invoke-virtual {v4, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v4
-
-    invoke-virtual {v4, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
-
-    move-result-object v4
-
-    invoke-virtual {v4}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {v0, v4}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
-
     .line 74
-    const/16 v4, 0x190
+    .local v3, "code":I
+    new-instance v6, Ljava/lang/StringBuilder;
 
-    if-lt v3, v4, :cond_2
+    invoke-direct {v6}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v7, "HTTP code: "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    invoke-virtual {v6, v3}, Ljava/lang/StringBuilder;->append(I)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    const-string v7, " from "
+
+    invoke-virtual {v6, v7}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    invoke-virtual {v6, p0}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v6
+
+    invoke-virtual {v6}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-static {v0, v6}, Landroid/util/Log;->i(Ljava/lang/String;Ljava/lang/String;)I
+
+    .line 76
+    const/16 v6, 0x190
+
+    if-lt v3, v6, :cond_2
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->getErrorStream()Ljava/io/InputStream;
 
-    move-result-object v4
+    move-result-object v6
 
-    goto :goto_0
+    goto :goto_1
 
     :cond_2
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->getInputStream()Ljava/io/InputStream;
 
-    move-result-object v4
+    move-result-object v6
     :try_end_0
     .catch Ljava/net/UnknownHostException; {:try_start_0 .. :try_end_0} :catch_1
     .catch Ljava/lang/Exception; {:try_start_0 .. :try_end_0} :catch_0
     .catchall {:try_start_0 .. :try_end_0} :catchall_2
 
-    .line 75
-    .local v4, "is":Ljava/io/InputStream;
-    :goto_0
-    if-nez v4, :cond_4
+    .line 77
+    .local v6, "is":Ljava/io/InputStream;
+    :goto_1
+    if-nez v6, :cond_4
 
-    .line 94
+    .line 96
     if-eqz v1, :cond_3
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->disconnect()V
 
-    .line 75
+    .line 77
     :cond_3
     return-object v2
 
-    .line 77
+    .line 79
     :cond_4
     :try_start_1
-    new-instance v5, Ljava/lang/StringBuilder;
+    new-instance v7, Ljava/lang/StringBuilder;
 
-    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+    invoke-direct {v7}, Ljava/lang/StringBuilder;-><init>()V
 
-    .line 78
-    .local v5, "sb":Ljava/lang/StringBuilder;
-    new-instance v6, Ljava/io/BufferedReader;
+    .line 80
+    .local v7, "sb":Ljava/lang/StringBuilder;
+    new-instance v8, Ljava/io/BufferedReader;
 
-    new-instance v7, Ljava/io/InputStreamReader;
+    new-instance v9, Ljava/io/InputStreamReader;
 
-    invoke-direct {v7, v4}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
+    invoke-direct {v9, v6}, Ljava/io/InputStreamReader;-><init>(Ljava/io/InputStream;)V
 
-    invoke-direct {v6, v7}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
+    invoke-direct {v8, v9}, Ljava/io/BufferedReader;-><init>(Ljava/io/Reader;)V
     :try_end_1
     .catch Ljava/net/UnknownHostException; {:try_start_1 .. :try_end_1} :catch_1
     .catch Ljava/lang/Exception; {:try_start_1 .. :try_end_1} :catch_0
     .catchall {:try_start_1 .. :try_end_1} :catchall_2
 
-    .line 80
-    .local v6, "in":Ljava/io/BufferedReader;
-    :goto_1
+    .line 82
+    .local v8, "in":Ljava/io/BufferedReader;
+    :goto_2
     :try_start_2
-    invoke-virtual {v6}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/io/BufferedReader;->readLine()Ljava/lang/String;
 
-    move-result-object v7
+    move-result-object v9
 
-    move-object v8, v7
+    move-object v10, v9
 
-    .local v8, "line":Ljava/lang/String;
-    if-eqz v7, :cond_5
+    .local v10, "line":Ljava/lang/String;
+    if-eqz v9, :cond_5
 
-    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    invoke-virtual {v7, v10}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
     :try_end_2
     .catchall {:try_start_2 .. :try_end_2} :catchall_0
 
-    goto :goto_1
-
-    .line 81
-    .end local v8    # "line":Ljava/lang/String;
-    :cond_5
-    :try_start_3
-    invoke-virtual {v6}, Ljava/io/BufferedReader;->close()V
+    goto :goto_2
 
     .line 83
-    .end local v6    # "in":Ljava/io/BufferedReader;
-    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    .end local v10    # "line":Ljava/lang/String;
+    :cond_5
+    :try_start_3
+    invoke-virtual {v8}, Ljava/io/BufferedReader;->close()V
 
-    move-result-object v6
+    .line 85
+    .end local v8    # "in":Ljava/io/BufferedReader;
+    invoke-virtual {v7}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
-    .line 84
-    .local v6, "body":Ljava/lang/String;
-    invoke-virtual {v6}, Ljava/lang/String;->isEmpty()Z
+    move-result-object v8
+
+    .line 86
+    .local v8, "body":Ljava/lang/String;
+    invoke-virtual {v8}, Ljava/lang/String;->isEmpty()Z
 
     move-result v0
     :try_end_3
@@ -1813,45 +1828,45 @@
 
     if-eqz v0, :cond_7
 
-    .line 94
+    .line 96
     if-eqz v1, :cond_6
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->disconnect()V
 
-    .line 84
+    .line 86
     :cond_6
     return-object v2
 
-    .line 86
+    .line 88
     :cond_7
     nop
 
-    .line 94
+    .line 96
     if-eqz v1, :cond_8
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->disconnect()V
 
-    .line 86
+    .line 88
     :cond_8
-    return-object v6
+    return-object v8
 
-    .line 78
-    .local v6, "in":Ljava/io/BufferedReader;
+    .line 80
+    .local v8, "in":Ljava/io/BufferedReader;
     :catchall_0
-    move-exception v7
+    move-exception v9
 
     :try_start_4
-    invoke-virtual {v6}, Ljava/io/BufferedReader;->close()V
+    invoke-virtual {v8}, Ljava/io/BufferedReader;->close()V
     :try_end_4
     .catchall {:try_start_4 .. :try_end_4} :catchall_1
 
-    goto :goto_2
+    goto :goto_3
 
     :catchall_1
-    move-exception v8
+    move-exception v10
 
     :try_start_5
-    invoke-virtual {v7, v8}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
+    invoke-virtual {v9, v10}, Ljava/lang/Throwable;->addSuppressed(Ljava/lang/Throwable;)V
 
     .end local v1    # "c":Ljavax/net/ssl/HttpsURLConnection;
     .end local p0    # "urlStr":Ljava/lang/String;
@@ -1859,18 +1874,20 @@
     .end local p2    # "device":Ljava/lang/String;
     .end local p3    # "useIp":Z
     .end local p4    # "hostHeader":Ljava/lang/String;
-    :goto_2
-    throw v7
+    :goto_3
+    throw v9
     :try_end_5
     .catch Ljava/net/UnknownHostException; {:try_start_5 .. :try_end_5} :catch_1
     .catch Ljava/lang/Exception; {:try_start_5 .. :try_end_5} :catch_0
     .catchall {:try_start_5 .. :try_end_5} :catchall_2
 
-    .line 94
+    .line 96
     .end local v3    # "code":I
-    .end local v4    # "is":Ljava/io/InputStream;
-    .end local v5    # "sb":Ljava/lang/StringBuilder;
-    .end local v6    # "in":Ljava/io/BufferedReader;
+    .end local v4    # "json":Ljava/lang/String;
+    .end local v5    # "out":[B
+    .end local v6    # "is":Ljava/io/InputStream;
+    .end local v7    # "sb":Ljava/lang/StringBuilder;
+    .end local v8    # "in":Ljava/io/BufferedReader;
     .restart local v1    # "c":Ljavax/net/ssl/HttpsURLConnection;
     .restart local p0    # "urlStr":Ljava/lang/String;
     .restart local p1    # "key":Ljava/lang/String;
@@ -1880,13 +1897,13 @@
     :catchall_2
     move-exception v0
 
-    goto :goto_3
+    goto :goto_4
 
-    .line 90
+    .line 92
     :catch_0
     move-exception v3
 
-    .line 91
+    .line 93
     .local v3, "e":Ljava/lang/Exception;
     :try_start_6
     const-string v4, "Error post request: "
@@ -1895,24 +1912,24 @@
     :try_end_6
     .catchall {:try_start_6 .. :try_end_6} :catchall_2
 
-    .line 92
+    .line 94
     nop
 
-    .line 94
+    .line 96
     if-eqz v1, :cond_9
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->disconnect()V
 
-    .line 92
+    .line 94
     :cond_9
     return-object v2
 
-    .line 87
+    .line 89
     .end local v3    # "e":Ljava/lang/Exception;
     :catch_1
     move-exception v3
 
-    .line 88
+    .line 90
     .local v3, "e":Ljava/net/UnknownHostException;
     :try_start_7
     new-instance v4, Ljava/lang/StringBuilder;
@@ -1941,26 +1958,26 @@
     :try_end_7
     .catchall {:try_start_7 .. :try_end_7} :catchall_2
 
-    .line 89
+    .line 91
     nop
 
-    .line 94
+    .line 96
     if-eqz v1, :cond_a
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->disconnect()V
 
-    .line 89
+    .line 91
     :cond_a
     return-object v2
 
-    .line 94
+    .line 96
     .end local v3    # "e":Ljava/net/UnknownHostException;
-    :goto_3
+    :goto_4
     if-eqz v1, :cond_b
 
     invoke-virtual {v1}, Ljavax/net/ssl/HttpsURLConnection;->disconnect()V
 
-    .line 95
+    .line 97
     :cond_b
     throw v0
 .end method
@@ -1970,35 +1987,35 @@
     .param p0, "activity"    # Landroid/app/Activity;
     .param p1, "context"    # Landroid/content/Context;
 
-    .line 195
+    .line 197
     new-instance v0, Landroid/widget/EditText;
 
     invoke-direct {v0, p1}, Landroid/widget/EditText;-><init>(Landroid/content/Context;)V
 
-    .line 196
+    .line 198
     .local v0, "input":Landroid/widget/EditText;
     const-string v1, "\u0423\u043a\u0430\u0436\u0438\u0442\u0435 \u043a\u043b\u044e\u0447, \u043a\u043e\u0442\u043e\u0440\u044b\u0439 \u0432\u044b \u043f\u043e\u043b\u0443\u0447\u0438\u043b\u0438 \u0438\u0437 \u0431\u043e\u0442\u0430"
 
     invoke-virtual {v0, v1}, Landroid/widget/EditText;->setHint(Ljava/lang/CharSequence;)V
 
-    .line 197
+    .line 199
     const/16 v1, 0x11
 
     invoke-virtual {v0, v1}, Landroid/widget/EditText;->setGravity(I)V
 
-    .line 198
+    .line 200
     new-instance v1, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     invoke-direct {v1, p1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;-><init>(Landroid/content/Context;)V
 
-    .line 199
+    .line 201
     const-string v2, "\u0423\u0437\u043d\u0430\u0442\u044c \u043f\u043e\u0434\u0440\u043e\u0431\u043d\u0435\u0439 \u043f\u0440\u043e \u0431\u043e\u043d\u0443\u0441\u044b \u0438 \u0446\u0435\u043d\u0443 VIP, \u043b\u0438\u0431\u043e \u043f\u0440\u0438\u043e\u0431\u0440\u0435\u0441\u0442\u0438 VIP \u0432\u044b \u043c\u043e\u0436\u0435\u0442\u0435 \u0432 Telegram/Discord MTG MODS, \u043d\u0430\u043f\u0440\u0438\u043c\u0435\u0440 https://t.me/mtgmods/60\n\n\u0415\u0441\u043b\u0438 \u0443 \u0432\u0430\u0441 \u0438 \u0442\u0430\u043a \u0443\u0436\u0435 \u0435\u0441\u0442\u044c \u043a\u0443\u043f\u043b\u0435\u043d\u043d\u044b\u0439 VIP, \u0442\u043e \u0432\u0432\u0435\u0434\u0438\u0442\u0435 \u0434\u0430\u043d\u043d\u044b\u0435 \u043d\u0438\u0436\u0435"
 
     invoke-virtual {v1, v2}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setMessage(Ljava/lang/CharSequence;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v1
 
-    .line 200
+    .line 202
     invoke-virtual {v1, v0}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setView(Landroid/view/View;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v1
@@ -2007,7 +2024,7 @@
 
     invoke-direct {v2, v0, p1, p0}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda11;-><init>(Landroid/widget/EditText;Landroid/content/Context;Landroid/app/Activity;)V
 
-    .line 201
+    .line 203
     const-string v3, "\u041f\u0440\u043e\u0432\u0435\u0440\u0438\u0442\u044c \u043a\u043b\u044e\u0447"
 
     invoke-virtual {v1, v3, v2}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setPositiveButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
@@ -2018,23 +2035,23 @@
 
     invoke-direct {v2, p1, p0}, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda12;-><init>(Landroid/content/Context;Landroid/app/Activity;)V
 
-    .line 212
+    .line 214
     const-string v3, "\u0417\u0430\u043a\u0440\u044b\u0442\u044c"
 
     invoke-virtual {v1, v3, v2}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setNegativeButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v1
 
-    .line 220
+    .line 222
     const/4 v2, 0x0
 
     invoke-virtual {v1, v2}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->setCancelable(Z)Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;
 
     move-result-object v1
 
-    .line 221
+    .line 223
     invoke-virtual {v1}, Lcom/google/android/material/dialog/MaterialAlertDialogBuilder;->show()Landroidx/appcompat/app/AlertDialog;
 
-    .line 222
+    .line 224
     return-void
 .end method
