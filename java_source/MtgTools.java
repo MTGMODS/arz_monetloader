@@ -99,8 +99,8 @@ public class MtgTools {
         Log.i("MtgTools", "Check key: " + key);
 
         final String host = "mtgmods.duckdns.org";
-        final String urlHost = "https://" + host + "/api/check_key";
-        final String urlIp   = "https://130.61.116.240/api/check_key";
+        final String urlHost = "https://" + host + "/api/v1/check_key";
+        final String urlIp   = "https://130.61.116.240/api/v1/check_key";
 
         String response = postRequest(urlHost, key, getDeviceId(context), false, host);
         if (response == null || response.contains("DNS_FAIL") || response.contains("UnknownHostException") || response.contains("host") || response.contains("or service")) {
