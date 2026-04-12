@@ -36,7 +36,7 @@
 
     iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda0;->f$1:Landroid/app/Activity;
 
-    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$initialize$17(Landroid/content/Context;Landroid/app/Activity;)V
+    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$initialize$16(Landroid/content/Context;Landroid/app/Activity;)V
 
     return-void
 .end method

@@ -36,7 +36,7 @@
 
     iget-object v1, p0, Lcom/arizona/launcher/MtgTools$$ExternalSyntheticLambda1;->f$1:Ljava/lang/String;
 
-    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$isValidKey$3(Landroid/content/Context;Ljava/lang/String;)V
+    invoke-static {v0, v1}, Lcom/arizona/launcher/MtgTools;->lambda$isValidKey$1(Landroid/content/Context;Ljava/lang/String;)V
 
     return-void
 .end method

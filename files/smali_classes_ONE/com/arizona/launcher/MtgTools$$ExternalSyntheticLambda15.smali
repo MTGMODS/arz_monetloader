@@ -22,7 +22,7 @@
     .locals 0
 
     .line 0
-    invoke-static {p1, p2}, Lcom/arizona/launcher/MtgTools;->lambda$initialize$14(Landroid/content/DialogInterface;I)V
+    invoke-static {p1, p2}, Lcom/arizona/launcher/MtgTools;->lambda$initialize$13(Landroid/content/DialogInterface;I)V
 
     return-void
 .end method
