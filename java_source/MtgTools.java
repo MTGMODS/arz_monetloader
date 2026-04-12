@@ -44,7 +44,7 @@ public class MtgTools {
         );
     }
 
-    private static String postRequest(String urlStr, String key, String device, boolean useIp, String hostHeader) {
+    private static String postRequest(String urlStr, String key, String device) {
         HttpsURLConnection c = null;
         try {
             c = (HttpsURLConnection) new URL(urlStr).openConnection();
@@ -52,18 +52,6 @@ public class MtgTools {
             c.setConnectTimeout(5000);
             c.setReadTimeout(5000);
             c.setDoOutput(true);
-
-            if (useIp) {
-                c.setRequestProperty("Host", hostHeader);
-                SSLContext sc = SSLContext.getInstance("TLS");
-                sc.init(null, new TrustManager[]{new X509TrustManager() {
-                    public void checkClientTrusted(java.security.cert.X509Certificate[] xcs, String s) {}
-                    public void checkServerTrusted(java.security.cert.X509Certificate[] xcs, String s) {}
-                    public java.security.cert.X509Certificate[] getAcceptedIssuers() { return new java.security.cert.X509Certificate[0]; }
-                }}, new java.security.SecureRandom());
-                c.setSSLSocketFactory(sc.getSocketFactory());
-                c.setHostnameVerifier((h, s) -> true);
-            }
 
             String json = String.format("{\"key\":\"%s\",\"device\":\"%s\"}", key, device != null ? device : "");
             byte[] out = json.getBytes(StandardCharsets.UTF_8);
@@ -105,14 +93,7 @@ public class MtgTools {
     public static boolean isValidKey(String key, Context context) {
         Log.i("MtgTools", "Check key: " + key);
 
-        final String host = "mtgmods.duckdns.org";
-        final String urlHost = "https://" + host + "/api/v1/check_key";
-        final String urlIp   = "https://130.61.116.240/api/v1/check_key";
-
-        String response = postRequest(urlHost, key, getDeviceId(context), false, host);
-        if (response == null || response.contains("DNS_FAIL") || response.contains("UnknownHostException") || response.contains("host") || response.contains("or service")) {
-            response = postRequest(urlIp, key, getDeviceId(context), true, host);
-        }
+        String response = postRequest("https://api.mtgmods.com/v1/subscription/check", key, getDeviceId(context));
         if (response == null) {
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n⚠️ Ошибка подключения ⚠️", Toast.LENGTH_LONG).show());
             return false;
