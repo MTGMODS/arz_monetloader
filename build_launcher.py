@@ -234,7 +234,7 @@ for i, line in enumerate(smali_lines):
         if re.search(r'sget-object (v\d+), Landroid/os/Build;->SUPPORTED_ABIS:\[Ljava/lang/String;', line):
             start_idx = i
     else:
-        if re.search(r':cond_3', line):
+        if re.search(r':cond_4', line):
             cond3_count += 1
             if cond3_count == 2:
                 end_idx = i
