@@ -20,10 +20,18 @@ jobs:
       - name: Get launcher version from JSON
         id: get_version
         run: |
-          VERSION_JSON=$(curl -s https://mob.maz-ins.com/game/release/app_version.json)
-          VERSION_NAME=$(echo $VERSION_JSON | jq -r '.launcherVersionName')
+          set -e
 
-          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+          VERSION_NAME=$(curl -Ls --fail \
+            https://mob.maz-ins.com/game/release/app_version.json \
+            | jq -r '.launcherVersionName')
+
+          if [ -z "$VERSION_NAME" ] || [ "$VERSION_NAME" = "null" ]; then
+            echo "Failed to get version"
+            exit 1
+          fi
+
+          echo "version_name=$VERSION_NAME" >> "$GITHUB_OUTPUT"
           echo "Detected version: $VERSION_NAME"
 
       - name: Check if tag exists
