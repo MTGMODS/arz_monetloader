@@ -192,7 +192,21 @@ with open(MANIFEST_PATH, "w", encoding="utf-8") as file:
 
 ##################################################################################################################
 
-UPDATE_SERVICE_PATH = DECODED_DIR + SMALI_PATH + "/com/arizona/launcher/UpdateService.smali"
+ARZ_SMALI_PATH = ""
+
+for smali_dir in SMALI_CLASSES:
+    smali_dir = smali_dir.replace('\\', '/')
+    potential_path = smali_dir + "/com/arizona/launcher/UpdateService.smali"
+    if os.path.isfile(potential_path):
+        ARZ_SMALI_PATH = smali_dir.replace(DECODED_DIR, '')
+        break
+
+if ARZ_SMALI_PATH == "":
+    raise RuntimeError("❗ Don't find arz work smali folder!")
+
+##################################################################################################################
+
+UPDATE_SERVICE_PATH = DECODED_DIR + ARZ_SMALI_PATH + "/com/arizona/launcher/UpdateService.smali"
 
 print("[INFO] 🔒 Disabling original client updates...")
 
@@ -215,7 +229,7 @@ print("[INFO] ✅ Client updates disabled successfully!")
 
 ##################################################################################################################
 
-MAIN_ENTRENCH_PATH = DECODED_DIR + SMALI_PATH + "/com/arizona/launcher/MainEntrench.smali"
+MAIN_ENTRENCH_PATH = DECODED_DIR + ARZ_SMALI_PATH + "/com/arizona/launcher/MainEntrench.smali"
 
 print("[INFO] 🔧 Injecting MTGTools...")
 
