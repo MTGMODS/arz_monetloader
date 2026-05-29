@@ -115,17 +115,23 @@ print("[INFO] 🔗 Injecting MonetLoader into GTASAInternal.smali...")
 with open(GTASA_INTERNAL_PATH, "r", encoding="utf-8") as file:
     smali_lines = file.readlines()
 
+check_find_samp = False
 check_connect = False
 
 for i, line in enumerate(smali_lines):
     match1 = re.search(r'const-string(?:/jumbo)? (v\d+), "samp"', line)
     if match1:
+        check_find_samp = True
         var_name = match1.group(1)
-        if f"invoke-static {{{var_name}}}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V" in smali_lines[i + 2]:
+
+        if (f"invoke-static {{{var_name}}}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V" in smali_lines[i + 2] or f"invoke-static {{{var_name}}}, Lcom/arizona/game/GTASAInternal;->loadNativeLibrary(Ljava/lang/String;)V" in smali_lines[i + 2]):
             smali_lines.insert(i + 4, f'\n    const-string {var_name}, "monetloader"\n\n    invoke-static {{{var_name}}}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V\n\n')
             print("[INFO] ✅ MonetLoader injected successfully!")
             check_connect = True
             break
+
+if not check_find_samp:
+    raise RuntimeError("❌ Failed to locate 'samp' in GTASAInternal.smali.")
 
 if not check_connect:
     raise RuntimeError("❌ Failed to locate 'samp' loadLibrary call in GTASAInternal.smali.")
