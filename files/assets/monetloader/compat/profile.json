@@ -5,7 +5,7 @@
     "samp_name": "libsamp.so",
     "receiveignorerpc_pattern": "F0B503AF2DE9000F87B081468C48",
     "cnetgame_ctor_pattern": "F0B503AF2DE9000F8DB08046DFF8??05", 
-    "rakclientinterface_netgame_offset": 528,
+    "rakclientinterface_netgame_offset": 536,
     "use_samp_touch_workaround": true,
     "nveventinsertnewest_offset": 2606320
 }
