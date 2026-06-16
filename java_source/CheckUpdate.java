@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import android.app.AlertDialog;
 
 import org.json.JSONObject;
 
@@ -46,7 +46,7 @@ public class CheckUpdate {
             String appVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 
             if (!appVersion.equals(currentVersion)) {
-                activity.runOnUiThread(() -> new MaterialAlertDialogBuilder(context)
+                activity.runOnUiThread(() -> new AlertDialog.Builder(context)
                         .setTitle("ℹ️ MonetLoader Update ℹ️")
                         .setMessage("Установленный у вас лаунчер версии " + appVersion + " не актуален!\n\nИспользуйте версию " + currentVersion + " для стабильной игры с Lua")
                         .setPositiveButton("Скачать " + currentVersion, (dialogInterface, i) -> {
