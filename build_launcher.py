@@ -79,6 +79,33 @@ print("[INFO] ✅ MonetLoader files added successfully!")
 
 ##################################################################################################################
 
+def compile_java_to_smali(java_source_dir, output_smali_dir):
+    android_jar = "android.jar" 
+    baksmali_path = "baksmali.jar"
+    d8_jar = "d8.jar" 
+    
+    classpath = f"{android_jar}:files/assets/monetloader/lib/android/jar/arzapi.jar:files/assets/monetloader/lib/webviews/WebViews.jar" 
+
+    java_files = [os.path.join(java_source_dir, f) for f in os.listdir(java_source_dir) if f.endswith('.java')]
+    
+    # ... (Крок 1: javac - компіляція) ...
+    print("[*] Крок 1: javac (.java -> .class)")
+    subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
+
+    # ... (Крок 2: d8 - конвертація) ...
+    # Якщо використовуєш локальний d8.jar:
+    print("[*] Крок 2: d8 (.class -> .dex)")
+    class_files = [os.path.join(java_source_dir, f) for f in os.listdir(java_source_dir) if f.endswith('.class')]
+    subprocess.run(["java", "-cp", d8_jar, "com.android.tools.r8.D8", "--release", "--output", ".", "--lib", android_jar] + class_files, check=True)
+
+    subprocess.run(["java", "-jar", baksmali_path, "d", "classes.dex", "-o", output_smali_dir], check=True)
+
+    os.remove("classes.dex")
+    for cf in class_files:
+        os.remove(cf)
+
+    print(f"[+] Smali файли успішно згенеровані у папку {output_smali_dir}")
+
 print("[INFO] 🔧 Adding MTG files...")
 
 PATH_SMALI_ONE = DECODED_DIR + '/smali_classes_ONE'
