@@ -16,7 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import android.app.AlertDialog;
 import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.File;
@@ -183,7 +183,7 @@ public class MtgTools {
         final EditText input = new EditText(context);
         input.setHint("Укажите ключ, который вы получили из бота");
         input.setGravity(Gravity.CENTER);
-        new MaterialAlertDialogBuilder(context)
+        new AlertDialog.Builder(context)
                 .setMessage("Узнать подробней про бонусы и цену VIP, либо приобрести VIP вы можете в Telegram/Discord MTG MODS, например https://t.me/mtgmods/60\n\nЕсли у вас и так уже есть купленный VIP, то введите данные ниже")
                 .setView(input)
                 .setPositiveButton("Проверить ключ", (dialog2, which) -> {
@@ -217,7 +217,7 @@ public class MtgTools {
                     new Handler(Looper.getMainLooper()).post(() -> {
                         if (isActiveAdBlocker(activity, context)) {
                             forceVip = true;
-                            new MaterialAlertDialogBuilder(context)
+                            new AlertDialog.Builder(context)
                                     .setTitle("ℹ️ Обнаружен AD Blocker (Private DNS) ℹ️")
                                     .setMessage(
                                             "Данный Lua лаунчер распространяется бесплатно, а реклама при запуске (в игре её нету) помогает поддерживать лаунчер 💖\n\n"
@@ -247,7 +247,7 @@ public class MtgTools {
                                     .show();
                         } else {
                             com.arizona.launcher.Ads.initializeAds(activity, context);
-                            new MaterialAlertDialogBuilder(context)
+                            new AlertDialog.Builder(context)
                                     .setTitle("ℹ️ Просмотр рекламы перед началом игры ℹ️")
                                     .setMessage("Этим действием вы поддерживаете MTG MODS ❤️\nРекламы в игре нету, она только при запуске лаунчера\n\nЕсли вы хотите отключить рекламу, приобретите VIP")
                                     .setPositiveButton("Играть", (dialog, which) -> dialog.dismiss())
