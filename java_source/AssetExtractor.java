@@ -16,9 +16,7 @@ import java.io.InputStream;
 
 import android.app.Activity;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-
-import androidx.appcompat.app.AlertDialog;
+import android.app.AlertDialog;
 
 public class AssetExtractor {
 
@@ -141,7 +139,7 @@ public class AssetExtractor {
     }
 
     private static void showErrorDialog(Activity activity, Context context, String title, String message) {
-        MaterialAlertDialogBuilder alertDialog = new MaterialAlertDialogBuilder(context)
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
                 .setPositiveButton("Ок", (dialogInterface, i) -> activity.finishAffinity())
