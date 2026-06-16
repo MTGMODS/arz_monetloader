@@ -65,19 +65,19 @@ if SMALI_PATH == "":
 ##################################################################################################################
 
 def compile_java_to_smali():
-    java_source_dir = "java_source"
+    java_dir = "java"
     output_smali_dir = "files/smali_classes_ONE"
     
     classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
 
     java_files = [
-        os.path.join(java_source_dir, f) 
-        for f in os.listdir(java_source_dir) 
+        os.path.join(java_dir, f) 
+        for f in os.listdir(java_dir) 
         if f.endswith('.java') and "(NoAds version)" not in f
     ]
     
     if not java_files:
-        print("[-] Java файли не знайдені у папці java_source!")
+        print("[-] Java файли не знайдені у папці java!")
         return
 
     try:
@@ -85,7 +85,7 @@ def compile_java_to_smali():
         subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
 
         print("[*] Крок 2: d8 (.class -> .dex)")
-        class_files = [os.path.join(java_source_dir, f) for f in os.listdir(java_source_dir) if f.endswith('.class')]
+        class_files = [os.path.join(java_dir, f) for f in os.listdir(java_dir) if f.endswith('.class')]
         subprocess.run([
             "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8", 
             "--release", 
@@ -108,9 +108,9 @@ def compile_java_to_smali():
         if os.path.exists("classes.dex"):
             os.remove("classes.dex")
         
-        for f in os.listdir(java_source_dir):
+        for f in os.listdir(java_dir):
             if f.endswith('.class'):
-                os.remove(os.path.join(java_source_dir, f))
+                os.remove(os.path.join(java_dir, f))
 
     print(f"[+] Smali файли успішно згенеровані у {output_smali_dir}!")
 
