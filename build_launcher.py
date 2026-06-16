@@ -412,7 +412,7 @@ if os.path.exists(SIGNED_APK):
 
 ##################################################################################################################
 
-APKSIGNER_PATH = PATH + "/apksigner.jar"
+APKSIGNER_PATH = PATH + "/libs/apksigner.jar"
 UNSIGNED_APK = DECODED_DIR + "/dist/" + APK_NAME + ".apk"
 
 KEYSTORE_PATH = PATH + "/key.jks"
