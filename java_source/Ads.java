@@ -3,7 +3,6 @@ package com.arizona.launcher;
 import android.content.Context;
 import android.app.Activity;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.unity3d.ads.IUnityAdsListener;
 import com.unity3d.ads.UnityAds;
 
