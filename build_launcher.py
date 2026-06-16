@@ -1,4 +1,4 @@
-import subprocess, os, re, shutil, glob, requests
+import subprocess, os, re, shutil, glob, requests, zipfile
 
 ##################################################################################################################
 
@@ -26,25 +26,25 @@ if not os.path.exists(APK_PATH):
 
 ##################################################################################################################
 
-# if os.path.exists(DECODED_DIR):
-#     print("[INFO] 🗑️ Delete old decompiled app folder...")
-#     shutil.rmtree(DECODED_DIR, ignore_errors=True)
+if os.path.exists(DECODED_DIR):
+    print("[INFO] 🗑️ Delete old decompiled app folder...")
+    shutil.rmtree(DECODED_DIR, ignore_errors=True)
 
-# print("[INFO] ⚙️ Decompiling APK...")
-# subprocess.run(["java", "-jar", APKTOOL_PATH, "d", APK_PATH, "-o", DECODED_DIR, "--force"], check=True)
-# print("[INFO] ✅ APK decompiled successfully!")
+print("[INFO] ⚙️ Decompiling APK...")
+subprocess.run(["java", "-jar", APKTOOL_PATH, "d", APK_PATH, "-o", DECODED_DIR, "--force"], check=True)
+print("[INFO] ✅ APK decompiled successfully!")
 
 ##################################################################################################################
 
 # MonetLoader only x32
 
-# LIB_PATH = DECODED_DIR + "/lib/arm64-v8a"
+LIB_PATH = DECODED_DIR + "/lib/arm64-v8a"
 
-# print(f"[INFO] 🗑️ Removing folder: {LIB_PATH}")
+print(f"[INFO] 🗑️ Removing folder: {LIB_PATH}")
 
-# if os.path.exists(LIB_PATH):
-#     shutil.rmtree(LIB_PATH)
-#     print("[INFO] ✅ arm64-v8a folder removed successfully!")
+if os.path.exists(LIB_PATH):
+    shutil.rmtree(LIB_PATH)
+    print("[INFO] ✅ arm64-v8a folder removed successfully!")
 
 ##################################################################################################################
 
@@ -159,6 +159,26 @@ def compile_unity_ads_to_smali():
     print(f"[+] Unity Ads успішно розпаковано у {output_smali_dir}!")
 
 compile_unity_ads_to_smali()
+
+def extract_monetloader_core():
+    print("[*] Динамічне розпакування ядра MonetLoader...")
+    
+    zip_path = "libs/monetloader.zip"
+    target_dir = os.path.join(DECODED_DIR, "assets", "monetloader")
+
+    if not os.path.exists(zip_path):
+        print(f"[-] Помилка: Архів {zip_path} не знайдено!")
+        exit(1)
+
+    try:
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(target_dir)
+        print("[+] Ядро MonetLoader (lib, дефолтні скрипти) успішно розпаковано!")
+    except Exception as e:
+        print(f"[-] Не вдалося розпакувати архів: {e}")
+        exit(1)
+
+extract_monetloader_core()
 
 ##################################################################################################################
 
