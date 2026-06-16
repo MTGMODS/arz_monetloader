@@ -4,7 +4,7 @@ import subprocess, os, re, shutil, glob, requests
 
 PATH = os.path.dirname(__file__).replace("\\", "/")
 
-APKTOOL_PATH = PATH + "/apktool.jar"
+APKTOOL_PATH = PATH + "/libs/apktool.jar"
 
 APK_NAME = "app-arizona-release_web"
 
@@ -26,25 +26,25 @@ if not os.path.exists(APK_PATH):
 
 ##################################################################################################################
 
-if os.path.exists(DECODED_DIR):
-    print("[INFO] 🗑️ Delete old decompiled app folder...")
-    shutil.rmtree(DECODED_DIR, ignore_errors=True)
+# if os.path.exists(DECODED_DIR):
+#     print("[INFO] 🗑️ Delete old decompiled app folder...")
+#     shutil.rmtree(DECODED_DIR, ignore_errors=True)
 
-print("[INFO] ⚙️ Decompiling APK...")
-subprocess.run(["java", "-jar", APKTOOL_PATH, "d", APK_PATH, "-o", DECODED_DIR, "--force"], check=True)
-print("[INFO] ✅ APK decompiled successfully!")
+# print("[INFO] ⚙️ Decompiling APK...")
+# subprocess.run(["java", "-jar", APKTOOL_PATH, "d", APK_PATH, "-o", DECODED_DIR, "--force"], check=True)
+# print("[INFO] ✅ APK decompiled successfully!")
 
 ##################################################################################################################
 
 # MonetLoader only x32
 
-LIB_PATH = DECODED_DIR + "/lib/arm64-v8a"
+# LIB_PATH = DECODED_DIR + "/lib/arm64-v8a"
 
-print(f"[INFO] 🗑️ Removing folder: {LIB_PATH}")
+# print(f"[INFO] 🗑️ Removing folder: {LIB_PATH}")
 
-if os.path.exists(LIB_PATH):
-    shutil.rmtree(LIB_PATH)
-    print("[INFO] ✅ arm64-v8a folder removed successfully!")
+# if os.path.exists(LIB_PATH):
+#     shutil.rmtree(LIB_PATH)
+#     print("[INFO] ✅ arm64-v8a folder removed successfully!")
 
 ##################################################################################################################
 
@@ -64,6 +64,104 @@ if SMALI_PATH == "":
 
 ##################################################################################################################
 
+def compile_java_to_smali():
+    java_source_dir = "java_source"
+    output_smali_dir = "files/smali_classes_ONE"
+    
+    classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
+
+    java_files = [
+        os.path.join(java_source_dir, f) 
+        for f in os.listdir(java_source_dir) 
+        if f.endswith('.java') and "(NoAds version)" not in f
+    ]
+    
+    if not java_files:
+        print("[-] Java файли не знайдені у папці java_source!")
+        return
+
+    try:
+        print("[*] Крок 1: javac (.java -> .class)")
+        subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
+
+        print("[*] Крок 2: d8 (.class -> .dex)")
+        class_files = [os.path.join(java_source_dir, f) for f in os.listdir(java_source_dir) if f.endswith('.class')]
+        subprocess.run([
+            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8", 
+            "--release", 
+            "--output", ".", 
+            "--lib", "libs/android.jar",
+            "--lib", "libs/unity-ads.jar"
+        ] + class_files, check=True)
+
+        print("[*] Крок 3: baksmali (.dex -> .smali)")
+        subprocess.run([
+            "java", "-jar", "libs/baksmali.jar", 
+            "d", "classes.dex", 
+            "-o", output_smali_dir
+        ], check=True)
+
+    except subprocess.CalledProcessError as e:
+        print(f"[-] Помилка під час компіляції: {e}")
+        exit(1)
+    finally:
+        if os.path.exists("classes.dex"):
+            os.remove("classes.dex")
+        
+        for f in os.listdir(java_source_dir):
+            if f.endswith('.class'):
+                os.remove(os.path.join(java_source_dir, f))
+
+    print(f"[+] Smali файли успішно згенеровані у {output_smali_dir}!")
+
+compile_java_to_smali()
+
+def compile_unity_ads_to_smali():
+    unity_jar = "libs/unity-ads.jar"
+    output_smali_dir = "files/smali_classes_TWO"
+    temp_dex_dir = "temp_unity_dex"
+
+    if not os.path.exists(unity_jar):
+        print("[-] unity-ads.jar не знайдено!")
+        return
+
+    os.makedirs(temp_dex_dir, exist_ok=True)
+
+    try:
+        print("[*] Крок 1: d8 (unity-ads.jar -> .dex)")
+        subprocess.run([
+            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8",
+            "--release",
+            "--output", temp_dex_dir,
+            "--lib", "libs/android.jar",
+            unity_jar
+        ], check=True)
+
+        print("[*] Крок 2: baksmali (.dex -> .smali)")
+
+        if os.path.exists(output_smali_dir):
+            shutil.rmtree(output_smali_dir)
+
+        dex_file = os.path.join(temp_dex_dir, "classes.dex")
+        subprocess.run([
+            "java", "-jar", "libs/baksmali.jar",
+            "d", dex_file,
+            "-o", output_smali_dir
+        ], check=True)
+
+    except subprocess.CalledProcessError as e:
+        print(f"[-] Помилка під час конвертації Unity Ads: {e}")
+        exit(1)
+    finally:
+        if os.path.exists(temp_dex_dir):
+            shutil.rmtree(temp_dex_dir)
+
+    print(f"[+] Unity Ads успішно розпаковано у {output_smali_dir}!")
+
+compile_unity_ads_to_smali()
+
+##################################################################################################################
+
 SRC_FILES = PATH + "/files"
 
 print("[INFO] 🔧 Adding MonetLoader files...")
@@ -78,33 +176,6 @@ for root, dirs, files in os.walk(SRC_FILES):
 print("[INFO] ✅ MonetLoader files added successfully!")
 
 ##################################################################################################################
-
-def compile_java_to_smali(java_source_dir, output_smali_dir):
-    android_jar = "android.jar" 
-    baksmali_path = "baksmali.jar"
-    d8_jar = "d8.jar" 
-    
-    classpath = f"{android_jar}:files/assets/monetloader/lib/android/jar/arzapi.jar:files/assets/monetloader/lib/webviews/WebViews.jar" 
-
-    java_files = [os.path.join(java_source_dir, f) for f in os.listdir(java_source_dir) if f.endswith('.java')]
-    
-    # ... (Крок 1: javac - компіляція) ...
-    print("[*] Крок 1: javac (.java -> .class)")
-    subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
-
-    # ... (Крок 2: d8 - конвертація) ...
-    # Якщо використовуєш локальний d8.jar:
-    print("[*] Крок 2: d8 (.class -> .dex)")
-    class_files = [os.path.join(java_source_dir, f) for f in os.listdir(java_source_dir) if f.endswith('.class')]
-    subprocess.run(["java", "-cp", d8_jar, "com.android.tools.r8.D8", "--release", "--output", ".", "--lib", android_jar] + class_files, check=True)
-
-    subprocess.run(["java", "-jar", baksmali_path, "d", "classes.dex", "-o", output_smali_dir], check=True)
-
-    os.remove("classes.dex")
-    for cf in class_files:
-        os.remove(cf)
-
-    print(f"[+] Smali файли успішно згенеровані у папку {output_smali_dir}")
 
 print("[INFO] 🔧 Adding MTG files...")
 
