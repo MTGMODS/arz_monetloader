@@ -413,7 +413,7 @@ print("[INFO] ✅ APK rebuilt successfully!")
 
 ##################################################################################################################
 
-SIGNED_APK = os.path.join(PATH, f"MonetLoader {version_app}.apk")
+SIGNED_APK = PATH + "/MonetLoader {version_app}.apk"
 
 if os.path.exists(SIGNED_APK):
     print(f"[INFO] 🗑️ Delete old signed apk...")
