@@ -1,15 +1,15 @@
 # 🧩 About this project
 
-An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **MonetLoader** library (from https://github.com/xefinity/MonetLoaderOSS).  
+An **external tool** that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader library](https://github.com/xefinity/MonetLoaderOSS)**.  
 
 This launcher build also integrates the **MTG Tools** module.
 It is responsible for:
 - 🧩 Automatically unpacking MonetLoader resource files
-- 🗒️ Automatically installing default lua scripts
+- 🗒️ Automatically installing default lua scripts & libs
 - 🔄 Checking if your launcher version is up to date
-- 💰 Controlling Unity Ads behavior *(to support the project)*  
+- 💰 Managing Unity Ads behavior for project monetization 
 
-> ⚠️ This is an **independent third-party project**, created solely to extend **Lua compatibility for Arizona Mobile**
+> ⚠️ This is an **independent third-party project**, created solely to provide **Lua scripting support** for **Arizona Mobile**
 > It is **not affiliated with, endorsed by, or connected to Arizona Games, Rockstar Games, or their partners.**   
 > All trademarks and copyrights belong to their respective owners.
 
@@ -18,7 +18,7 @@ It is responsible for:
 ## ⚙️ Features
 
 ### 🧩 Core Functionality
-- 1️⃣ Adds **Lua scripting** support via **MonetLoader** (x32 only)
+- 1️⃣ Adds **Lua scripting** support via **MonetLoader** (32-bit only)
 - 2️⃣ Integrates **MTG Tools** module and **Unity Ads** SDK
 
 ### ⚙️ MonetLoader Integration
@@ -60,7 +60,7 @@ It is responsible for:
     ├── apktool.jar             # Decompiles and recompiles the APK
     ├── baksmali.jar            # Disassembles .dex files into .smali format
     ├── d8.jar                  # Converts Java .class files to Android .dex
-    ├── unity-ads.jar           # Unity Ads SDK for monetization this project
+    ├── unity-ads.jar           # Unity Ads SDK (used for project monetization)
     └── monetloader.zip         # Vendor MonetLoader core (unpacked dynamically)
 ```
 
@@ -68,11 +68,11 @@ It is responsible for:
 ### 1️⃣ Requirements
 - **Python 3.10+**
 - **Java 8+**
-- **Keystore for signing final APK** *(if not provided — unsigned apk will be saved)*
+- **Keystore for signing the final APK** *(if not provided — unsigned apk will be saved)*
 ---
 ### 2️⃣ Build Process
 1. **Clone** this repository to your local machine  
-2. Set your keystore credentials in .env file in the root folder
+2. Set your keystore credentials in the .env file located in the project root
 
 ```bash
 KEY_ALIAS="alias"
