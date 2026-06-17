@@ -241,8 +241,7 @@ def compile_unity_ads_to_smali():
     temp_dex_dir = "temp_unity_dex"
 
     if not os.path.exists(unity_jar):
-        print("[-] unity-ads.jar не знайдено!")
-        return
+        raise RuntimeError("❗ Unity Ads jar not found!")
 
     os.makedirs(temp_dex_dir, exist_ok=True)
 
@@ -256,10 +255,7 @@ def compile_unity_ads_to_smali():
             unity_jar
         ], check=True)
 
-        print("[*] Крок 2: baksmali (.dex -> .smali)")
-
-        if os.path.exists(PATH_SMALI_ADS):
-            shutil.rmtree(PATH_SMALI_ADS)
+        print("[INFO] ⚙️ Dex -> Smali...")
 
         dex_file = os.path.join(temp_dex_dir, "classes.dex")
         subprocess.run([
@@ -269,13 +265,12 @@ def compile_unity_ads_to_smali():
         ], check=True)
 
     except subprocess.CalledProcessError as e:
-        print(f"[-] Помилка під час конвертації Unity Ads: {e}")
-        exit(1)
+        raise RuntimeError(f"❗ Failed compile Unity Ads: {e}")
     finally:
         if os.path.exists(temp_dex_dir):
             shutil.rmtree(temp_dex_dir)
 
-    print(f"[+] Unity Ads успішно розпаковано у {PATH_SMALI_ADS}!")
+    print("[INFO] ✅ Unity Ads compiled successfully!")
 
 compile_unity_ads_to_smali()
 
