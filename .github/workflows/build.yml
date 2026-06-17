@@ -65,7 +65,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.check_tag.outputs.exists == 'false'
-        run: pip install requests
+        run: pip install requests python-dotenv
 
       - name: Set up Java
         if: steps.check_tag.outputs.exists == 'false'
