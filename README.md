@@ -1,6 +1,6 @@
 # 🧩 About this project
 
-An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **[MonetLoader](https://t.me/monetloader)** library.  
+An **external tool** that adds **Lua scripting support** to the **Arizona Mobile** client through the external **MonetLoader** library (from https://github.com/xefinity/MonetLoaderOSS).  
 
 This launcher build also integrates the **MTG Tools** module.
 It is responsible for:
@@ -36,24 +36,32 @@ It is responsible for:
 ### 💰 Unity Ads
 - Loads and displays ads using the Unity SDK  
 - Ads appear **once at startup** and **do not interrupt gameplay**  
-- Can be **disabled** inside the launcher *(for VIP users)*  
+- Can be **disabled** inside the launcher *(for MTGVIP subscribers)*  
 
 ---
 
 ## 📂 Project Structure
 
 ```bash
-├── build_launcher.py                   # Main build automation script
-├── apktool.jar                         # Decompiler/Recompiler
-├── apksigner.jar                       # APK signing tool
-├── key.jks                             # Example keystore (not included in repo)
-├── files/assets/                       # MonetLoader resource files
-├── files/lib/                          # MonetLoader & LuaJIT libraries
-├── files/smali_classes_*               # Injected custom smali code
-├── java_source/MtgTools.java           # Core MTG integration logic
-├── java_source/AssetExtractor.java     # Extracts required resource files
-├── java_source/CheckUpdate.java        # Update check manager
-└── java_source/Ads.java                # Unity Ads integration
+├── .env                        # Environment variables for keystore (optional)
+├── key.jks                     # Keystore for signing the final APK (optional)
+├── build_launcher.py           # Main build automation script (The Orchestrator)
+├── files/                      # Payload directory (copied directly into the decompiled APK)
+│   ├── assets/                 # Custom resources, Lua scripts & configs
+│   └── lib/                    # Base MonetLoader native libraries (.so)
+├── java/                       # Java source code for the wrapper
+│   ├── Ads.java                # Unity Ads integration
+│   ├── AssetExtractor.java     # Extracts required resource files
+│   ├── CheckUpdate.java        # Update check manager
+│   └── MtgTools.java           # Core MTG logic & Network checks
+└── libs/                       # Build tools & heavy vendor archives
+    ├── android.jar             # Android SDK for compiling Java code                  
+    ├── apksigner.jar           # Signs the final rebuilt APK
+    ├── apktool.jar             # Decompiles and recompiles the APK
+    ├── baksmali.jar            # Disassembles .dex files into .smali format
+    ├── d8.jar                  # Converts Java .class files to Android .dex
+    ├── unity-ads.jar           # Unity Ads SDK for monetization this project
+    └── monetloader.zip         # Vendor MonetLoader core (unpacked dynamically)
 ```
 
 # 🚀 Usage
@@ -64,20 +72,14 @@ It is responsible for:
 ---
 ### 2️⃣ Build Process
 1. **Clone** this repository to your local machine  
-2. Set your keystore credentials using environment variables:
+2. Set your keystore credentials in .env file in the root folder
 
-**Linux / macOS (bash):**
 ```bash
-export KEY_ALIAS="your_alias"
-export KEY_PASS="your_key_password"
-export KEYSTORE_PASS="your_keystore_password" # optional if same as KEY_PASS
+KEY_ALIAS="alias"
+KEY_PASS="key_password"
+KEYSTORE_PASS="keystore_password" # optional if same as KEY_PASS
 ```
-**Windows (PowerShell, temporary)**
-```powershell
-$env:KEY_ALIAS="your_alias"
-$env:KEY_PASS="your_key_password"
-$env:KEYSTORE_PASS="your_keystore_password"
-```
+
 3. Update `profile.json` with the correct `libsamp` configuration  
 (see tutorial: https://www.youtube.com/watch?v=u6gdRxX3lSc)
 4. Run the build script in terminal:
