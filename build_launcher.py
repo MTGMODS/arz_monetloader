@@ -2,7 +2,7 @@ import subprocess, os, re, shutil, glob, requests, zipfile
 
 ##################################################################################################################
 
-PATH = os.path.dirname(__file__).replace("\\", "/")
+PATH = os.path.dirname(__file__)
 
 APKTOOL_PATH = PATH + "/libs/apktool.jar"
 
@@ -148,10 +148,10 @@ print("[INFO] 🔄 Change package name to 'com.arizona.game' in AndroidManifest.
 manifest_data = manifest_data.replace("com.arizona21.game.web", "com.arizona.game")
 manifest_data = manifest_data.replace("com.arizona21.game", "com.arizona.game")
 
-print("[INFO] 🏷  Setting app name to 'Arizona Lua'...")
+print("[INFO] 🏷  Change app name to 'Arizona Lua' in AndroidManifest...")
 manifest_data = re.sub(r'android:label="@string/app_name"', 'android:label="Arizona Lua"', manifest_data)
 if 'android:label="Arizona Lua"' in manifest_data:
-    print("[INFO] ✅ Successful renamed!")
+    print("[INFO] ✅ App renamed successfully!")
 else:
     raise RuntimeError("❌ Failed to update app label in AndroidManifest.xml.")
 
@@ -178,7 +178,7 @@ LATEST_SMALI = max(smali_numbers)
 
 PATH_SMALI_TOOLS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 1}"
 
-print("[INFO] 🔧 Compiling MTG Tools...")
+print("[INFO] 🔧 Compiling MTG Tools from java files to smali...")
 
 def compile_java_to_smali():
     classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
@@ -198,6 +198,8 @@ def compile_java_to_smali():
         subprocess.run([
             "javac", 
             "--release", "8", 
+            "-Xlint:-options",
+            "-nowarn",
             "-cp", classpath
         ] + java_files, check=True)
 
@@ -236,7 +238,7 @@ compile_java_to_smali()
 
 PATH_SMALI_ADS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 2}"
 
-print("[INFO] 🔧 Compiling Unity Ads...")
+print("[INFO] 🔧 Compiling Unity Ads from jar to smali...")
 
 def compile_unity_ads_to_smali():
     unity_jar = "libs/unity-ads.jar"
