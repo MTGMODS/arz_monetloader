@@ -451,6 +451,11 @@ if os.path.exists(KEYSTORE_PATH) and KEY_ALIAS and KEY_PASS:
         ], check=True)
         print(f"[INFO] ✅ Signed successfully!")
         print(f"[INFO] ℹ️ Your launcher {version_app}: {SIGNED_APK}")
+
+        idsig = SIGNED_APK + ".idsig"
+        if os.path.exists(idsig):
+            os.remove(idsig)
+
     except subprocess.CalledProcessError as e:
         print(f"[ERROR] {e}")
 else:
@@ -465,7 +470,7 @@ print("[INFO] ✅ Build process completed successfully!")
 print("[INFO] 🗑️ Remove temporary build directory...")
 shutil.rmtree(DECODED_DIR, ignore_errors=True)
 
-print("[INFO] 🗑️ Remove original downloaded APK...")
+print("[INFO] 🗑️ Remove original APK...")
 os.remove(APK_PATH)
     
 ##################################################################################################################
