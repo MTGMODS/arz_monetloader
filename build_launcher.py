@@ -216,6 +216,8 @@ def compile_java_to_smali():
             "-o", PATH_SMALI_TOOLS
         ], check=True)
 
+        print("[INFO] ✅ MTG Tools compiled successfully!")
+
     except subprocess.CalledProcessError as e:
         raise RuntimeError(f"❗ Failed compile MTG Tools: {e}")
     finally:
@@ -225,8 +227,6 @@ def compile_java_to_smali():
         for f in os.listdir(java_dir):
             if f.endswith('.class'):
                 os.remove(os.path.join(java_dir, f))
-        
-        print("[INFO] ✅ MTG Tools compiled successfully!")
                 
 compile_java_to_smali()
 
