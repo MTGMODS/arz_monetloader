@@ -36,15 +36,13 @@ print("[INFO] ✅ APK decompiled successfully!")
 
 ##################################################################################################################
 
-# MonetLoader only x32
-
 LIB_PATH = DECODED_DIR + "/lib/arm64-v8a"
 
-print(f"[INFO] 🗑️ Removing folder: {LIB_PATH}")
+print(f"[INFO] 🗑️ Remove x64 lib folder (Monetloader only x32)...")
 
 if os.path.exists(LIB_PATH):
     shutil.rmtree(LIB_PATH)
-    print("[INFO] ✅ arm64-v8a folder removed successfully!")
+    print("[INFO] ✅ Folder arm64-v8a removed successfully!")
 
 ##################################################################################################################
 
