@@ -15,11 +15,9 @@ APK_PATH = DECODED_DIR + ".apk"
 ##################################################################################################################
 
 if not os.path.exists(APK_PATH):
-    print(f"[INFO] 🚫 {APK_NAME}.apk not found")
-
     URL = "https://arz-mob.react-group.tech/game/release/launcher_new/app-arizona-release_web.apk"
 
-    print(f"[INFO] 📥 Downloading latest APK from {URL}...")
+    print(f"[INFO] 📥 Downloading latest original APK from {URL}...")
 
     with open(APK_PATH, 'wb') as f:
         f.write(requests.get(URL).content)
