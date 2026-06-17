@@ -1,8 +1,8 @@
-# 🧩 MTGMODS MonetLoader Builder [![Download Latest Release](https://img.shields.io/github/v/release/MTGMODS/arz_monetloader?label=Download%20Latest%20APK&style=for-the-badge&color=success)](https://github.com/MTGMODS/arz_monetloader/releases/latest)
+# 🧩 MonetLoader Builder [![Download Latest Release](https://img.shields.io/github/v/release/MTGMODS/arz_monetloader?label=Download%20Latest%20APK&style=for-the-badge&color=success)](https://github.com/MTGMODS/arz_monetloader/releases/latest)
 
-<img width="900" height="400" alt="Logo" src="https://github.com/user-attachments/assets/8c570cb3-ed3f-4c39-8b14-9ecb3ab4ed83" />
+<img width="1000" height="450" alt="Logo" src="https://github.com/user-attachments/assets/8c570cb3-ed3f-4c39-8b14-9ecb3ab4ed83" />
 
-An **external automation tool** (patcher) that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader library](https://github.com/xefinity/MonetLoaderOSS)**.
+An **external automation tool** that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader library](https://github.com/xefinity/MonetLoaderOSS)**.
 
 This repository contains a build pipeline that dynamically patches the game. It is responsible for:
 - 📥 Downloading the official client and decompiling it locally
