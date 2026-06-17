@@ -2,7 +2,7 @@ import subprocess, os, re, shutil, glob, requests, zipfile
 
 ##################################################################################################################
 
-PATH = os.path.dirname(__file__)
+PATH = os.path.dirname(__file__).replace('\\', '/')
 
 APKTOOL_PATH = PATH + "/libs/apktool.jar"
 
