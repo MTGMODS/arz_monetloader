@@ -57,7 +57,7 @@ for root, dirs, files in os.walk(SRC_FILES):
         os.makedirs(os.path.dirname(dest_file), exist_ok=True)
         shutil.copy2(src_file, dest_file)
 
-print("[INFO] ✅ Folder \"files\" adden successfully!")
+print("[INFO] ✅ Folder \"files\" added successfully!")
 
 ##################################################################################################################
 
@@ -74,7 +74,7 @@ try:
         zip_ref.extractall(MONETLOADER_TARGET_DIR)
     print("[INFO] ✅ MonetLoader core extracted successfully!")
 except Exception as e:
-    raise RuntimeError(f"❗ Critical error with unpack MonetLoader core: {e}")
+    raise RuntimeError(f"❗ Failed to extract MonetLoader core: {e}")
 
 ##################################################################################################################
 
@@ -90,7 +90,7 @@ for smali_dir in SMALI_CLASSES:
         break
 
 if SMALI_PATH == "":
-    raise RuntimeError("❗ Don't find work smali folder!")
+    raise RuntimeError("❗ Failed to find GTASA smali folder!")
 
 ##################################################################################################################
 
@@ -174,11 +174,11 @@ for path in SMALI_CLASSES:
 if not smali_numbers:
     raise RuntimeError("❌ No smali_classes folders found!")
 
-LATERS_SMALI = max(smali_numbers)
+LATEST_SMALI = max(smali_numbers)
 
 ##################################################################################################################
 
-PATH_SMALI_TOOLS = DECODED_DIR + f"/smali_classes{LATERS_SMALI + 1}"
+PATH_SMALI_TOOLS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 1}"
 
 print("[INFO] 🔧 Compiling MTG Tools...")
 
@@ -232,7 +232,7 @@ compile_java_to_smali()
 
 ##################################################################################################################
 
-PATH_SMALI_ADS = DECODED_DIR + f"/smali_classes{LATERS_SMALI + 2}"
+PATH_SMALI_ADS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 2}"
 
 print("[INFO] 🔧 Compiling Unity Ads...")
 
@@ -311,7 +311,7 @@ for smali_dir in SMALI_CLASSES:
         break
 
 if ARZ_SMALI_PATH == "":
-    raise RuntimeError("❗ Don't find arz smali folder!")
+    raise RuntimeError("❗ Arizona Launcher smali folder not found!")
 
 ##################################################################################################################
 
@@ -352,7 +352,7 @@ for i, line in enumerate(smali_lines):
     if match_toast:
         var_name_3 = match_toast.group(1)
         smali_lines[i] = f'    invoke-virtual {{{var_name_3}}}, Landroid/widget/Toast;->show()V\n\n    invoke-static {{p0, p0}}, Lcom/arizona/launcher/MtgTools;->initialize(Landroid/app/Activity;Landroid/content/Context;)V\n'
-        print("[INFO] ✅ MTGTools inject successfully.")
+        print("[INFO] ✅ MTGTools injected successfully.")
         check_toast = True
         break
 
