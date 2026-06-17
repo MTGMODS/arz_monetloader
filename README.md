@@ -1,5 +1,8 @@
 # 🧩 About this project
 
+<img width="1774" height="887" alt="ChatGPT Image 17 черв  2026 р , 16_22_10 (1)" src="https://github.com/user-attachments/assets/8c570cb3-ed3f-4c39-8b14-9ecb3ab4ed83" />
+
+
 An **external tool** that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader library](https://github.com/xefinity/MonetLoaderOSS)**.  
 
 This launcher build also integrates the **MTG Tools** module.
