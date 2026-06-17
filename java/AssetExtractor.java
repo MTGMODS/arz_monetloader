@@ -22,8 +22,6 @@ public class AssetExtractor {
 
     public static void unpackAssets(Activity activity, Context context) {
 
-        unpackDataFilesAssets(context);
-
         String folderName = "monetloader";
         File[] mediaDirs = context.getExternalMediaDirs();
         File outputFolder = new File(mediaDirs.length > 0 ? mediaDirs[0] : null, folderName);
@@ -68,34 +66,6 @@ public class AssetExtractor {
             }
         }
 
-    }
-
-    public static void unpackDataFilesAssets(Context context) {
-        String folderName = "data_files";
-        AssetManager assetManager = context.getAssets();
-
-        try {
-            String[] files = assetManager.list(folderName);
-            if (files == null || files.length == 0) return;
-
-            File outputFolder = context.getExternalFilesDir(null);
-            if (outputFolder == null || (!outputFolder.exists() && !outputFolder.mkdirs())) {
-                return;
-            }
-
-            for (String fileName : files) {
-                File outFile = new File(outputFolder, fileName);
-                if (isDirectory(assetManager, folderName + "/" + fileName)) {
-                    outFile.mkdirs();
-                    unpackAssetsRecursive(assetManager, folderName + "/" + fileName, outFile);
-                } else {
-                    copyFile(assetManager, folderName + "/" + fileName, outFile);
-                }
-            }
-
-        } catch (IOException e) {
-            Log.e("MtgTools", "Error extractor: " + e);
-        }
     }
 
     private static boolean isDirectory(AssetManager assetManager, String path) {
