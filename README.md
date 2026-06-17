@@ -1,20 +1,18 @@
-# 🧩 About this project
+# 🧩 MTGMODS MonetLoader Builder [![Download Latest Release](https://img.shields.io/github/v/release/MTGMODS/arz_monetloader?label=Download%20Latest%20APK&style=for-the-badge&color=success)](https://github.com/MTGMODS/arz_monetloader/releases/latest)
 
-<img width="1774" height="887" alt="ChatGPT Image 17 черв  2026 р , 16_22_10 (1)" src="https://github.com/user-attachments/assets/8c570cb3-ed3f-4c39-8b14-9ecb3ab4ed83" />
+<img width="900" height="400" alt="Logo" src="https://github.com/user-attachments/assets/8c570cb3-ed3f-4c39-8b14-9ecb3ab4ed83" />
 
+An **external automation tool** (patcher) that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader library](https://github.com/xefinity/MonetLoaderOSS)**.
 
-An **external tool** that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader library](https://github.com/xefinity/MonetLoaderOSS)**.  
-
-This launcher build also integrates the **MTG Tools** module.
-It is responsible for:
+This repository contains a build pipeline that dynamically patches the game. It is responsible for:
+- 📥 Downloading the official client and decompiling it locally
 - 🧩 Automatically unpacking MonetLoader resource files
-- 🗒️ Automatically installing default lua scripts & libs
-- 🔄 Checking if your launcher version is up to date
-- 💰 Managing Unity Ads behavior for project monetization 
+- 🗒️ Automatically installing default Lua scripts & libs
+- 🔄 Checking if the launcher version is up to date
+- 💰 Managing Unity Ads behavior *(to support the continued development of this tool)*
 
 
-> ⚠️ **LEGAL DISCLAIMER** 
-> This repository **does not contain** any original game files, assets, or proprietary code belonging to Arizona Games. It is strictly a build automation tool (a patcher) that modifies the official client locally on the user's machine.  
+> ⚠️ **LEGAL DISCLAIMER** > This repository **does not contain** any original game files, assets, or proprietary code belonging to Arizona Games. It is strictly a build automation tool (a patcher) that modifies the official client locally via CI/CD pipelines. The files provided in the Releases tab are automated build artifacts provided solely for educational purposes and user convenience.  
 > This project is **independent and not affiliated with, endorsed by, or connected to Arizona Games, Rockstar Games, or their partners.** All trademarks and copyrights belong to their respective owners.
 
 ---
