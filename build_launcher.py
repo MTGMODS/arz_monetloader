@@ -418,7 +418,7 @@ if os.path.exists(SIGNED_APK):
 ##################################################################################################################
 
 from dotenv import load_dotenv
-load_dotenv()
+load_dotenv(os.path.join(PATH, ".env"))
 
 APKSIGNER_PATH = PATH + "/libs/apksigner.jar"
 UNSIGNED_APK = DECODED_DIR + "/dist/" + APK_NAME + ".apk"
