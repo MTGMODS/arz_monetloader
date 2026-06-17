@@ -94,133 +94,6 @@ if SMALI_PATH == "":
 
 ##################################################################################################################
 
-def compile_java_to_smali():
-    java_dir = "java"
-    output_smali_dir = "files/smali_classes_ONE"
-    
-    classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
-
-    java_files = [
-        os.path.join(java_dir, f) 
-        for f in os.listdir(java_dir) 
-        if f.endswith('.java') and "(NoAds version)" not in f
-    ]
-    
-    if not java_files:
-        print("[-] Java файли не знайдені у папці java!")
-        return
-
-    try:
-        print("[*] Крок 1: javac (.java -> .class)")
-        subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
-
-        print("[*] Крок 2: d8 (.class -> .dex)")
-        class_files = [os.path.join(java_dir, f) for f in os.listdir(java_dir) if f.endswith('.class')]
-        subprocess.run([
-            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8", 
-            "--release", 
-            "--output", ".", 
-            "--lib", "libs/android.jar",
-            "--lib", "libs/unity-ads.jar"
-        ] + class_files, check=True)
-
-        print("[*] Крок 3: baksmali (.dex -> .smali)")
-        subprocess.run([
-            "java", "-jar", "libs/baksmali.jar", 
-            "d", "classes.dex", 
-            "-o", output_smali_dir
-        ], check=True)
-
-    except subprocess.CalledProcessError as e:
-        print(f"[-] Помилка під час компіляції: {e}")
-        exit(1)
-    finally:
-        if os.path.exists("classes.dex"):
-            os.remove("classes.dex")
-        
-        for f in os.listdir(java_dir):
-            if f.endswith('.class'):
-                os.remove(os.path.join(java_dir, f))
-
-    print(f"[+] Smali файли успішно згенеровані у {output_smali_dir}!")
-
-compile_java_to_smali()
-
-def compile_unity_ads_to_smali():
-    unity_jar = "libs/unity-ads.jar"
-    output_smali_dir = "files/smali_classes_TWO"
-    temp_dex_dir = "temp_unity_dex"
-
-    if not os.path.exists(unity_jar):
-        print("[-] unity-ads.jar не знайдено!")
-        return
-
-    os.makedirs(temp_dex_dir, exist_ok=True)
-
-    try:
-        print("[*] Крок 1: d8 (unity-ads.jar -> .dex)")
-        subprocess.run([
-            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8",
-            "--release",
-            "--output", temp_dex_dir,
-            "--lib", "libs/android.jar",
-            unity_jar
-        ], check=True)
-
-        print("[*] Крок 2: baksmali (.dex -> .smali)")
-
-        if os.path.exists(output_smali_dir):
-            shutil.rmtree(output_smali_dir)
-
-        dex_file = os.path.join(temp_dex_dir, "classes.dex")
-        subprocess.run([
-            "java", "-jar", "libs/baksmali.jar",
-            "d", dex_file,
-            "-o", output_smali_dir
-        ], check=True)
-
-    except subprocess.CalledProcessError as e:
-        print(f"[-] Помилка під час конвертації Unity Ads: {e}")
-        exit(1)
-    finally:
-        if os.path.exists(temp_dex_dir):
-            shutil.rmtree(temp_dex_dir)
-
-    print(f"[+] Unity Ads успішно розпаковано у {output_smali_dir}!")
-
-compile_unity_ads_to_smali()
-
-##################################################################################################################
-
-print("[INFO] 🔧 Adding MTG files...")
-
-PATH_SMALI_ONE = DECODED_DIR + '/smali_classes_ONE'
-PATH_SMALI_TWO = DECODED_DIR + '/smali_classes_TWO'
-
-smali_numbers = []
-
-for path in SMALI_CLASSES:
-    name = os.path.basename(path)
-    if name.startswith("smali_classes"):
-        num = name.replace("smali_classes", "")
-        if num.isdigit():
-            smali_numbers.append(int(num))
-
-if not smali_numbers:
-    raise RuntimeError("❌ No smali_classes folders found!")
-
-LATERS_SMALI = max(smali_numbers)
-
-PATH_SMALI_ONE_WORK = PATH_SMALI_ONE.replace('_ONE', f"{LATERS_SMALI + 1}")
-PATH_SMALI_TWO_WORK = PATH_SMALI_TWO.replace('_TWO', f"{LATERS_SMALI + 2}")
-
-os.rename(PATH_SMALI_ONE, PATH_SMALI_ONE_WORK)
-os.rename(PATH_SMALI_TWO, PATH_SMALI_TWO_WORK)
-
-print("[INFO] ✅ MTG files added successfully!")
-
-##################################################################################################################
-
 GTASA_INTERNAL_PATH = DECODED_DIR + SMALI_PATH + "/com/arizona/game/GTASAInternal.smali"
 
 print("[INFO] 🔗 Injecting MonetLoader into GTASAInternal.smali...")
@@ -254,9 +127,9 @@ with open(GTASA_INTERNAL_PATH, "w", encoding="utf-8") as file:
 
 ##################################################################################################################
 
-print("[INFO] 🔄 Updating package name to 'com.arizona.game' in smali files...")
+print("[INFO] 🔄 Change package name to 'com.arizona.game' in all smali files...")
 
-for filepath in glob.glob(f"{SMALI_PATH}/**/*.smali", recursive=True):
+for filepath in glob.glob(DECODED_DIR + SMALI_PATH + "/**/*.smali", recursive=True):
     with open(filepath, "r", encoding="utf-8") as file:
         smali_data = file.read()
 
@@ -273,7 +146,7 @@ MANIFEST_PATH = DECODED_DIR + "/AndroidManifest.xml"
 with open(MANIFEST_PATH, "r", encoding="utf-8") as file:
     manifest_data = file.read()
 
-print("[INFO] 🔄 Updating package name to 'com.arizona.game' in smali files...")
+print("[INFO] 🔄 Change package name to 'com.arizona.game' in AndroidManifest...")
 manifest_data = manifest_data.replace("com.arizona21.game.web", "com.arizona.game")
 manifest_data = manifest_data.replace("com.arizona21.game", "com.arizona.game")
 
@@ -283,6 +156,128 @@ if 'android:label="Arizona Lua"' in manifest_data:
     print("[INFO] ✅ Successful renamed!")
 else:
     raise RuntimeError("❌ Failed to update app label in AndroidManifest.xml.")
+
+with open(MANIFEST_PATH, "w", encoding="utf-8") as file:
+    file.write(manifest_data)
+
+##################################################################################################################
+
+smali_numbers = []
+
+for path in SMALI_CLASSES:
+    name = os.path.basename(path)
+    if name.startswith("smali_classes"):
+        num = name.replace("smali_classes", "")
+        if num.isdigit():
+            smali_numbers.append(int(num))
+
+if not smali_numbers:
+    raise RuntimeError("❌ No smali_classes folders found!")
+
+LATERS_SMALI = max(smali_numbers)
+
+##################################################################################################################
+
+PATH_SMALI_TOOLS = DECODED_DIR + f"/smali_classes{LATERS_SMALI + 1}"
+
+print("[INFO] 🔧 Compiling MTG Tools...")
+
+def compile_java_to_smali():
+    classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
+
+    java_dir = "java" 
+    java_files = [
+        os.path.join(java_dir, f) 
+        for f in os.listdir(java_dir) 
+        if f.endswith('.java') and "(NoAds version)" not in f
+    ]
+    
+    if not java_files:
+        raise RuntimeError(f"❗ Java source files not found in {java_dir} folder!")
+
+    try:
+        print("[INFO] ⚙️ Java -> Class...")
+        subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
+
+        print("[INFO] ⚙️ Class -> Dex...")
+        class_files = [os.path.join(java_dir, f) for f in os.listdir(java_dir) if f.endswith('.class')]
+        subprocess.run([
+            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8", 
+            "--release", 
+            "--output", ".", 
+            "--lib", "libs/android.jar",
+            "--lib", "libs/unity-ads.jar"
+        ] + class_files, check=True)
+
+        print("[INFO] ⚙️ Dex -> Smali...")
+        subprocess.run([
+            "java", "-jar", "libs/baksmali.jar", 
+            "d", "classes.dex", 
+            "-o", PATH_SMALI_TOOLS
+        ], check=True)
+
+    except subprocess.CalledProcessError as e:
+        raise RuntimeError(f"❗ Failed compile MTG Tools: {e}")
+    finally:
+        if os.path.exists("classes.dex"):
+            os.remove("classes.dex")
+        
+        for f in os.listdir(java_dir):
+            if f.endswith('.class'):
+                os.remove(os.path.join(java_dir, f))
+        
+        print("[INFO] ✅ MTG Tools compiled successfully!")
+                
+compile_java_to_smali()
+
+##################################################################################################################
+
+PATH_SMALI_ADS = DECODED_DIR + f"/smali_classes{LATERS_SMALI + 2}"
+
+print("[INFO] 🔧 Compiling Unity Ads...")
+
+def compile_unity_ads_to_smali():
+    unity_jar = "libs/unity-ads.jar"
+    temp_dex_dir = "temp_unity_dex"
+
+    if not os.path.exists(unity_jar):
+        print("[-] unity-ads.jar не знайдено!")
+        return
+
+    os.makedirs(temp_dex_dir, exist_ok=True)
+
+    try:
+        print("[INFO] ⚙️ Unity Ads Jar -> Dex...")
+        subprocess.run([
+            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8",
+            "--release",
+            "--output", temp_dex_dir,
+            "--lib", "libs/android.jar",
+            unity_jar
+        ], check=True)
+
+        print("[*] Крок 2: baksmali (.dex -> .smali)")
+
+        if os.path.exists(PATH_SMALI_ADS):
+            shutil.rmtree(PATH_SMALI_ADS)
+
+        dex_file = os.path.join(temp_dex_dir, "classes.dex")
+        subprocess.run([
+            "java", "-jar", "libs/baksmali.jar",
+            "d", dex_file,
+            "-o", PATH_SMALI_ADS
+        ], check=True)
+
+    except subprocess.CalledProcessError as e:
+        print(f"[-] Помилка під час конвертації Unity Ads: {e}")
+        exit(1)
+    finally:
+        if os.path.exists(temp_dex_dir):
+            shutil.rmtree(temp_dex_dir)
+
+    print(f"[+] Unity Ads успішно розпаковано у {PATH_SMALI_ADS}!")
+
+compile_unity_ads_to_smali()
 
 ##################################################################################################################
 
@@ -321,36 +316,13 @@ for smali_dir in SMALI_CLASSES:
         break
 
 if ARZ_SMALI_PATH == "":
-    raise RuntimeError("❗ Don't find arz work smali folder!")
-
-##################################################################################################################
-
-UPDATE_SERVICE_PATH = DECODED_DIR + ARZ_SMALI_PATH + "/com/arizona/launcher/UpdateService.smali"
-
-print("[INFO] 🔒 Disabling original client updates...")
-
-with open(UPDATE_SERVICE_PATH, "r", encoding="utf-8") as file:
-    smali_lines = file.readlines()
-
-matches = [i for i, line in enumerate(smali_lines) if "needUpdateMsg" in line]
-
-if len(matches) < 3:
-    raise RuntimeError("❌ Unexpected UpdateService structure (needUpdateMsg not found enough times).")
-
-# add \"const/4 p1, 0x0\" after 3/4 "needUpdateMsg"
-insert_index = matches[2]
-smali_lines.insert(insert_index + 2, "    const/4 p1, 0x0\n")
-
-with open(UPDATE_SERVICE_PATH, "w", encoding="utf-8") as file:
-    file.writelines(smali_lines)
-
-print("[INFO] ✅ Client updates disabled successfully!")
+    raise RuntimeError("❗ Don't find arz smali folder!")
 
 ##################################################################################################################
 
 MAIN_ENTRENCH_PATH = DECODED_DIR + ARZ_SMALI_PATH + "/com/arizona/launcher/MainEntrench.smali"
 
-print("[INFO] 🔧 Injecting MTGTools...")
+print("[INFO] 🔧 Injecting call MTGTools...")
 
 with open(MAIN_ENTRENCH_PATH, "r", encoding="utf-8") as file:
     smali_lines = file.readlines()
@@ -385,7 +357,7 @@ for i, line in enumerate(smali_lines):
     if match_toast:
         var_name_3 = match_toast.group(1)
         smali_lines[i] = f'    invoke-virtual {{{var_name_3}}}, Landroid/widget/Toast;->show()V\n\n    invoke-static {{p0, p0}}, Lcom/arizona/launcher/MtgTools;->initialize(Landroid/app/Activity;Landroid/content/Context;)V\n'
-        print("[INFO] ✅ MTGTools initialized successfully.")
+        print("[INFO] ✅ MTGTools inject successfully.")
         check_toast = True
         break
 
@@ -410,6 +382,29 @@ if not check_version:
 
 with open(MAIN_ENTRENCH_PATH, "w", encoding="utf-8") as file:
     file.writelines(smali_lines)
+
+##################################################################################################################
+
+UPDATE_SERVICE_PATH = DECODED_DIR + ARZ_SMALI_PATH + "/com/arizona/launcher/UpdateService.smali"
+
+print("[INFO] 🔒 Disable client updates...")
+
+with open(UPDATE_SERVICE_PATH, "r", encoding="utf-8") as file:
+    smali_lines = file.readlines()
+
+matches = [i for i, line in enumerate(smali_lines) if "needUpdateMsg" in line]
+
+if len(matches) < 3:
+    raise RuntimeError("❌ Unexpected UpdateService structure (needUpdateMsg not found enough times).")
+
+# add \"const/4 p1, 0x0\" after 3/4 "needUpdateMsg"
+insert_index = matches[2]
+smali_lines.insert(insert_index + 2, "    const/4 p1, 0x0\n")
+
+with open(UPDATE_SERVICE_PATH, "w", encoding="utf-8") as file:
+    file.writelines(smali_lines)
+
+print("[INFO] ✅ Client updates disabled successfully!")
 
 ##################################################################################################################
 
@@ -465,14 +460,11 @@ else:
 
 print("[INFO] ✅ Build process completed successfully!")
 
-if os.path.exists(DECODED_DIR):
-    print("[INFO] 🗑️ Removing temporary build directory...")
-    shutil.rmtree(DECODED_DIR, ignore_errors=True)
+print("[INFO] 🗑️ Remove temporary build directory...")
+shutil.rmtree(DECODED_DIR, ignore_errors=True)
 
-if os.path.exists(APK_PATH):
-    print("[INFO] 🗑️ Removing original downloaded APK...")
-
-    os.remove(APK_PATH)
+print("[INFO] 🗑️ Remove original downloaded APK...")
+os.remove(APK_PATH)
     
 ##################################################################################################################
 
