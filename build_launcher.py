@@ -184,11 +184,7 @@ def compile_java_to_smali():
     classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
 
     java_dir = "java" 
-    java_files = [
-        os.path.join(java_dir, f) 
-        for f in os.listdir(java_dir) 
-        if f.endswith('.java') and "(NoAds version)" not in f
-    ]
+    java_files = glob(os.path.join(java_dir, "*.java"))
     
     if not java_files:
         raise RuntimeError(f"❗ Java source files not found in {java_dir} folder!")
