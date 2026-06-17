@@ -197,7 +197,11 @@ def compile_java_to_smali():
 
     try:
         print("[INFO] ⚙️ Java -> Class...")
-        subprocess.run(["javac", "-source", "1.8", "-target", "1.8", "-cp", classpath] + java_files, check=True)
+        subprocess.run([
+            "javac", 
+            "--release", "8", 
+            "-cp", classpath
+        ] + java_files, check=True)
 
         print("[INFO] ⚙️ Class -> Dex...")
         class_files = [os.path.join(java_dir, f) for f in os.listdir(java_dir) if f.endswith('.class')]
