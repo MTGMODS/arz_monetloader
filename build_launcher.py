@@ -1,5 +1,5 @@
 import subprocess, os, re, shutil, glob, requests, zipfile
-
+from compat_profile import update_compat
 ##################################################################################################################
 
 PATH = os.path.dirname(__file__).replace('\\', '/')
@@ -401,6 +401,22 @@ with open(UPDATE_SERVICE_PATH, "w", encoding="utf-8") as file:
 
 print("[INFO] ✅ Client updates disabled successfully!")
 
+##################################################################################################################
+
+print("[INFO] 🔍 Update MonetLoader compat profile.json to the last libsamp.so")
+
+ORIGINAL_PROFILE_PATH = PATH + "/files/assets/monetloader/compat/profile.json"
+
+LIBSAMP_PATH = DECODED_DIR + "/lib/armeabi-v7a/libsamp.so"
+PROFILE_PATH = DECODED_DIR + "/assets/monetloader/compat/profile.json"
+
+try:
+    update_compat(version_app, ORIGINAL_PROFILE_PATH, LIBSAMP_PATH)
+    print("[INFO] ✅ Update compat finished successfully!")
+    shutil.copy2(ORIGINAL_PROFILE_PATH, PROFILE_PATH)
+except Exception as e:
+    print(f"[ERROR] ❌ Compat profile update failed: {e}")
+    
 ##################################################################################################################
 
 print("[INFO] ⚙️ Rebuilding APK...")
