@@ -37,12 +37,23 @@ def pattern_to_bytes(pattern):
     pattern = pattern.replace(" ", "")
     for i in range(0, len(pattern), 2):
         b = pattern[i:i+2]
-        result.append(None if b == "??" else int(b, 16))
+        if b == "??":
+            result.append(None)
+        else:
+            try:
+                result.append(int(b, 16))
+            except ValueError:
+                print(f"[COMPAT] ⚠️ Invalid hex byte '{b}' found in pattern. Ignoring broken pattern.")
+                return []
     return result
 
 def find_pattern(data, pattern):
     if not pattern: return -1
     p = pattern_to_bytes(pattern)
+    
+    if not p or len(p) == 0: 
+        return -1 
+    
     for i in range(len(data) - len(p) + 1):
         ok = True
         for j, b in enumerate(p):
