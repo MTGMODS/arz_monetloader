@@ -1,10 +1,10 @@
 {
     "gtasa_name": "libGTASA.so",
-    "profile_name": "Arizona v17.2.1 by t.me/mtgmods",
+    "profile_name": "Arizona v17.2.5 by t.me/mtgmods",
     "compat_scripts": [],
     "samp_name": "libsamp.so",
     "receiveignorerpc_pattern": "F0B503AF2DE9000F87B081468C48",
-    "cnetgame_ctor_pattern": "F0B503AF2DE9000F8DB08046DFF8??05", 
+    "cnetgame_ctor_pattern": "F0B503AF2DE9000F8DB08046DFF8??05",
     "rakclientinterface_netgame_offset": 536,
     "use_samp_touch_workaround": true,
     "nveventinsertnewest_offset": 2606320
