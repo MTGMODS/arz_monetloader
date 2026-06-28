@@ -1,4 +1,4 @@
-import subprocess, os, re, shutil, glob, requests, zipfile
+import subprocess, os, re, shutil, glob, requests, zipfile, json
 from compat_profile import update_compat
 from dotenv import load_dotenv
 
@@ -418,6 +418,24 @@ try:
     shutil.copy2(ORIGINAL_PROFILE_PATH, PROFILE_PATH)
 except Exception as e:
     print(f"[ERROR] ❌ Compat profile update failed: {e}")
+
+##################################################################################################################
+
+launcher_json_path = PATH + '/launcher.json'
+
+print(f"[INFO] 📝 Updating version in launcher.json...")
+
+if os.path.exists(launcher_json_path):
+    with open(launcher_json_path, 'r', encoding='utf-8') as f:
+        launcher_data = json.load(f)
+    
+    launcher_data['version'] = version_app
+    
+    with open(launcher_json_path, 'w', encoding='utf-8') as f:
+        json.dump(launcher_data, f, indent=2, ensure_ascii=False)
+        print(f"[INFO] ✅ Updated launcher.json to {version_app} successfully!")
+else:
+    print(f"[WARNING] ⚠️ File launcher.json not found in {PATH}!")
     
 ##################################################################################################################
 
