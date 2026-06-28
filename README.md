@@ -93,13 +93,15 @@ If you want to compile the project yourself:
 ---
 ### 2️⃣ Build Steps
 
-1. **Clone** this repository to your local machine
-- git clone [https://github.com/MTGMODS/arz_monetloader.git](https://github.com/MTGMODS/arz_monetloader.git)
-- cd arz_monetloader
-
-2. Install **Python*** dependencies:
-- pip install -r requirements.txt
-  
+1. **Clone** this repository to your local machine:
+```bash
+git clone https://github.com/MTGMODS/arz_monetloader.git
+cd arz_monetloader
+```
+2. Install **Python** dependencies:
+```bash
+pip install -r requirements.txt
+```
 3. Set **your keystore** credentials in the **.env** file located in the project root
 
 ```bash
