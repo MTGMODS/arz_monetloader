@@ -498,11 +498,15 @@ else:
 
 print("[INFO] ✅ Build process completed successfully!")
 
-print("[INFO] 🗑️ Remove temporary build directory...")
-shutil.rmtree(DECODED_DIR, ignore_errors=True)
+is_github_actions = os.environ.get("GITHUB_ACTIONS") == "true"
 
-print("[INFO] 🗑️ Remove original APK...")
-os.remove(APK_PATH)
+if not is_github_actions:
+    print("[INFO] 🗑️ Remove temporary build directory...")
+    shutil.rmtree(DECODED_DIR, ignore_errors=True)
+
+    print("[INFO] 🗑️ Remove original APK...")
+    if os.path.exists(APK_PATH):
+        os.remove(APK_PATH)
     
 ##################################################################################################################
 
