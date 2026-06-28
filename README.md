@@ -13,7 +13,7 @@ This repository contains a build pipeline that dynamically patches the game. It 
 
 
 > ⚠️ **LEGAL DISCLAIMER** 
-> This repository **does not contain** any original game files, assets, or proprietary code. It is strictly a build automation tool (a patcher) that modifies the official client locally via CI/CD pipelines. The files provided in the Releases tab are automated build artifacts provided solely for educational purposes and user convenience.  
+> This repository **does not contain** any original game files, assets, or proprietary code. It is strictly a build automation tool (a patcher) that modifies the official client locally via CI/CD pipelines. The files provided in the Releases tab are automated build artifacts provided solely for research, interoperability, and informational purposes only.  
 > This project is **independent and not affiliated with, endorsed by, or connected to Arizona Games, Rockstar Games, MonetLoader Team or their partners.** 
 > All trademarks and copyrights belong to their respective owners.
 
@@ -37,6 +37,7 @@ Our automated CI/CD pipeline builds the latest version every time the game updat
 ### 🧩 Core Functionality
 - 1️⃣ Adds **Lua scripting** support via **MonetLoader** (32-bit only)
 - 2️⃣ Integrates **MTG Tools** module and **Unity Ads** SDK
+- 3️⃣ Automatically analyzes the `libsamp.so` and generates memory offsets (`profile.json`) for game updates
 
 ### ⚙️ MonetLoader Integration
 - Provides Lua-based scripting support & includes required resource files
@@ -60,7 +61,9 @@ This project uses a fully automated, dynamic build pipeline.
 ```bash
 ├── .env                        # Environment variables for keystore (optional)
 ├── key.jks                     # Keystore for signing the final APK (optional)
+├── requirements.txt            # Python dependencies for the build environment
 ├── build_launcher.py           # Main build automation script (The Orchestrator)
+├── compat_profile.py           # Dynamic ELF-analysis engine for auto-patching memory offsets
 ├── files/                      # Payload directory (copied directly into the decompiled APK)
 │   ├── assets/                 # Custom resources, Lua scripts & configs
 │   └── lib/                    # Base MonetLoader native libraries (.so)
@@ -79,7 +82,7 @@ This project uses a fully automated, dynamic build pipeline.
     └── monetloader.zip         # Vendor MonetLoader core (unpacked dynamically)
 ```
 
-# 🚀 Build Process (For Developers)
+# 🚀 Build Process (Local Development)
 
 If you want to compile the project yourself:
 
@@ -90,9 +93,14 @@ If you want to compile the project yourself:
 ---
 ### 2️⃣ Build Steps
 
-1. **Clone** this repository to your local machine  
+1. **Clone** this repository to your local machine
+- git clone [https://github.com/MTGMODS/arz_monetloader.git](https://github.com/MTGMODS/arz_monetloader.git)
+- cd arz_monetloader
 
-2. Set **your keystore** credentials in the **.env** file located in the project root
+2. Install **Python*** dependencies:
+- pip install -r requirements.txt
+  
+3. Set **your keystore** credentials in the **.env** file located in the project root
 
 ```bash
 KEY_ALIAS="alias"
@@ -100,15 +108,21 @@ KEY_PASS="key_password"
 KEYSTORE_PASS="keystore_password" # optional if same as KEY_PASS
 ```
 
-3. Update `profile.json` for the current `libsamp` version
-(see tutorial: https://www.youtube.com/watch?v=u6gdRxX3lSc)
-
 4. Run the build script in terminal:
 ```bash
 python build_launcher.py
 ```
-The script will automatically download the original APK, decompile it, inject the Smali code, compile your Java wrapper, build the project, and sign the final APK.
+The script will automatically download the original APK, decompile it, inject the Smali code, compile your Java wrapper, automatic profile.json generation, build the project, and sign the final APK.
 
+---
+
+### ⚠️ Fallback for `profile.json` (If auto-generation fails or for custom libsamp.so)
+The compat_profile.py script automatically calculates memory offsets for the official Arizona Mobile client. 
+
+If the script throws an error during the offset search, you can update it manually:
+- Open build_launcher.py and comment out or remove all the update_compat(...) lines.
+- Manually update files/assets/monetloader/compat/profile.json for the current libsamp version.
+- See tutorial: https://www.youtube.com/watch?v=u6gdRxX3lSc
 ---
 
 # 📜 License & Copyright
