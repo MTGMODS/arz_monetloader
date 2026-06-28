@@ -49,14 +49,6 @@ jobs:
         if: steps.check_tag.outputs.exists == 'true'
         run: exit 0
 
-      - name: Create new tag
-        if: steps.check_tag.outputs.exists == 'false'
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git tag "${{ steps.get_version.outputs.version_name }}"
-          git push origin "${{ steps.get_version.outputs.version_name }}"
-
       - name: Set up Python
         if: steps.check_tag.outputs.exists == 'false'
         uses: actions/setup-python@v5
@@ -87,6 +79,14 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
         run: python build_launcher.py
 
+      - name: Create new tag
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git tag "${{ steps.get_version.outputs.version_name }}"
+          git push origin "${{ steps.get_version.outputs.version_name }}"
+
       - name: Create GitHub Release
         if: steps.check_tag.outputs.exists == 'false'
         uses: softprops/action-gh-release@v2
@@ -97,5 +97,5 @@ jobs:
           body: |
             **🚀 Лаунчер MonetLoader обновлён до версии ${{ steps.get_version.outputs.version_name }}!**
           draft: false
-          prerelease: true
-          make_latest: false
+          prerelease: false
+          make_latest: true
