@@ -79,11 +79,23 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
         run: python build_launcher.py
 
-      - name: Create new tag
+      - name: Commit updated JSON files
         if: steps.check_tag.outputs.exists == 'false'
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
+          git add launcher.json files/assets/monetloader/compat/profile.json
+
+          if git diff --cached --quiet; then
+            echo "ℹ️ Json files not changed. Skip commit."
+          else
+            git commit -m "Update launcher & compat profile (v${{ steps.get_version.outputs.version_name }})"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+
+      - name: Create new tag
+        if: steps.check_tag.outputs.exists == 'false'
+        run: |
           git tag "${{ steps.get_version.outputs.version_name }}"
           git push origin "${{ steps.get_version.outputs.version_name }}"
 
