@@ -65,7 +65,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.check_tag.outputs.exists == 'false'
-        run: pip install requests python-dotenv
+        run: pip install requests python-dotenv pyelftools capstone
 
       - name: Set up Java
         if: steps.check_tag.outputs.exists == 'false'
