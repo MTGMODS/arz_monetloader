@@ -77,7 +77,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASS: ${{ secrets.KEY_PASS }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-        run: python build_launcher.py
+        run: python main.py
 
       - name: Commit updated JSON files
         if: steps.check_tag.outputs.exists == 'false'
@@ -105,7 +105,7 @@ jobs:
         with:
           tag_name: ${{ steps.get_version.outputs.version_name }}
           name: "MonetLoader ${{ steps.get_version.outputs.version_name }}"
-          files: MonetLoader*.apk
+          files: "*Lua*.apk"
           body: |
             **🚀 Лаунчер MonetLoader обновлён до версии ${{ steps.get_version.outputs.version_name }}!**
           draft: false
