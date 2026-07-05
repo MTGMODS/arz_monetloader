@@ -1,5 +1,6 @@
 # Original ARZ Client
 /app-arizona-release_web/
+/app-rodina-release_web/
 
 # SIGNED KEY
 *.jks
