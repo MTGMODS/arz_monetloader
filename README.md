@@ -1,8 +1,8 @@
-# 🧩 MonetLoader Builder for Arizona Mobile [![Download Latest Release](https://img.shields.io/github/v/release/MTGMODS/arz_monetloader?label=Download%20Latest%20APK&style=for-the-badge&color=success)](https://github.com/MTGMODS/arz_monetloader/releases/latest)
+# 🧩 MonetLoader for Arizona/Rodina Mobile [![Download Latest Release](https://img.shields.io/github/v/release/MTGMODS/arz_monetloader?label=Download%20Latest%20APK&style=for-the-badge&color=success)](https://github.com/MTGMODS/arz_monetloader/releases/latest)
 
 <img width="900" height="400" alt="Logo" src="https://github.com/user-attachments/assets/8c570cb3-ed3f-4c39-8b14-9ecb3ab4ed83" />
 
-An **external automation tool** (patcher) that adds **Lua scripting support** to the **[Arizona Mobile](https://arzgame.online/)** client through the external **[MonetLoader](https://github.com/xefinity/MonetLoaderOSS)** library.
+An **external automation tool** (patcher) that adds **Lua scripting support** to the **[Arizona/Rodina](https://arzgame.online/)** client through the external **[MonetLoader](https://github.com/xefinity/MonetLoaderOSS)** library.
 
 This repository contains a build pipeline that dynamically patches the game. It is responsible for:
 - 📥 Downloading the official client and decompiling it locally
@@ -26,7 +26,7 @@ If you only want to play, you don't need to build the project yourself.
 Our automated CI/CD pipeline builds the latest version every time the game updates.
 
 1. Go to the [Releases page](https://github.com/MTGMODS/arz_monetloader/releases/latest).
-2. Download the latest `MonetLoader vX.X.X.apk`.
+2. Download the latest `Arizona vX.X.X.apk` or `Rodina vX.X.X.apk`.
 3. Install the APK on your Android device and grant the necessary permissions.
 4. Use the `/mtg` command in-game to manage your scripts!
 
@@ -62,7 +62,8 @@ This project uses a fully automated, dynamic build pipeline.
 ├── .env                        # Environment variables for keystore (optional)
 ├── key.jks                     # Keystore for signing the final APK (optional)
 ├── requirements.txt            # Python dependencies for the build environment
-├── build_launcher.py           # Main build automation script (The Orchestrator)
+├── main.py                     # The Orchestrator (Defines build targets and runs subprocesses)
+├── build_launcher.py           # The Build Engine (Worker script for individual isolated builds)
 ├── compat_profile.py           # Dynamic ELF-analysis engine for auto-patching memory offsets
 ├── files/                      # Payload directory (copied directly into the decompiled APK)
 │   ├── assets/                 # Custom resources, Lua scripts & configs
@@ -78,7 +79,8 @@ This project uses a fully automated, dynamic build pipeline.
     ├── apktool.jar             # Decompiles and recompiles the APK
     ├── baksmali.jar            # Disassembles .dex files into .smali format
     ├── d8.jar                  # Converts Java .class files to Android .dex
-    ├── unity-ads.jar           # Unity Ads SDK (used for project monetization)
+    ├── unity-ads-4.4.1.jar     # Unity Ads SDK (used for project monetization)
+    ├── unity-scaradapter...jar # Unity Ads SDK (used for project monetization)
     └── monetloader.zip         # Vendor MonetLoader core (unpacked dynamically)
 ```
 
@@ -110,11 +112,20 @@ KEY_PASS="key_password"
 KEYSTORE_PASS="keystore_password" # optional if same as KEY_PASS
 ```
 
-4. Run the build script in terminal:
+4. Run the orchestrator script in the terminal:
 ```bash
-python build_launcher.py
+python main.py
 ```
-The script will automatically download the original APK, decompile it, inject the Smali code, compile your Java wrapper, automatic profile.json generation, build the project, and sign the final APK.
+The script will sequentially launch isolated subprocesses for each target defined in main.py (e.g., Arizona, then Rodina). 
+
+For each target, it will automatically download the original APK, decompile it, inject the Smali code, auto-adapt Java paths, generate profile.json, build the project, and sign the final APK.
+
+Tip: If you want to build only a specific target, you can run the builder directly:
+```bash
+python build_launcher.py arizona
+# or
+python build_launcher.py rodina
+```
 
 ---
 
@@ -131,4 +142,4 @@ If the script throws an error during the offset search, you can update it manual
 
 - **The code in this repository** (build scripts, Java wrappers, and custom Lua helpers) is released under the [MIT License](LICENSE). You are free to modify and distribute these specific tools.
 - **MonetLoader** is an open-source project created by [xefinity](https://github.com/xefinity). Please refer to their repository for specific licensing terms.
-- **Arizona Mobile** and all related trademarks, copyrights, and assets are the property of their respective owners. This project claims no ownership over the original game client.
+- **Arizona/Rodina Mobile** and all related trademarks, copyrights, and assets are the property of their respective owners. This project claims no ownership over the original game client.
