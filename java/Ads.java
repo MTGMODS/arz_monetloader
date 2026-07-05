@@ -14,7 +14,7 @@ import com.unity3d.ads.UnityAdsShowOptions;
 public class Ads {
 
     private static final String GAME_ID = "4595401";
-    public static final Boolean testMode = true;
+    public static final Boolean testMode = false;
     public static final String placementVideo = "Interstitial_Android";
 
     public static void initializeAds(final Activity activity, final Context context) {
