@@ -1,6 +1,28 @@
-import subprocess, os, re, shutil, glob, requests, zipfile, json
+import subprocess, os, re, shutil, glob, requests, zipfile, json, sys
 from compat_profile import update_compat
 from dotenv import load_dotenv
+
+CONFIGS = {
+    "arizona": {
+        "apk_name": "app-arizona-release_web",
+        "download_url": "https://arz-mob.react-group.tech/game/release/launcher_new/app-arizona-release_web.apk",
+        "source_package": "com.arizona21.game",
+        "target_package": "com.arizona.game",
+        "app_label": "Arizona Lua",
+    },
+    "rodina": {
+        "apk_name": "app-rodina-release_web",
+        "download_url": "https://mob2.azinternal.com/release/launcher_new/app-rodina-release_web.apk",
+        "source_package": "com.rodina21.game",
+        "target_package": "com.rodina.game",
+        "app_label": "Rodina Lua",
+    },
+}
+
+if len(sys.argv) < 2:
+    raise RuntimeError("[INFO] 👉 Usage: python builder.py <arizona|rodina>")
+
+cfg = CONFIGS[sys.argv[1]]
 
 ##################################################################################################################
 
@@ -8,7 +30,7 @@ PATH = os.path.dirname(__file__).replace('\\', '/')
 
 APKTOOL_PATH = PATH + "/libs/apktool.jar"
 
-APK_NAME = "app-arizona-release_web"
+APK_NAME = cfg["apk_name"]
 
 DECODED_DIR = PATH + "/" + APK_NAME
 
@@ -17,7 +39,7 @@ APK_PATH = DECODED_DIR + ".apk"
 ##################################################################################################################
 
 if not os.path.exists(APK_PATH):
-    URL = "https://arz-mob.react-group.tech/game/release/launcher_new/app-arizona-release_web.apk"
+    URL = cfg["download_url"]
 
     print(f"[INFO] 📥 Downloading latest original APK from {URL}...")
 
@@ -127,14 +149,14 @@ with open(GTASA_INTERNAL_PATH, "w", encoding="utf-8") as file:
 
 ##################################################################################################################
 
-print("[INFO] 🔄 Change package name to 'com.arizona.game' in all smali files...")
+print(f"[INFO] 🔄 Change package name to '{cfg["target_package"]}' in all smali files...")
 
 for filepath in glob.glob(DECODED_DIR + SMALI_PATH + "/**/*.smali", recursive=True):
     with open(filepath, "r", encoding="utf-8") as file:
         smali_data = file.read()
 
-    smali_data = smali_data.replace("com.arizona21.game.web", "com.arizona.game")
-    smali_data = smali_data.replace("com.arizona21.game", "com.arizona.game")
+    smali_data = smali_data.replace(cfg["source_package"] + ".web", cfg["target_package"])
+    smali_data = smali_data.replace(cfg["source_package"], cfg["target_package"])
 
     with open(filepath, "w", encoding="utf-8") as file:
         file.write(smali_data)
@@ -146,13 +168,13 @@ MANIFEST_PATH = DECODED_DIR + "/AndroidManifest.xml"
 with open(MANIFEST_PATH, "r", encoding="utf-8") as file:
     manifest_data = file.read()
 
-print("[INFO] 🔄 Change package name to 'com.arizona.game' in AndroidManifest...")
-manifest_data = manifest_data.replace("com.arizona21.game.web", "com.arizona.game")
-manifest_data = manifest_data.replace("com.arizona21.game", "com.arizona.game")
+print(f"[INFO] 🔄 Change package name to '{cfg["target_package"]}' in AndroidManifest...")
+manifest_data = manifest_data.replace(cfg["source_package"] + ".web", cfg["target_package"])
+manifest_data = manifest_data.replace(cfg["source_package"], cfg["target_package"])
 
-print("[INFO] 🏷  Change app name to 'Arizona Lua' in AndroidManifest...")
-manifest_data = re.sub(r'android:label="@string/app_name"', 'android:label="Arizona Lua"', manifest_data)
-if 'android:label="Arizona Lua"' in manifest_data:
+print(f"[INFO] 🏷  Change app name to '{cfg['app_label']}' in AndroidManifest...")
+manifest_data = re.sub(r'android:label="@string/app_name"', f'android:label="{cfg['app_label']}"', manifest_data)
+if f'android:label="{cfg['app_label']}"' in manifest_data:
     print("[INFO] ✅ App renamed successfully!")
 else:
     raise RuntimeError("❌ Failed to update app label in AndroidManifest.xml.")
@@ -186,12 +208,7 @@ def compile_java_to_smali():
     classpath = f"libs/android.jar{os.pathsep}libs/unity-ads-4.4.1.jar"
 
     java_dir = "java" 
-    # java_files = glob.glob(os.path.join(java_dir, "*.java"))
-
-    java_files = glob.glob(
-        os.path.join(java_dir, "**", "*.java"),
-        recursive=True
-    )
+    java_files = glob.glob(os.path.join(java_dir, "*.java"))
 
     if not java_files:
         raise RuntimeError(f"❗ Java source files not found in {java_dir} folder!")
@@ -384,7 +401,7 @@ for i, line in enumerate(smali_lines):
     if match_version:
         var_name_4, version_found = match_version.groups()
         version_app = "v" + version_found
-        smali_lines[i] = f'    const-string {var_name_4}, "[MTG MODS]\\n\u2139\ufe0f ARZ v{version_found} \u2139\ufe0f"\n'
+        smali_lines[i] = f'    const-string {var_name_4}, "[MTG MODS]\\n\u2139\ufe0f v{version_found} \u2139\ufe0f"\n'
         print(f"[INFO] ✅ Launch toast updated to ARZ v{version_found}.")
         check_version = True
         break
@@ -460,7 +477,7 @@ print("[INFO] ✅ APK rebuilt successfully!")
 
 ##################################################################################################################
 
-SIGNED_APK = PATH + f"/MonetLoader {version_app}.apk"
+SIGNED_APK = PATH + f"/{cfg['app_label']} {version_app}.apk"
 
 if os.path.exists(SIGNED_APK):
     print(f"[INFO] 🗑️ Delete old signed apk...")
