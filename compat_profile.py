@@ -209,7 +209,7 @@ def update_compat(version_app, profile_path, libsamp_path):
     
     profile = load_profile(profile_path)
     
-    profile["profile_name"] = f"Arizona {version_app} by t.me/mtgmods"
+    profile["profile_name"] = f"{version_app} by t.me/mtgmods"
 
     idx1 = find_pattern(text_data, profile.get("cnetgame_ctor_pattern", ""))
     idx2 = find_pattern(text_data, profile.get("receiveignorerpc_pattern", ""))
