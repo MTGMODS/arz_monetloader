@@ -173,7 +173,7 @@ manifest_data = manifest_data.replace(cfg['source_package'] + ".web", cfg['targe
 manifest_data = manifest_data.replace(cfg['source_package'], cfg['target_package'])
 
 print(f"[INFO] 🏷  Change app name to '{cfg['app_label']}' in AndroidManifest...")
-manifest_data = re.sub(r'android:label="@string/app_name"', f'android:label="{cfg['app_label']}"', manifest_data)
+manifest_data = re.sub(r'android:label="@string/app_name"', "android:label=\"{cfg['app_label']}\"", manifest_data)
 if f'android:label="{cfg['app_label']}"' in manifest_data:
     print("[INFO] ✅ App renamed successfully!")
 else:
