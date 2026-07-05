@@ -244,7 +244,6 @@ PATH_SMALI_ADS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 2}"
 print("[INFO] 🔧 Compiling Unity Ads from jar to smali...")
 
 def compile_unity_ads_to_smali():
-    # unity_jar = "libs/unity-ads-4.4.1.jar"
     unity_jars = [
         "libs/unity-ads-4.4.1.jar",
         "libs/unity-scaradapter-common.jar",
@@ -262,26 +261,16 @@ def compile_unity_ads_to_smali():
 
     try:
         print("[INFO] ⚙️ Unity Ads Jar -> Dex...")
-        # subprocess.run([
-        #     "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8",
-        #     "--release",
-        #     "--output", temp_dex_dir,
-        #     "--lib", "libs/android.jar",
-        #     unity_jar
-        # ], check=True)
-
-        cmd = [
+        
+        subprocess.run([
             "java",
             "-cp", "libs/d8.jar",
             "com.android.tools.r8.D8",
             "--release",
             "--output", temp_dex_dir,
             "--lib", "libs/android.jar",
-        ]
-
-        cmd.extend(unity_jars)
-
-        subprocess.run(cmd, check=True)
+            *unity_jars
+        ], check=True)
 
         print("[INFO] ⚙️ Dex -> Smali...")
 
