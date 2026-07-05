@@ -183,11 +183,16 @@ PATH_SMALI_TOOLS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 1}"
 print("[INFO] 🔧 Compiling MTG Tools from java files to smali...")
 
 def compile_java_to_smali():
-    classpath = f"libs/android.jar{os.pathsep}libs/unity-ads.jar"
+    classpath = f"libs/android.jar{os.pathsep}libs/unity-ads-4.4.1.jar"
 
     java_dir = "java" 
-    java_files = glob.glob(os.path.join(java_dir, "*.java"))
-    
+    # java_files = glob.glob(os.path.join(java_dir, "*.java"))
+
+    java_files = glob.glob(
+        os.path.join(java_dir, "**", "*.java"),
+        recursive=True
+    )
+
     if not java_files:
         raise RuntimeError(f"❗ Java source files not found in {java_dir} folder!")
 
@@ -208,7 +213,7 @@ def compile_java_to_smali():
             "--release", 
             "--output", ".", 
             "--lib", "libs/android.jar",
-            "--lib", "libs/unity-ads.jar"
+            "--lib", "libs/unity-ads-4.4.1.jar"
         ] + class_files, check=True)
 
         print("[INFO] ⚙️ Dex -> Smali...")
@@ -239,23 +244,44 @@ PATH_SMALI_ADS = DECODED_DIR + f"/smali_classes{LATEST_SMALI + 2}"
 print("[INFO] 🔧 Compiling Unity Ads from jar to smali...")
 
 def compile_unity_ads_to_smali():
-    unity_jar = "libs/unity-ads.jar"
+    # unity_jar = "libs/unity-ads-4.4.1.jar"
+    unity_jars = [
+        "libs/unity-ads-4.4.1.jar",
+        "libs/unity-scaradapter-common.jar",
+        "libs/unity-scaradapter-1920.jar",
+        "libs/unity-scaradapter-1950.jar",
+        "libs/unity-scaradapter-2000.jar",
+    ]
     temp_dex_dir = "temp_unity_dex"
 
-    if not os.path.exists(unity_jar):
-        raise RuntimeError("❗ Unity Ads jar not found!")
+    for jar in unity_jars:
+        if not os.path.exists(jar):
+            raise RuntimeError(f"❗ Jar not found: {jar}")
 
     os.makedirs(temp_dex_dir, exist_ok=True)
 
     try:
         print("[INFO] ⚙️ Unity Ads Jar -> Dex...")
-        subprocess.run([
-            "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8",
+        # subprocess.run([
+        #     "java", "-cp", "libs/d8.jar", "com.android.tools.r8.D8",
+        #     "--release",
+        #     "--output", temp_dex_dir,
+        #     "--lib", "libs/android.jar",
+        #     unity_jar
+        # ], check=True)
+
+        cmd = [
+            "java",
+            "-cp", "libs/d8.jar",
+            "com.android.tools.r8.D8",
             "--release",
             "--output", temp_dex_dir,
             "--lib", "libs/android.jar",
-            unity_jar
-        ], check=True)
+        ]
+
+        cmd.extend(unity_jars)
+
+        subprocess.run(cmd, check=True)
 
         print("[INFO] ⚙️ Dex -> Smali...")
 
@@ -281,10 +307,10 @@ compile_unity_ads_to_smali()
 print("[INFO] 📢 Adding Unity Ads activities to AndroidManifest.xml...")
 
 new_activities = '''
-<activity android:configChanges="fontScale|keyboard|keyboardHidden|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode" android:hardwareAccelerated="true" android:name="com.unity3d.services.ads.adunit.AdUnitActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-<activity android:configChanges="fontScale|keyboard|keyboardHidden|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode" android:hardwareAccelerated="true" android:name="com.unity3d.services.ads.adunit.AdUnitTransparentActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-<activity android:configChanges="fontScale|keyboard|keyboardHidden|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode" android:hardwareAccelerated="false" android:name="com.unity3d.services.ads.adunit.AdUnitTransparentSoftwareActivity" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-<activity android:configChanges="fontScale|keyboard|keyboardHidden|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode" android:hardwareAccelerated="false" android:name="com.unity3d.services.ads.adunit.AdUnitSoftwareActivity" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+<activity android:name="com.unity3d.services.ads.adunit.AdUnitActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:hardwareAccelerated="true" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+<activity android:name="com.unity3d.services.ads.adunit.AdUnitTransparentActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:hardwareAccelerated="true" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+<activity android:name="com.unity3d.services.ads.adunit.AdUnitTransparentSoftwareActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:hardwareAccelerated="false" android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+<activity android:name="com.unity3d.services.ads.adunit.AdUnitSoftwareActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:hardwareAccelerated="false" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
 '''
 
 manifest_data = re.sub(
