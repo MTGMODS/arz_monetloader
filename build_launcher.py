@@ -30,7 +30,7 @@ PATH = os.path.dirname(__file__).replace('\\', '/')
 
 APKTOOL_PATH = PATH + "/libs/apktool.jar"
 
-APK_NAME = cfg["apk_name"]
+APK_NAME = cfg['apk_name']
 
 DECODED_DIR = PATH + "/" + APK_NAME
 
@@ -39,7 +39,7 @@ APK_PATH = DECODED_DIR + ".apk"
 ##################################################################################################################
 
 if not os.path.exists(APK_PATH):
-    URL = cfg["download_url"]
+    URL = cfg['download_url']
 
     print(f"[INFO] 📥 Downloading latest original APK from {URL}...")
 
@@ -149,14 +149,14 @@ with open(GTASA_INTERNAL_PATH, "w", encoding="utf-8") as file:
 
 ##################################################################################################################
 
-print(f"[INFO] 🔄 Change package name to '{cfg["target_package"]}' in all smali files...")
+print(f"[INFO] 🔄 Change package name to '{cfg['target_package']}' in all smali files...")
 
 for filepath in glob.glob(DECODED_DIR + SMALI_PATH + "/**/*.smali", recursive=True):
     with open(filepath, "r", encoding="utf-8") as file:
         smali_data = file.read()
 
-    smali_data = smali_data.replace(cfg["source_package"] + ".web", cfg["target_package"])
-    smali_data = smali_data.replace(cfg["source_package"], cfg["target_package"])
+    smali_data = smali_data.replace(cfg['source_package'] + ".web", cfg['target_package'])
+    smali_data = smali_data.replace(cfg['source_package'], cfg['target_package'])
 
     with open(filepath, "w", encoding="utf-8") as file:
         file.write(smali_data)
@@ -168,9 +168,9 @@ MANIFEST_PATH = DECODED_DIR + "/AndroidManifest.xml"
 with open(MANIFEST_PATH, "r", encoding="utf-8") as file:
     manifest_data = file.read()
 
-print(f"[INFO] 🔄 Change package name to '{cfg["target_package"]}' in AndroidManifest...")
-manifest_data = manifest_data.replace(cfg["source_package"] + ".web", cfg["target_package"])
-manifest_data = manifest_data.replace(cfg["source_package"], cfg["target_package"])
+print(f"[INFO] 🔄 Change package name to '{cfg['target_package']}' in AndroidManifest...")
+manifest_data = manifest_data.replace(cfg['source_package'] + ".web", cfg['target_package'])
+manifest_data = manifest_data.replace(cfg['source_package'], cfg['target_package'])
 
 print(f"[INFO] 🏷  Change app name to '{cfg['app_label']}' in AndroidManifest...")
 manifest_data = re.sub(r'android:label="@string/app_name"', f'android:label="{cfg['app_label']}"', manifest_data)
