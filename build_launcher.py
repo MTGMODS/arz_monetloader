@@ -402,7 +402,7 @@ for i, line in enumerate(smali_lines):
         var_name_4, version_found = match_version.groups()
         version_app = "v" + version_found
         smali_lines[i] = f'    const-string {var_name_4}, "[MTG MODS]\\n\u2139\ufe0f v{version_found} \u2139\ufe0f"\n'
-        print(f"[INFO] ✅ Launch toast updated to ARZ v{version_found}.")
+        print(f"[INFO] ✅ Launch toast updated to v{version_found}.")
         check_version = True
         break
 
