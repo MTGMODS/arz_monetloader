@@ -1,73 +1,75 @@
 package com.arizona.launcher;
 
-import android.content.Context;
 import android.app.Activity;
-
-import com.unity3d.ads.IUnityAdsListener;
-import com.unity3d.ads.UnityAds;
-
-import android.content.SharedPreferences;
-import android.os.Handler;
-import android.os.Looper;
+import android.content.Context;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import com.unity3d.ads.IUnityAdsInitializationListener;
+import com.unity3d.ads.IUnityAdsLoadListener;
+import com.unity3d.ads.IUnityAdsShowListener;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.ads.UnityAdsShowOptions;
 
 public class Ads {
 
-    public static String placementVideo = "Interstitial_Android";
+    private static final String GAME_ID = "4595401";
+    public static final Boolean testMode = true;
+    public static final String placementVideo = "Interstitial_Android";
 
-    private static class UnityAdsListener implements IUnityAdsListener {
-        private Context context;
+    public static void initializeAds(final Activity activity, final Context context) {
+        UnityAds.initialize(activity, GAME_ID, testMode, new IUnityAdsInitializationListener() {
+        
+            @Override
+            public void onInitializationComplete() {
+                Log.d("MtgTools", "Unity Ads initialized 4.4.1");
 
-        public UnityAdsListener(Context context) {
-            this.context = context;
-        }
+                UnityAds.load(placementVideo, new IUnityAdsLoadListener() {
 
-        public void onUnityAdsReady(String placementVideo) {
-            // Toast.makeText(context, "[MTG MODS]\nℹ️️ Реклама готова ℹ️", Toast.LENGTH_LONG).show();
-        }
-        @Override
-        public void onUnityAdsStart(String placementVideo) {
-            Toast.makeText(context, "[MTG MODS]\nℹ️️ VIP убирает рекламу ℹ️", Toast.LENGTH_LONG).show();
-        }
-        @Override
-        public void onUnityAdsFinish(String placementVideo, UnityAds.FinishState finishState) {
-            if (finishState.equals(UnityAds.FinishState.COMPLETED)) {
-                Toast.makeText(context, "[MTG MODS]\n❤️ Спасибо за просмотр ❤️", Toast.LENGTH_SHORT).show();
-            } else if (finishState.equals(UnityAds.FinishState.SKIPPED)) {
-                Toast.makeText(context, "[MTG MODS]\n😭 Вы пропустили 😭️", Toast.LENGTH_LONG).show();
-            } else if (finishState.equals(UnityAds.FinishState.ERROR)) {
-                // Toast.makeText(context, "[MTG MODS]\n❗️️ Ошибка сети ❗", Toast.LENGTH_LONG).show();
+                    @Override
+                    public void onUnityAdsAdLoaded(String placementId) {
+                        Log.d("MtgTools", "Ad loaded");
+
+                        UnityAds.show(activity, placementId, new UnityAdsShowOptions(),
+                                new IUnityAdsShowListener() {
+
+                                    @Override
+                                    public void onUnityAdsShowStart(String placementId) {
+                                        Toast.makeText(context, "[MTG MODS]\nℹ️️ VIP убирает рекламу ℹ️", Toast.LENGTH_LONG).show();
+                                    }
+
+                                    @Override
+                                    public void onUnityAdsShowClick(String placementId) {
+                                        
+                                    }
+
+                                    @Override
+                                    public void onUnityAdsShowComplete(String placementId, UnityAds.UnityAdsShowCompletionState state) {
+                                        if (state == UnityAds.UnityAdsShowCompletionState.COMPLETED) {
+                                            Toast.makeText(context, "[MTG MODS]\n❤️ Спасибо за просмотр ❤️", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(context, "[MTG MODS]\n😭 Вы пропустили 😭", Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onUnityAdsShowFailure(String placementId, UnityAds.UnityAdsShowError error, String message) {
+                                        Log.e("MtgTools", "Show Error: " + error + " " + message);
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onUnityAdsFailedToLoad(String placementId, UnityAds.UnityAdsLoadError error, String message) {
+                        Log.e("MtgTools","Load Error: " + error + " " + message);
+                    }
+                });
             }
-        }
 
-        @Override
-        public void onUnityAdsError(UnityAds.UnityAdsError error, String message) {
-            // Toast.makeText(context, "[MTG MODS]\n❗️️ Ошибка сети ❗", Toast.LENGTH_LONG).show();
-            Log.e("MtgTools", "onUnityAdsError: " + message);
-        }
-
-    }
-
-    public static void initializeAds(Activity activity, Context context) {
-        final Ads.UnityAdsListener UnityAdsListener = new Ads.UnityAdsListener(context);
-        UnityAds.addListener(UnityAdsListener);
-        UnityAds.initialize(activity, "4595401", false);
-        new Thread(() -> {
-            while (!UnityAds.isReady(placementVideo)) {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    Log.e("MtgTools", "Error ads: ", e);
-                }
+            @Override
+            public void onInitializationFailed(UnityAds.UnityAdsInitializationError error, String message) {
+                Log.e("MtgTools", "Init Error: " + error + " " + message);
             }
-            new Handler(Looper.getMainLooper()).post(() -> {
-                UnityAds.show(activity, placementVideo);
-            });
-        }).start();
+        });
     }
-
-
-
 }
