@@ -89,7 +89,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "ℹ️ Json files not changed. Skip commit."
           else
-            git commit -m "Update launcher & compat profile (v${{ steps.get_version.outputs.version_name }})"
+            git commit -m "Update launcher & compat profile (${{ steps.get_version.outputs.version_name }})"
             git push origin HEAD:${{ github.ref_name }}
           fi
 
