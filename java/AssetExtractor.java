@@ -27,11 +27,7 @@ public class AssetExtractor {
         File outputFolder = new File(mediaDirs.length > 0 ? mediaDirs[0] : null, folderName);
 
         if (outputFolder == null || (!outputFolder.exists() && !outputFolder.mkdirs())) {
-            showErrorDialog(activity, context, "❗ MonetLoader Error ❗",
-            "Не удалось автоматически создать папку /Android/media/com.arizona.game/monetloader\n\n" +
-                    "Попробуйте перезапустить лаунчер\n\n" +
-                    "Если перезапуск не помог — создайте папку вручную в файловом менеджере!"
-            );
+            showErrorDialog(activity, context, "❗ MonetLoader Error ❗", "Не удалось автоматически создать папку /monetloader\n\nПопробуйте перезапустить лаунчер или создайте её вручную.");
             return;
         }
 
@@ -39,7 +35,7 @@ public class AssetExtractor {
             AssetManager assetManager = context.getAssets();
             String[] files = assetManager.list(folderName);
             if (files == null || files.length == 0) {
-                showErrorDialog(activity, context, "❗ MonetLoader Error ❗", "Не удалось установить файлы, assets пустой!\n\n" + "Переустановите данный лаунчер из t.me/mtgmods");
+                showErrorDialog(activity, context, "❗ MonetLoader Error ❗", "У вас битый APK без нужных файлов!\n\n" + "Переустановите данный лаунчер из t.me/mtgmods");
                 return;
             }
 
@@ -53,16 +49,11 @@ public class AssetExtractor {
                 }
             }
 
-//            new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n☑️ MonetLoader ☑️", Toast.LENGTH_SHORT).show());
-
         } catch (IOException e) {
             Log.e("MtgTools", "Error extractor: " + e);
             File fixFile = new File(outputFolder, "lib/imgui_piemenu.lua");
             if (!fixFile.exists()) {
-                showErrorDialog(activity, context, "❗MonetLoader Error❗",
-                "Не удалось автоматически установить нужные библиотеки для работоспособности!\n\n" +
-                "Попробуйте перезапустить лаунчер\n\n" +
-                "Если перезапуск не помог — вручную установите библиотеки по инструкции:\nhttps://t.me/mtgmods/1359 - Ошибка при запуске");
+                showErrorDialog(activity, context, "❗MonetLoader Error❗", "Не удалось автоматически установить нужные библиотеки для работоспособности!\n\nПопробуйте перезапустить лаунчер или установите их вручную.");
             }
         }
 
