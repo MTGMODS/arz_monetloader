@@ -46,7 +46,7 @@ public class Ads {
                                     @Override
                                     public void onUnityAdsShowComplete(String placementId, UnityAds.UnityAdsShowCompletionState state) {
                                         if (state == UnityAds.UnityAdsShowCompletionState.COMPLETED) {
-                                            Toast.makeText(context, "[MTG MODS]\n❤️ Спасибо за просмотр ❤️", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "[MTG MODS]\n❤️ Спасибо ❤️", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(context, "[MTG MODS]\n😭 Вы пропустили 😭", Toast.LENGTH_LONG).show();
                                         }
