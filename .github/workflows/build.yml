@@ -105,9 +105,9 @@ jobs:
         with:
           tag_name: ${{ steps.get_version.outputs.version_name }}
           name: "MonetLoader ${{ steps.get_version.outputs.version_name }}"
-          files: "*Lua*.apk"
+          files: "*.apk"
           body: |
-            **🚀 Лаунчер MonetLoader обновлён до версии ${{ steps.get_version.outputs.version_name }}!**
+            **🚀 MonetLoader интегрирован в версию ${{ steps.get_version.outputs.version_name }}!**
           draft: false
           prerelease: false
           make_latest: true
