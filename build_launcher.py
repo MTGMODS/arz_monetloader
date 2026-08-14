@@ -2,27 +2,15 @@ import subprocess, os, re, shutil, glob, requests, zipfile, json, sys
 from compat_profile import update_compat
 from dotenv import load_dotenv
 
-CONFIGS = {
-    "arizona": {
-        "apk_name": "app-arizona-release_web",
-        "download_url": "https://arz-mob.react-group.tech/game/release/launcher_new/app-arizona-release_web.apk",
-        "source_package": "com.arizona21.game",
-        "target_package": "com.arizona.game",
-        "app_label": "Arizona Lua",
-    },
-    "rodina": {
-        "apk_name": "app-rodina-release_web",
-        "download_url": "https://mob2.azinternal.com/release/launcher_new/app-rodina-release_web.apk",
-        "source_package": "com.rodina21.game",
-        "target_package": "com.rodina.game",
-        "app_label": "Rodina Lua",
-    },
-}
-
-if len(sys.argv) < 2:
+if len(sys.argv) != 2 or sys.argv[1] not in {"arizona", "rodina"}:
     raise RuntimeError("[INFO] 👉 Usage: python builder.py <arizona|rodina>")
 
-cfg = CONFIGS[sys.argv[1]]
+PROJECTS_APK = {
+    "arizona": "https://arz-mob.react-group.tech/game/release/launcher_new/app-arizona-release_web.apk",
+    "rodina": "https://mob2.azinternal.com/release/launcher_new/app-rodina-release_web.apk",
+}
+
+DOWNLOAD_URL = PROJECTS_APK[sys.argv[1]]
 
 ##################################################################################################################
 
@@ -30,7 +18,7 @@ PATH = os.path.dirname(__file__).replace('\\', '/')
 
 APKTOOL_PATH = PATH + "/libs/apktool.jar"
 
-APK_NAME = cfg['apk_name']
+APK_NAME = DOWNLOAD_URL.split("/")[-1].removesuffix(".apk")
 
 DECODED_DIR = PATH + "/" + APK_NAME
 
@@ -39,12 +27,10 @@ APK_PATH = DECODED_DIR + ".apk"
 ##################################################################################################################
 
 if not os.path.exists(APK_PATH):
-    URL = cfg['download_url']
-
-    print(f"[INFO] 📥 Downloading latest original APK from {URL}...")
+    print(f"[INFO] 📥 Downloading latest original APK from {DOWNLOAD_URL}...")
 
     with open(APK_PATH, 'wb') as f:
-        f.write(requests.get(URL).content)
+        f.write(requests.get(DOWNLOAD_URL).content)
 
 ##################################################################################################################
 
@@ -146,43 +132,6 @@ if not check_connect:
 
 with open(GTASA_INTERNAL_PATH, "w", encoding="utf-8") as file:
     file.writelines(smali_lines)
-
-##################################################################################################################
-
-print(f"[INFO] 🔄 Change package name to '{cfg['target_package']}' in all smali files...")
-
-for filepath in glob.glob(DECODED_DIR + SMALI_PATH + "/**/*.smali", recursive=True):
-    with open(filepath, "r", encoding="utf-8") as file:
-        smali_data = file.read()
-
-    smali_data = smali_data.replace(cfg['source_package'] + ".web", cfg['target_package'])
-    smali_data = smali_data.replace(cfg['source_package'], cfg['target_package'])
-
-    with open(filepath, "w", encoding="utf-8") as file:
-        file.write(smali_data)
-
-##################################################################################################################
-
-MANIFEST_PATH = DECODED_DIR + "/AndroidManifest.xml"
-
-with open(MANIFEST_PATH, "r", encoding="utf-8") as file:
-    manifest_data = file.read()
-
-print(f"[INFO] 🔄 Change package name to '{cfg['target_package']}' in AndroidManifest...")
-manifest_data = manifest_data.replace(cfg['source_package'] + ".web", cfg['target_package'])
-manifest_data = manifest_data.replace(cfg['source_package'], cfg['target_package'])
-
-print(f"[INFO] 🏷  Change app name to '{cfg['app_label']}' in AndroidManifest...")
-expected_label = f'android:label="{cfg["app_label"]}"'
-manifest_data = re.sub(r'android:label="@string/app_name"', expected_label, manifest_data)
-
-if expected_label in manifest_data:
-    print("[INFO] ✅ App renamed successfully!")
-else:
-    raise RuntimeError("❌ Failed to update app label in AndroidManifest.xml.")
-
-with open(MANIFEST_PATH, "w", encoding="utf-8") as file:
-    file.write(manifest_data)
 
 ##################################################################################################################
 
@@ -312,7 +261,12 @@ compile_unity_ads_to_smali()
 
 ##################################################################################################################
 
+MANIFEST_PATH = DECODED_DIR + "/AndroidManifest.xml"
+
 print("[INFO] 📢 Adding Unity Ads activities to AndroidManifest.xml...")
+
+with open(MANIFEST_PATH, "r", encoding="utf-8") as file:
+    manifest_data = file.read()
 
 new_activities = '''
 <activity android:name="com.unity3d.services.ads.adunit.AdUnitActivity" android:configChanges="fontScale|keyboard|keyboardHidden|locale|mnc|mcc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen" android:hardwareAccelerated="true" android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
@@ -353,7 +307,7 @@ if ARZ_SMALI_PATH == "":
 
 MAIN_ENTRENCH_PATH = DECODED_DIR + ARZ_SMALI_PATH + "/com/arizona/launcher/MainEntrench.smali"
 
-print("[INFO] 🔧 Injecting call MTGTools...")
+print("[INFO] 🔧 Injecting call MTG Tools...")
 
 with open(MAIN_ENTRENCH_PATH, "r", encoding="utf-8") as file:
     smali_lines = file.readlines()
@@ -479,16 +433,9 @@ print("[INFO] ✅ APK rebuilt successfully!")
 
 ##################################################################################################################
 
-SIGNED_APK = PATH + f"/{cfg['app_label']} {version_app}.apk"
-
-if os.path.exists(SIGNED_APK):
-    print(f"[INFO] 🗑️ Delete old signed apk...")
-    os.remove(SIGNED_APK)
-
-##################################################################################################################
-
 load_dotenv(os.path.join(PATH, ".env"))
 
+SIGNED_APK = PATH + f"/{APK_NAME}.apk"
 APKSIGNER_PATH = PATH + "/libs/apksigner.jar"
 UNSIGNED_APK = DECODED_DIR + "/dist/" + APK_NAME + ".apk"
 
@@ -496,6 +443,9 @@ KEYSTORE_PATH = PATH + "/key.jks"
 KEY_ALIAS = os.getenv("KEY_ALIAS")
 KEY_PASS = os.getenv("KEY_PASS")
 KEYSTORE_PASS = os.getenv("KEYSTORE_PASS") or KEY_PASS
+
+if os.path.exists(SIGNED_APK):
+    os.remove(SIGNED_APK)
 
 print("[INFO] 🔐 Signing APK...")
 
@@ -537,10 +487,6 @@ is_github_actions = os.environ.get("GITHUB_ACTIONS") == "true"
 if not is_github_actions:
     print("[INFO] 🗑️ Remove temporary build directory...")
     shutil.rmtree(DECODED_DIR, ignore_errors=True)
-
-    print("[INFO] 🗑️ Remove original APK...")
-    if os.path.exists(APK_PATH):
-        os.remove(APK_PATH)
     
 ##################################################################################################################
 
