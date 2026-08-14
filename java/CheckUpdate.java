@@ -62,9 +62,6 @@ public class CheckUpdate {
                         .show());
                 return true;
             }
-//            else {
-//                activity.runOnUiThread(() -> Toast.makeText(context, "[MTG MODS]\n☑️ ️Актуальная версия ☑️", Toast.LENGTH_SHORT).show());
-//            }
 
         } catch (Exception e) {
             Log.e("MtgTools", "Error update: ", e);
