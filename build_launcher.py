@@ -379,17 +379,17 @@ with open(UPDATE_SERVICE_PATH, "r", encoding="utf-8") as file:
 
 matches = [i for i, line in enumerate(smali_lines) if "needUpdateMsg" in line]
 
-if len(matches) < 3:
-    raise RuntimeError("❌ Unexpected UpdateService structure (needUpdateMsg not found enough times).")
+if len(matches) < 2 or len(matches) > 3:
+    print("[INFO] ❌ Unexpected UpdateService structure (needUpdateMsg).")
+    print("[INFO] ❌ Client updates not disabled!")
+else:
+    insert_index = matches[1]
+    smali_lines.insert(insert_index + 2, "    const/4 p3, 0x0\n\n")
 
-# add \"const/4 p1, 0x0\" after 3/4 "needUpdateMsg"
-insert_index = matches[2]
-smali_lines.insert(insert_index + 2, "    const/4 p1, 0x0\n")
+    with open(UPDATE_SERVICE_PATH, "w", encoding="utf-8") as file:
+        file.writelines(smali_lines)
 
-with open(UPDATE_SERVICE_PATH, "w", encoding="utf-8") as file:
-    file.writelines(smali_lines)
-
-print("[INFO] ✅ Client updates disabled successfully!")
+    print("[INFO] ✅ Client updates disabled successfully!")
 
 ##################################################################################################################
 
