@@ -93,7 +93,7 @@ public class MtgTools {
     public static boolean isValidKey(String key, Context context) {
         Log.i("MtgTools", "Check key: " + key);
 
-        String response = postRequest("https://api.mtgmods.com/v1/subscription/check", key, getDeviceId(context));
+        String response = postRequest("https://api.mtgmods.com/v1/license/check", key, getDeviceId(context));
         if (response == null) {
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(context, "[MTG MODS]\n⚠️ Ошибка подключения ⚠️", Toast.LENGTH_LONG).show());
             return false;
